@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>BDFE948A-A198-4CCE-972B-CC42F782E569</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Benchmark</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>F3F0B77D-D8F0-4F3C-8691-9145B58FAE19</key>
+		<string>https://svn.alfresco.com/repos/scratch/devenv/mac</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>projects/benchmarkapp/Benchmark/Benchmark.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>F3F0B77D-D8F0-4F3C-8691-9145B58FAE19</key>
+		<string>../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>F3F0B77D-D8F0-4F3C-8691-9145B58FAE19</key>
+		<string>https://svn.alfresco.com/repos/scratch</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://svn.alfresco.com/repos/scratch/devenv/mac/projects/benchmarkapp/Benchmark/Benchmark.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>F3F0B77D-D8F0-4F3C-8691-9145B58FAE19</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F3F0B77D-D8F0-4F3C-8691-9145B58FAE19</string>
+			<key>IDESourceControlWCCName</key>
+			<string>devenv</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,30 @@
+//
+//  Property.h
+//  Benchmark
+//
+//  Created by Gavin Cornwell on 16/09/2013.
+//  Copyright (c) 2013 Alfresco. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+typedef enum
+{
+    PropertyTypeString = 0,
+    PropertyTypeNumber
+    
+} PropertyType;
+
+@interface Property : NSObject
+
+@property (strong, nonatomic, readonly) NSString *name;
+@property (strong, nonatomic, readonly) id value;
+@property (strong, nonatomic, readonly) id defaultValue;
+@property (assign, nonatomic, readonly) PropertyType type;
+
+- (id)initWithName:(NSString *)name
+             value:(id)value
+      defaultValue:(id)defaultValue
+              type:(PropertyType)type;
+
+@end
