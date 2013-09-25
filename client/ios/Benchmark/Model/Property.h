@@ -18,9 +18,10 @@ typedef enum
 @interface Property : NSObject
 
 @property (strong, nonatomic, readonly) NSString *name;
-@property (strong, nonatomic, readonly) id value;
-@property (strong, nonatomic, readonly) id defaultValue;
 @property (assign, nonatomic, readonly) PropertyType type;
+@property (strong, nonatomic, readwrite) id value;
+@property (strong, nonatomic, readonly) id defaultValue;
+@property (assign, nonatomic, readonly) BOOL hasValueChanged;
 
 - (id)initWithName:(NSString *)name
              value:(id)value

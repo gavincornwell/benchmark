@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Constants.h"
 #import "Test.h"
+#import "Property.h"
 #import "Run.h"
 #import "RunStatus.h"
 

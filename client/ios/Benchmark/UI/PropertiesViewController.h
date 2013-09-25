@@ -11,8 +11,6 @@
 
 @interface PropertiesViewController : UITableViewController
 
-- (id)initWithTest:(Test *)test benchmarkService:(id<BenchmarkService>)service;
-
-- (id)initWithRun:(Run *)run benchmarkService:(id<BenchmarkService>)service;
+- (id)initWithProperties:(NSArray *)properties editable:(BOOL)editable benchmarkService:(id<BenchmarkService>)service;
 
 @end

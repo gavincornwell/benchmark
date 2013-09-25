@@ -122,7 +122,7 @@
             if (cell == nil)
             {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:PropertiesIdentifier];
-                cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
             cell.textLabel.text = @"Properties";
@@ -186,8 +186,9 @@
 {
     if (indexPath.section == 0 && indexPath.row == 1)
     {
-        PropertiesViewController *propsVC = [[PropertiesViewController alloc] initWithTest:self.test
-                                                                          benchmarkService:self.benchmarkService];
+        PropertiesViewController *propsVC = [[PropertiesViewController alloc] initWithProperties:self.test.properties
+                                                                                        editable:YES
+                                                                                benchmarkService:self.benchmarkService];
         [self.navigationController pushViewController:propsVC animated:YES];
     }
     else

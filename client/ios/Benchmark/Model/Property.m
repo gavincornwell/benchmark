@@ -10,9 +10,9 @@
 
 @interface Property ()
 @property (strong, nonatomic, readwrite) NSString *name;
-@property (strong, nonatomic, readwrite) id value;
 @property (strong, nonatomic, readwrite) id defaultValue;
 @property (assign, nonatomic, readwrite) PropertyType type;
+@property (assign, nonatomic, readwrite) BOOL hasValueChanged;
 @end
 
 @implementation Property
@@ -29,6 +29,7 @@
         self.value = value;
         self.defaultValue = defaultValue;
         self.type = type;
+        self.hasValueChanged = false;
     }
     return self;
 }

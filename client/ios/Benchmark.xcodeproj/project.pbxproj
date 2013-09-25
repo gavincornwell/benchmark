@@ -22,6 +22,7 @@
 		5831F89F17E43AAC00ADFE98 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5831F87717E43AAC00ADFE98 /* Foundation.framework */; };
 		5831F8A717E43AAD00ADFE98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5831F8A517E43AAD00ADFE98 /* InfoPlist.strings */; };
 		5831F8AA17E43AAD00ADFE98 /* BenchmarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831F8A917E43AAD00ADFE98 /* BenchmarkTests.m */; };
+		587A9A3C17F34AB200D6D57B /* EditPropertyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 587A9A3B17F34AB200D6D57B /* EditPropertyViewController.m */; };
 		5884706B17E514AD00F89A6B /* BenchmarkLabService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5884706A17E514AD00F89A6B /* BenchmarkLabService.m */; };
 		5884706D17E5160700F89A6B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5884706C17E5160700F89A6B /* Settings.bundle */; };
 		5884707017E519BA00F89A6B /* Run.m in Sources */ = {isa = PBXBuildFile; fileRef = 5884706F17E519BA00F89A6B /* Run.m */; };
@@ -84,6 +85,8 @@
 		5831F8A617E43AAD00ADFE98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5831F8A817E43AAD00ADFE98 /* BenchmarkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BenchmarkTests.h; sourceTree = "<group>"; };
 		5831F8A917E43AAD00ADFE98 /* BenchmarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BenchmarkTests.m; sourceTree = "<group>"; };
+		587A9A3A17F34AB200D6D57B /* EditPropertyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditPropertyViewController.h; path = UI/EditPropertyViewController.h; sourceTree = "<group>"; };
+		587A9A3B17F34AB200D6D57B /* EditPropertyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditPropertyViewController.m; path = UI/EditPropertyViewController.m; sourceTree = "<group>"; };
 		5884706917E514AD00F89A6B /* BenchmarkLabService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BenchmarkLabService.h; path = Service/BenchmarkLabService.h; sourceTree = "<group>"; };
 		5884706A17E514AD00F89A6B /* BenchmarkLabService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BenchmarkLabService.m; path = Service/BenchmarkLabService.m; sourceTree = "<group>"; };
 		5884706C17E5160700F89A6B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -247,6 +250,8 @@
 		5884706417E5138400F89A6B /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				587A9A3A17F34AB200D6D57B /* EditPropertyViewController.h */,
+				587A9A3B17F34AB200D6D57B /* EditPropertyViewController.m */,
 				58E2338B17ECC520006F941E /* PropertiesViewController.h */,
 				58E2338C17ECC520006F941E /* PropertiesViewController.m */,
 				58E2338817ECA326006F941E /* RunViewController.h */,
@@ -445,6 +450,7 @@
 				58E2338A17ECA327006F941E /* RunViewController.m in Sources */,
 				58E2338D17ECC521006F941E /* PropertiesViewController.m in Sources */,
 				582E39F417EF85BD00A53ED3 /* TestViewController.m in Sources */,
+				587A9A3C17F34AB200D6D57B /* EditPropertyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
