@@ -11,7 +11,8 @@
 typedef enum
 {
     PropertyTypeString = 0,
-    PropertyTypeNumber
+    PropertyTypeInteger,
+    PropertyTypeDecimal
     
 } PropertyType;
 

@@ -89,7 +89,14 @@
     // set cell text
     Property *property = [self.properties objectAtIndex:indexPath.row];
     cell.textLabel.text = property.name;
-    cell.detailTextLabel.text = [property.defaultValue description];
+    if (property.value != nil)
+    {
+        cell.detailTextLabel.text = [property.value description];
+    }
+    else
+    {
+        cell.detailTextLabel.text = [property.defaultValue description];
+    }
     
     return cell;
 }

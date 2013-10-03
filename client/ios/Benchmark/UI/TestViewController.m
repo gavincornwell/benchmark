@@ -13,7 +13,7 @@
 @interface TestViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
 @property (nonatomic, strong, readwrite) Test *test;
-@property (nonatomic, strong, readwrite) NSMutableArray *runs;
+@property (nonatomic, strong, readwrite) NSArray *runs;
 @end
 
 @implementation TestViewController

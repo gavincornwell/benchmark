@@ -11,13 +11,14 @@
 @interface EditPropertyViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
 @property (nonatomic, strong, readwrite) Property *property;
+@property (nonatomic, strong, readwrite) UITextField *textField;
 @end
 
 @implementation EditPropertyViewController
 
 - (id)initWithProperty:(Property *)property benchmarkService:(id<BenchmarkService>)service;
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
     if (self)
     {
         self.property = property;
@@ -32,16 +33,44 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"Edit Property";
-}
-
-- (void) showFailureAlert:(NSString *)message
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:nil];
-    [alert show];
+    self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+    
+    CGRect frame;
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        frame = CGRectMake(20, 30, 720, 40);
+    }
+    else
+    {
+        frame = CGRectMake(20, 30, 280, 40);
+    }
+    
+    self.textField = [[UITextField alloc] initWithFrame:frame];
+    self.textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    self.textField.placeholder = [self.property.defaultValue description];
+    self.textField.borderStyle = UITextBorderStyleRoundedRect;
+    self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    
+    if (self.property.type == PropertyTypeInteger)
+    {
+        [self.textField setKeyboardType:UIKeyboardTypeNumberPad];
+    }
+    else if (self.property.type == PropertyTypeDecimal)
+    {
+        [self.textField setKeyboardType:UIKeyboardTypeDecimalPad];
+    }
+    
+    [self.view addSubview:self.textField];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:self
+                                                                             action:@selector(savePressed:)];
+    
+    self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:self
+                                                                             action:@selector(cancelPressed:)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,47 +79,19 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (IBAction)cancelPressed:(id)sender
 {
-    // Return the number of sections.
-    return 1;
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (IBAction)savePressed:(id)sender
 {
-    // Return the number of rows in the section.
-    return 1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    self.property.value = self.textField.text;
     
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
+    // TODO: call the benchmarkService to persist the property change
     
-    // set cell text
-    cell.textLabel.text = self.property.name;
-    cell.detailTextLabel.text = [self.property.defaultValue description];
-    
-    return cell;
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - Table view delegate
-
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return nil;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-}
 
 @end

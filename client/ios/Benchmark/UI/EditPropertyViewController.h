@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BenchmarkService.h"
 
-@interface EditPropertyViewController : UITableViewController
+@interface EditPropertyViewController : UIViewController
 
 - (id)initWithProperty:(Property *)property benchmarkService:(id<BenchmarkService>)service;
 

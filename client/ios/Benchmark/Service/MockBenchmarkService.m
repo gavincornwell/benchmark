@@ -22,9 +22,10 @@
     // create properties
     Property *prop1 = [[Property alloc] initWithName:@"share.protocol" value:nil defaultValue:@"http" type:PropertyTypeString];
     Property *prop2 = [[Property alloc] initWithName:@"share.host" value:nil defaultValue:@"lab.alfresco.me" type:PropertyTypeString];
-    Property *prop3 = [[Property alloc] initWithName:@"share.port" value:nil defaultValue:[NSNumber numberWithInt:8080] type:PropertyTypeNumber];
-    Property *prop4 = [[Property alloc] initWithName:@"number.users" value:nil defaultValue:[NSNumber numberWithInt:20] type:PropertyTypeNumber];
-    NSArray *properties = [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, nil];
+    Property *prop3 = [[Property alloc] initWithName:@"share.port" value:nil defaultValue:[NSNumber numberWithInt:8080] type:PropertyTypeInteger];
+    Property *prop4 = [[Property alloc] initWithName:@"number.users" value:nil defaultValue:[NSNumber numberWithInt:20] type:PropertyTypeInteger];
+    Property *prop5 = [[Property alloc] initWithName:@"frequency" value:nil defaultValue:[NSNumber numberWithFloat:2.5] type:PropertyTypeDecimal];
+    NSArray *properties = [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, nil];
     
     // create some tests
     Test *test1 = [[Test alloc] initWithName:@"BM-01" notes:@"Test signup rate of new users" properties:properties];
@@ -43,8 +44,8 @@
     // create properties
     Property *prop1 = [[Property alloc] initWithName:@"share.protocol" value:nil defaultValue:@"http" type:PropertyTypeString];
     Property *prop2 = [[Property alloc] initWithName:@"share.host" value:nil defaultValue:@"lab.alfresco.me" type:PropertyTypeString];
-    Property *prop3 = [[Property alloc] initWithName:@"share.port" value:nil defaultValue:[NSNumber numberWithInt:8080] type:PropertyTypeNumber];
-    Property *prop4 = [[Property alloc] initWithName:@"number.users" value:nil defaultValue:[NSNumber numberWithInt:20] type:PropertyTypeNumber];
+    Property *prop3 = [[Property alloc] initWithName:@"share.port" value:nil defaultValue:[NSNumber numberWithInt:8080] type:PropertyTypeInteger];
+    Property *prop4 = [[Property alloc] initWithName:@"number.users" value:nil defaultValue:[NSNumber numberWithInt:20] type:PropertyTypeInteger];
     NSArray *properties = [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, nil];
     
     // create some test runs

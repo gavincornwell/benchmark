@@ -2,21 +2,27 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>BDFE948A-A198-4CCE-972B-CC42F782E569</string>
+	<string>65422787-2F0A-4EA7-8F97-665D911E3397</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Benchmark</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>2A9141BA-86F8-4629-8CE3-21EED828F3C6</key>
+		<string>https://github.com/gavincornwell/benchmark.git</string>
 		<key>F3F0B77D-D8F0-4F3C-8691-9145B58FAE19</key>
 		<string>https://svn.alfresco.com/repos/scratch/devenv/mac</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>projects/benchmarkapp/Benchmark/Benchmark.xcodeproj/project.xcworkspace</string>
+	<string>projects/benchmark/client/ios/Benchmark.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>2A9141BA-86F8-4629-8CE3-21EED828F3C6</key>
+		<string>../../../..</string>
 		<key>F3F0B77D-D8F0-4F3C-8691-9145B58FAE19</key>
-		<string>../../../../..</string>
+		<string>../../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectRepositoryRootDictionary</key>
 	<dict>
@@ -24,13 +30,21 @@
 		<string>https://svn.alfresco.com/repos/scratch</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://svn.alfresco.com/repos/scratch/devenv/mac/projects/benchmarkapp/Benchmark/Benchmark.xcodeproj</string>
+	<string>https://github.com/gavincornwell/benchmark.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
 	<string>F3F0B77D-D8F0-4F3C-8691-9145B58FAE19</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2A9141BA-86F8-4629-8CE3-21EED828F3C6</string>
+			<key>IDESourceControlWCCName</key>
+			<string>benchmark</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.subversion</string>

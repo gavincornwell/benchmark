@@ -118,6 +118,8 @@
             cell.detailTextLabel.text = self.run.notes;
             UIImage *img = [UIImage imageNamed:@"samples.png"];
             cell.imageView.image = img;
+            
+            // TODO use cell.accessoryView to display the correct status image on the right hand side
         }
         else
         {
