@@ -60,16 +60,10 @@
     completionBlock(nil, nil);
 }
 
-- (void)updateProperties:(NSDictionary *)properties forTest:(Test *)test completionBlock:(BOOLCompletionBlock)completionBlock
+- (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionBlock:(BOOLCompletionBlock)completionBlock
 {
-    [Utils assertArgumentNotNil:test argumentName:@"test"];
-    [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
-    completionBlock(YES, nil);
-}
-
-- (void)updateProperties:(NSDictionary *)properties forRun:(Run *)run completionBlock:(BOOLCompletionBlock)completionBlock
-{
-    [Utils assertArgumentNotNil:run argumentName:@"run"];
+    [Utils assertArgumentNotNil:property argumentName:@"property"];
+    [Utils assertArgumentNotNil:object argumentName:@"object"];
     [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
     completionBlock(YES, nil);
 }

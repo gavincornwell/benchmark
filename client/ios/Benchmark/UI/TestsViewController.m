@@ -38,7 +38,12 @@
     [self.benchmarkService retrieveTestsWithCompletionBlock:^(NSArray *tests, NSError *error){
         if (nil == tests)
         {
-            [self showFailureAlert:@"Failed to retrieve tests"];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Failed to retrieve tests"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:nil];
+            [alert show];
         }
         else
         {
@@ -46,16 +51,6 @@
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
         }
     }];
-}
-
-- (void) showFailureAlert:(NSString *)message
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:nil];
-    [alert show];
 }
 
 - (void)didReceiveMemoryWarning

@@ -12,20 +12,24 @@
 
 @interface PropertiesViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
+@property (nonatomic, strong, readwrite) BenchmarkObject *benchmarkObject;
 @property (nonatomic, strong, readwrite) NSArray *properties;
 @property (nonatomic, assign, readwrite) BOOL editingAllowed;
+@property (nonatomic, assign, readwrite) BOOL loadingForFirstTime;
 @end
 
 @implementation PropertiesViewController
 
-- (id)initWithProperties:(NSArray *)properties editable:(BOOL)editable benchmarkService:(id<BenchmarkService>)service;
+- (id)initWithBenchmarkObject:(BenchmarkObject *)object editable:(BOOL)editable benchmarkService:(id<BenchmarkService>)service
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
     {
-        self.properties = properties;
+        self.benchmarkObject = object;
+        self.properties = object.properties;
         self.editingAllowed = editable;
         self.benchmarkService = service;
+        self.loadingForFirstTime = YES;
     }
     
     return self;
@@ -38,14 +42,16 @@
     self.navigationItem.title = @"Properties";
 }
 
-- (void) showFailureAlert:(NSString *)message
+- (void)viewWillAppear:(BOOL)animated
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:nil];
-    [alert show];
+    [super viewWillAppear:animated];
+    
+    if (!self.loadingForFirstTime)
+    {
+        [self.tableView reloadData];
+    }
+    
+    self.loadingForFirstTime = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,13 +95,13 @@
     // set cell text
     Property *property = [self.properties objectAtIndex:indexPath.row];
     cell.textLabel.text = property.name;
-    if (property.value != nil)
+    if (property.currentValue != nil)
     {
-        cell.detailTextLabel.text = [property.value description];
+        cell.detailTextLabel.text = property.currentValue;
     }
     else
     {
-        cell.detailTextLabel.text = [property.defaultValue description];
+        cell.detailTextLabel.text = property.originalValue;
     }
     
     return cell;
@@ -119,6 +125,7 @@
 {
     Property *property = [self.properties objectAtIndex:indexPath.row];
     EditPropertyViewController *editPropVC = [[EditPropertyViewController alloc] initWithProperty:property
+                                                                                ofBenchmarkObject:self.benchmarkObject
                                                                                  benchmarkService:self.benchmarkService];
     [self.navigationController pushViewController:editPropVC animated:YES];
 }

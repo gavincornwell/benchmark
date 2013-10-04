@@ -38,7 +38,12 @@
     [self.benchmarkService retrieveStatusForRun:self.run completionBlock:^(RunStatus *status, NSError *error) {
         if (nil == status)
         {
-            [self showFailureAlert:@"Failed to retrieve run status"];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Failed to retrieve run status"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:nil];
+            [alert show];
         }
         else
         {
@@ -46,16 +51,6 @@
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
         }
     }];
-}
-
-- (void) showFailureAlert:(NSString *)message
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:nil];
-    [alert show];
 }
 
 - (void)didReceiveMemoryWarning
@@ -119,7 +114,23 @@
             UIImage *img = [UIImage imageNamed:@"samples.png"];
             cell.imageView.image = img;
             
-            // TODO use cell.accessoryView to display the correct status image on the right hand side
+            NSString *iconName = nil;
+            if (self.run.hasStarted && self.run.hasCompleted)
+            {
+                iconName = @"completed.png";
+            }
+            else if (self.run.hasStarted && !self.run.hasCompleted)
+            {
+                iconName = @"in-progress.png";
+            }
+            else
+            {
+                iconName = @"pending.png";
+            }
+            
+            UIImage *statusImg = [UIImage imageNamed:iconName];
+            UIImageView *statusImgView = [[UIImageView alloc] initWithImage:statusImg];
+            cell.accessoryView = statusImgView;
         }
         else
         {
@@ -200,9 +211,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PropertiesViewController *propsVC = [[PropertiesViewController alloc] initWithProperties:self.run.properties
-                                                                                    editable:!self.run.hasStarted
-                                                                            benchmarkService:self.benchmarkService];
+    PropertiesViewController *propsVC = [[PropertiesViewController alloc] initWithBenchmarkObject:self.run
+                                                                                         editable:!self.run.hasStarted
+                                                                                 benchmarkService:self.benchmarkService];
     [self.navigationController pushViewController:propsVC animated:YES];
 }
 

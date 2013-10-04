@@ -11,6 +11,6 @@
 
 @interface PropertiesViewController : UITableViewController
 
-- (id)initWithProperties:(NSArray *)properties editable:(BOOL)editable benchmarkService:(id<BenchmarkService>)service;
+- (id)initWithBenchmarkObject:(BenchmarkObject *)object editable:(BOOL)editable benchmarkService:(id<BenchmarkService>)service;
 
 @end

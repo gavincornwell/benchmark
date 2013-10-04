@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BenchmarkObject.h"
 #import "Constants.h"
 #import "Test.h"
 #import "Property.h"
@@ -29,11 +30,7 @@ typedef void (^RunStatusCompletionBlock)(RunStatus *status, NSError *error);
 
 - (void)createRunWithName:(NSString *)name notes:(NSString *)notes completionBlock:(RunCompletionBlock)completionBlock;
 
-
-- (void)updateProperties:(NSDictionary *)properties forTest:(Test *)test completionBlock:(BOOLCompletionBlock)completionBlock;
-
-- (void)updateProperties:(NSDictionary *)properties forRun:(Run *)run completionBlock:(BOOLCompletionBlock)completionBlock;
-
+- (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionBlock:(BOOLCompletionBlock)completionBlock;
 
 - (void)retrieveTestsWithCompletionBlock:(ArrayCompletionBlock)completionBlock;
 

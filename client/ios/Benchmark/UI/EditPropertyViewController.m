@@ -10,23 +10,43 @@
 
 @interface EditPropertyViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
+@property (nonatomic, strong, readwrite) BenchmarkObject *benchmarkObject;
 @property (nonatomic, strong, readwrite) Property *property;
 @property (nonatomic, strong, readwrite) UITextField *textField;
 @end
 
 @implementation EditPropertyViewController
 
-- (id)initWithProperty:(Property *)property benchmarkService:(id<BenchmarkService>)service;
+- (id)initWithProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object benchmarkService:(id<BenchmarkService>)service
 {
     self = [super init];
     if (self)
     {
         self.property = property;
+        self.benchmarkObject = object;
         self.benchmarkService = service;
     }
     
     return self;
 }
+
+#pragma mark - Utilities
+
+/*! Returns the major version of iOS, (i.e. for iOS 6.1.3 it returns 6)
+ */
+NSUInteger DeviceSystemMajorVersion()
+{
+    static NSUInteger _deviceSystemMajorVersion = -1;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        _deviceSystemMajorVersion = [[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] objectAtIndex:0] intValue];
+    });
+    
+    return _deviceSystemMajorVersion;
+}
+
+#define IOS7_OR_ABOVE (DeviceSystemMajorVersion() >= 7)
 
 - (void)viewDidLoad
 {
@@ -38,16 +58,30 @@
     CGRect frame;
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
-        frame = CGRectMake(20, 30, 720, 40);
+        if (IOS7_OR_ABOVE)
+        {
+            frame = CGRectMake(20, 100, 720, 40);
+        }
+        else
+        {
+            frame = CGRectMake(20, 30, 720, 40);
+        }
     }
     else
     {
-        frame = CGRectMake(20, 30, 280, 40);
+        if (IOS7_OR_ABOVE)
+        {
+            frame = CGRectMake(20, 100, 280, 40);
+        }
+        else
+        {
+            frame = CGRectMake(20, 30, 280, 40);
+        }
     }
     
     self.textField = [[UITextField alloc] initWithFrame:frame];
     self.textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.textField.placeholder = [self.property.defaultValue description];
+    self.textField.placeholder = self.property.originalValue;
     self.textField.borderStyle = UITextBorderStyleRoundedRect;
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
@@ -86,12 +120,25 @@
 
 - (IBAction)savePressed:(id)sender
 {
-    self.property.value = self.textField.text;
+    self.property.currentValue = self.textField.text;
     
-    // TODO: call the benchmarkService to persist the property change
-    
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.benchmarkService updateProperty:self.property
+                        ofBenchmarkObject:self.benchmarkObject
+                          completionBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded)
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Failed to update property"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+    }];
 }
-
 
 @end

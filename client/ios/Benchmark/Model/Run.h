@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BenchmarkObject.h"
 
-@interface Run : NSObject
+@interface Run : BenchmarkObject
 
-@property (strong, nonatomic, readonly) NSString *name;
-@property (strong, nonatomic, readonly) NSString *notes;
-@property (strong, nonatomic, readonly) NSArray *properties;
 @property (nonatomic, assign, readonly) BOOL hasStarted;
 @property (nonatomic, assign, readonly) BOOL hasCompleted;
 

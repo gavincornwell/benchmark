@@ -34,6 +34,7 @@
 		5884708417E5237B00F89A6B /* samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 5884707C17E5237B00F89A6B /* samples.png */; };
 		5884708517E5237B00F89A6B /* samples@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5884707D17E5237B00F89A6B /* samples@2x.png */; };
 		5884708817E662B700F89A6B /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5884708717E662B700F89A6B /* Utils.m */; };
+		58C90F2F17FF16A800DF23C4 /* BenchmarkObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */; };
 		58E2334C17E79B8B006F941E /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2334B17E79B8B006F941E /* Test.m */; };
 		58E2334F17E79D66006F941E /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2334E17E79D66006F941E /* Property.m */; };
 		58E2335217E79F77006F941E /* RunStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2335117E79F77006F941E /* RunStatus.m */; };
@@ -102,6 +103,8 @@
 		5884707D17E5237B00F89A6B /* samples@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "samples@2x.png"; sourceTree = "<group>"; };
 		5884708617E662B700F89A6B /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = Common/Utils.h; sourceTree = "<group>"; };
 		5884708717E662B700F89A6B /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = Common/Utils.m; sourceTree = "<group>"; };
+		58C90F2D17FF16A800DF23C4 /* BenchmarkObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BenchmarkObject.h; path = Model/BenchmarkObject.h; sourceTree = "<group>"; };
+		58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BenchmarkObject.m; path = Model/BenchmarkObject.m; sourceTree = "<group>"; };
 		58E2334A17E79B8B006F941E /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test.h; path = Model/Test.h; sourceTree = "<group>"; };
 		58E2334B17E79B8B006F941E /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Test.m; path = Model/Test.m; sourceTree = "<group>"; };
 		58E2334D17E79D66006F941E /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Property.h; path = Model/Property.h; sourceTree = "<group>"; };
@@ -235,6 +238,8 @@
 		5884705D17E5121400F89A6B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				58C90F2D17FF16A800DF23C4 /* BenchmarkObject.h */,
+				58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */,
 				5884706E17E519BA00F89A6B /* Run.h */,
 				5884706F17E519BA00F89A6B /* Run.m */,
 				58E2334A17E79B8B006F941E /* Test.h */,
@@ -450,6 +455,7 @@
 				58E2338A17ECA327006F941E /* RunViewController.m in Sources */,
 				58E2338D17ECC521006F941E /* PropertiesViewController.m in Sources */,
 				582E39F417EF85BD00A53ED3 /* TestViewController.m in Sources */,
+				58C90F2F17FF16A800DF23C4 /* BenchmarkObject.m in Sources */,
 				587A9A3C17F34AB200D6D57B /* EditPropertyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

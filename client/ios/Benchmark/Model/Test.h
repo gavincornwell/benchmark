@@ -7,15 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BenchmarkObject.h"
 
-@interface Test : NSObject
-
-@property (strong, nonatomic, readonly) NSString *name;
-@property (strong, nonatomic, readonly) NSString *notes;
-@property (strong, nonatomic, readonly) NSArray *properties;
-
-- (id)initWithName:(NSString *)name
-             notes:(NSString *)notes
-        properties:(NSArray *)properties;
+@interface Test : BenchmarkObject
 
 @end

@@ -40,7 +40,12 @@
     [self.benchmarkService retrieveRunsForTest:self.test completionBlock:^(NSArray *runs, NSError *error){
         if (nil == runs)
         {
-            [self showFailureAlert:@"Failed to retrieve test runs"];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Failed to retrieve test runs"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:nil];
+            [alert show];
         }
         else
         {
@@ -48,16 +53,6 @@
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
         }
     }];
-}
-
-- (void) showFailureAlert:(NSString *)message
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:nil];
-    [alert show];
 }
 
 - (void)didReceiveMemoryWarning
@@ -166,8 +161,6 @@
     return cell;
 }
 
-
-
 #pragma mark - Table view delegate
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -186,9 +179,9 @@
 {
     if (indexPath.section == 0 && indexPath.row == 1)
     {
-        PropertiesViewController *propsVC = [[PropertiesViewController alloc] initWithProperties:self.test.properties
-                                                                                        editable:YES
-                                                                                benchmarkService:self.benchmarkService];
+        PropertiesViewController *propsVC = [[PropertiesViewController alloc] initWithBenchmarkObject:self.test
+                                                                                             editable:YES
+                                                                                     benchmarkService:self.benchmarkService];
         [self.navigationController pushViewController:propsVC animated:YES];
     }
     else

@@ -10,26 +10,23 @@
 
 @interface Property ()
 @property (strong, nonatomic, readwrite) NSString *name;
-@property (strong, nonatomic, readwrite) id defaultValue;
+@property (strong, nonatomic, readwrite) NSString *originalValue;
 @property (assign, nonatomic, readwrite) PropertyType type;
-@property (assign, nonatomic, readwrite) BOOL hasValueChanged;
 @end
 
 @implementation Property
 
 - (id)initWithName:(NSString *)name
-             value:(id)value
-      defaultValue:(NSString *)defaultValue
-              type:(PropertyType)type
+     originalValue:(NSString *)originalValue
+              type:(PropertyType)type;
 {
     self = [super init];
     if (self)
     {
         self.name = name;
-        self.value = value;
-        self.defaultValue = defaultValue;
+        self.originalValue = originalValue;
         self.type = type;
-        self.hasValueChanged = false;
+        self.currentValue = nil;
     }
     return self;
 }

@@ -11,6 +11,6 @@
 
 @interface EditPropertyViewController : UIViewController
 
-- (id)initWithProperty:(Property *)property benchmarkService:(id<BenchmarkService>)service;
+- (id)initWithProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object benchmarkService:(id<BenchmarkService>)service;
 
 @end

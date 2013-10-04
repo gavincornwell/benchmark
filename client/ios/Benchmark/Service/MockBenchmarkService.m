@@ -13,26 +13,71 @@
 #import "Test.h"
 #import "Utils.h"
 
+@interface MockBenchmarkService ()
+@property (nonatomic, strong, readwrite) NSMutableDictionary *tests;
+@property (nonatomic, strong, readwrite) NSMutableDictionary *runs;
+@end
+
+
 @implementation MockBenchmarkService
+
+#pragma mark - Initialisation
+
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        [self initialiseTestData];
+    }
+    return self;
+}
+
+- (void)initialiseTestData
+{
+    // create dictionaries
+    self.tests = [NSMutableDictionary dictionary];
+    self.runs = [NSMutableDictionary dictionary];
+    
+    // create test1
+    Test *test1 = [[Test alloc] initWithName:@"BM-01" notes:@"Test signup rate of new users" properties:[self initialiseProperties]];
+    Run *run1ForTest1 = [[Run alloc] initWithName:@"Run01" notes:@"1000 users" properties:[self initialiseProperties] hasStarted:YES hasCompleted:YES];
+    Run *run2ForTest1 = [[Run alloc] initWithName:@"Run02" notes:@"10000 users" properties:[self initialiseProperties] hasStarted:NO hasCompleted:NO];
+    NSArray *runsForTest1 = [NSArray arrayWithObjects:run1ForTest1, run2ForTest1, nil];
+    [self.tests setObject:test1 forKey:test1.name];
+    [self.runs setObject:runsForTest1 forKey:test1.name];
+    
+    // create test2
+    Test *test2 = [[Test alloc] initWithName:@"BM-15" notes:@"Test performance of public API" properties:[self initialiseProperties]];
+    Run *run1ForTest2 = [[Run alloc] initWithName:@"Only Run" notes:@"50000 users" properties:[self initialiseProperties] hasStarted:YES hasCompleted:NO];
+    NSArray *runsForTest2 = [NSArray arrayWithObjects:run1ForTest2, nil];
+    [self.tests setObject:test2 forKey:test2.name];
+    [self.runs setObject:runsForTest2 forKey:test2.name];
+    
+    // create test3
+    Test *test3 = [[Test alloc] initWithName:@"Soak" notes:@"Cloud soak tests" properties:[self initialiseProperties]];
+    NSArray *runsForTest3 = [NSArray array];
+    [self.tests setObject:test3 forKey:test3.name];
+    [self.runs setObject:runsForTest3 forKey:test3.name];
+}
+
+- (NSArray *)initialiseProperties
+{
+    Property *prop1 = [[Property alloc] initWithName:@"share.protocol" originalValue:@"http" type:PropertyTypeString];
+    Property *prop2 = [[Property alloc] initWithName:@"share.host" originalValue:@"lab.alfresco.me" type:PropertyTypeString];
+    Property *prop3 = [[Property alloc] initWithName:@"share.port" originalValue:@"8080" type:PropertyTypeInteger];
+    Property *prop4 = [[Property alloc] initWithName:@"number.users" originalValue:@"20" type:PropertyTypeInteger];
+    Property *prop5 = [[Property alloc] initWithName:@"frequency" originalValue:@"2.5" type:PropertyTypeDecimal];
+    
+    return [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, nil];
+}
+
+#pragma mark - Protocol methods
 
 - (void)retrieveTestsWithCompletionBlock:(ArrayCompletionBlock)completionBlock
 {
     [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
-    
-    // create properties
-    Property *prop1 = [[Property alloc] initWithName:@"share.protocol" value:nil defaultValue:@"http" type:PropertyTypeString];
-    Property *prop2 = [[Property alloc] initWithName:@"share.host" value:nil defaultValue:@"lab.alfresco.me" type:PropertyTypeString];
-    Property *prop3 = [[Property alloc] initWithName:@"share.port" value:nil defaultValue:[NSNumber numberWithInt:8080] type:PropertyTypeInteger];
-    Property *prop4 = [[Property alloc] initWithName:@"number.users" value:nil defaultValue:[NSNumber numberWithInt:20] type:PropertyTypeInteger];
-    Property *prop5 = [[Property alloc] initWithName:@"frequency" value:nil defaultValue:[NSNumber numberWithFloat:2.5] type:PropertyTypeDecimal];
-    NSArray *properties = [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, nil];
-    
-    // create some tests
-    Test *test1 = [[Test alloc] initWithName:@"BM-01" notes:@"Test signup rate of new users" properties:properties];
-    Test *test2 = [[Test alloc] initWithName:@"BM-15" notes:@"Test performance of public API" properties:properties];
-    
-    // return tests as an array
-    NSArray *results = [NSArray arrayWithObjects:test1, test2, nil];
+    NSArray *results = [self.tests allValues];
     completionBlock(results, nil);
 }
 
@@ -41,20 +86,8 @@
     [Utils assertArgumentNotNil:test argumentName:@"test"];
     [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
     
-    // create properties
-    Property *prop1 = [[Property alloc] initWithName:@"share.protocol" value:nil defaultValue:@"http" type:PropertyTypeString];
-    Property *prop2 = [[Property alloc] initWithName:@"share.host" value:nil defaultValue:@"lab.alfresco.me" type:PropertyTypeString];
-    Property *prop3 = [[Property alloc] initWithName:@"share.port" value:nil defaultValue:[NSNumber numberWithInt:8080] type:PropertyTypeInteger];
-    Property *prop4 = [[Property alloc] initWithName:@"number.users" value:nil defaultValue:[NSNumber numberWithInt:20] type:PropertyTypeInteger];
-    NSArray *properties = [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, nil];
-    
-    // create some test runs
-    Run *run1 = [[Run alloc] initWithName:@"Run01" notes:@"1000 users" properties:properties hasStarted:YES hasCompleted:YES];
-    Run *run2 = [[Run alloc] initWithName:@"Run02" notes:@"10000 users" properties:properties hasStarted:NO hasCompleted:NO];
-    Run *run3 = [[Run alloc] initWithName:@"Run03" notes:@"50000 users" properties:properties hasStarted:YES hasCompleted:NO];
-    
     // return runs as an array
-    NSArray *results = [NSArray arrayWithObjects:run1, run2, run3, nil];
+    NSArray *results = [self.runs objectForKey:test.name];
     completionBlock(results, nil);
 }
 
@@ -76,21 +109,21 @@
     }
     else if ([run.name isEqualToString:@"Run02"])
     {
-        status = [[RunStatus alloc] initWithState:RunStateNotStarted
-                                        startTime:nil
-                                         duration:0
-                                      successRate:0
-                                      resultCount:0
-                                       eventQueue:0];
-    }
-    else
-    {
         status = [[RunStatus alloc] initWithState:RunStateInProgress
                                         startTime:[NSDate date]
                                          duration:6783
                                       successRate:90
                                       resultCount:45000
                                        eventQueue:2];
+    }
+    else
+    {
+        status = [[RunStatus alloc] initWithState:RunStateNotStarted
+                                        startTime:nil
+                                         duration:0
+                                      successRate:0
+                                      resultCount:0
+                                       eventQueue:0];
     }
     
     // return the status
@@ -111,19 +144,12 @@
     completionBlock(nil, nil);
 }
 
-- (void)updateProperties:(NSDictionary *)properties forTest:(Test *)test completionBlock:(BOOLCompletionBlock)completionBlock
+- (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionBlock:(BOOLCompletionBlock)completionBlock
 {
-    [Utils assertArgumentNotNil:test argumentName:@"test"];
+    [Utils assertArgumentNotNil:property argumentName:@"property"];
+    [Utils assertArgumentNotNil:object argumentName:@"object"];
     [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
     completionBlock(YES, nil);
 }
-
-- (void)updateProperties:(NSDictionary *)properties forRun:(Run *)run completionBlock:(BOOLCompletionBlock)completionBlock
-{
-    [Utils assertArgumentNotNil:run argumentName:@"run"];
-    [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
-    completionBlock(YES, nil);
-}
-
 
 @end
