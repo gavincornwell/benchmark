@@ -53,8 +53,9 @@
     completionBlock(nil, nil);
 }
 
-- (void)createRunWithName:(NSString *)name notes:(NSString *)notes completionBlock:(RunCompletionBlock)completionBlock
+- (void)createRunForTest:(Test *)test name:(NSString *)name notes:(NSString *)notes completionBlock:(RunCompletionBlock)completionBlock
 {
+    [Utils assertArgumentNotNil:name argumentName:@"test"];
     [Utils assertArgumentNotNil:name argumentName:@"name"];
     [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
     completionBlock(nil, nil);

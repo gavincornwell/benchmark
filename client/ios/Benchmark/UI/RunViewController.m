@@ -35,6 +35,19 @@
     
     self.navigationItem.title = self.run.name;
     
+    if (!self.run.hasStarted)
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
+                                                                                               target:self
+                                                                                               action:@selector(start:)];
+    }
+    else if (self.run.hasStarted && !self.run.hasCompleted)
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                               target:self
+                                                                                               action:@selector(refresh:)];
+    }
+    
     [self.benchmarkService retrieveStatusForRun:self.run completionBlock:^(RunStatus *status, NSError *error) {
         if (nil == status)
         {
@@ -215,6 +228,18 @@
                                                                                          editable:!self.run.hasStarted
                                                                                  benchmarkService:self.benchmarkService];
     [self.navigationController pushViewController:propsVC animated:YES];
+}
+
+#pragma mark - Button handlers
+
+- (IBAction)start:(id)sender
+{
+    NSLog(@"start");
+}
+
+- (IBAction)refresh:(id)sender
+{
+    NSLog(@"refresh");
 }
 
 @end

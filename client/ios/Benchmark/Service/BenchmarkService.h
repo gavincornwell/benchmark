@@ -28,7 +28,7 @@ typedef void (^RunStatusCompletionBlock)(RunStatus *status, NSError *error);
 
 - (void)createTestWithName:(NSString *)name notes:(NSString *)notes completionBlock:(TestCompletionBlock)completionBlock;
 
-- (void)createRunWithName:(NSString *)name notes:(NSString *)notes completionBlock:(RunCompletionBlock)completionBlock;
+- (void)createRunForTest:(Test *)test name:(NSString *)name notes:(NSString *)notes completionBlock:(RunCompletionBlock)completionBlock;
 
 - (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionBlock:(BOOLCompletionBlock)completionBlock;
 

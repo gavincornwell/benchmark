@@ -41,22 +41,22 @@
     
     // create test1
     Test *test1 = [[Test alloc] initWithName:@"BM-01" notes:@"Test signup rate of new users" properties:[self initialiseProperties]];
-    Run *run1ForTest1 = [[Run alloc] initWithName:@"Run01" notes:@"1000 users" properties:[self initialiseProperties] hasStarted:YES hasCompleted:YES];
-    Run *run2ForTest1 = [[Run alloc] initWithName:@"Run02" notes:@"10000 users" properties:[self initialiseProperties] hasStarted:NO hasCompleted:NO];
-    NSArray *runsForTest1 = [NSArray arrayWithObjects:run1ForTest1, run2ForTest1, nil];
+    Run *run1ForTest1 = [[Run alloc] initWithName:@"Completed Run" notes:@"1000 users" properties:[self initialiseProperties] hasStarted:YES hasCompleted:YES];
+    Run *run2ForTest1 = [[Run alloc] initWithName:@"In Progress Run" notes:@"10000 users" properties:[self initialiseProperties] hasStarted:YES hasCompleted:NO];
+    NSMutableArray *runsForTest1 = [NSMutableArray arrayWithObjects:run1ForTest1, run2ForTest1, nil];
     [self.tests setObject:test1 forKey:test1.name];
     [self.runs setObject:runsForTest1 forKey:test1.name];
     
     // create test2
     Test *test2 = [[Test alloc] initWithName:@"BM-15" notes:@"Test performance of public API" properties:[self initialiseProperties]];
-    Run *run1ForTest2 = [[Run alloc] initWithName:@"Only Run" notes:@"50000 users" properties:[self initialiseProperties] hasStarted:YES hasCompleted:NO];
-    NSArray *runsForTest2 = [NSArray arrayWithObjects:run1ForTest2, nil];
+    Run *run1ForTest2 = [[Run alloc] initWithName:@"Not Started Run" notes:@"50000 users" properties:[self initialiseProperties] hasStarted:NO hasCompleted:NO];
+    NSMutableArray *runsForTest2 = [NSMutableArray arrayWithObjects:run1ForTest2, nil];
     [self.tests setObject:test2 forKey:test2.name];
     [self.runs setObject:runsForTest2 forKey:test2.name];
     
     // create test3
     Test *test3 = [[Test alloc] initWithName:@"Soak" notes:@"Cloud soak tests" properties:[self initialiseProperties]];
-    NSArray *runsForTest3 = [NSArray array];
+    NSMutableArray *runsForTest3 = [NSMutableArray array];
     [self.tests setObject:test3 forKey:test3.name];
     [self.runs setObject:runsForTest3 forKey:test3.name];
 }
@@ -98,7 +98,7 @@
     
     RunStatus *status = nil;
     
-    if ([run.name isEqualToString:@"Run01"])
+    if ([run.name isEqualToString:@"Completed Run"])
     {
         status = [[RunStatus alloc] initWithState:RunStateComplete
                                         startTime:[NSDate date]
@@ -107,7 +107,7 @@
                                       resultCount:98
                                        eventQueue:0];
     }
-    else if ([run.name isEqualToString:@"Run02"])
+    else if ([run.name isEqualToString:@"In Progress Run"])
     {
         status = [[RunStatus alloc] initWithState:RunStateInProgress
                                         startTime:[NSDate date]
@@ -134,14 +134,32 @@
 {
     [Utils assertArgumentNotNil:name argumentName:@"name"];
     [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
-    completionBlock(nil, nil);
+    
+    // create the test
+    Test *test = [[Test alloc] initWithName:name notes:notes properties:nil];
+    
+    // add to internal dictionary
+    [self.tests setObject:test forKey:test.name];
+    
+    // call the completion handler
+    completionBlock(test, nil);
 }
 
-- (void)createRunWithName:(NSString *)name notes:(NSString *)notes completionBlock:(RunCompletionBlock)completionBlock
+- (void)createRunForTest:(Test *)test name:(NSString *)name notes:(NSString *)notes completionBlock:(RunCompletionBlock)completionBlock
 {
+    [Utils assertArgumentNotNil:name argumentName:@"test"];
     [Utils assertArgumentNotNil:name argumentName:@"name"];
     [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
-    completionBlock(nil, nil);
+    
+    // create the test run
+    Run *run = [[Run alloc] initWithName:name notes:notes properties:nil hasStarted:NO hasCompleted:NO];
+    
+    // add to the internal dictionary
+    NSMutableArray *runs = [self.runs objectForKey:test.name];
+    [runs addObject:run];
+    
+    // call the completion handler
+    completionBlock(run, nil);
 }
 
 - (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionBlock:(BOOLCompletionBlock)completionBlock

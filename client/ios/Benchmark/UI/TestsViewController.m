@@ -35,6 +35,10 @@
     self.tests = [NSArray array];
     self.navigationItem.title = @"Tests";
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                           target:self
+                                                                                           action:@selector(addTest:)];
+    
     [self.benchmarkService retrieveTestsWithCompletionBlock:^(NSArray *tests, NSError *error){
         if (nil == tests)
         {
@@ -108,6 +112,13 @@
     Test *test = [self.tests objectAtIndex:indexPath.row];
     TestViewController *testVC = [[TestViewController alloc] initWithTest:test benchmarkService:self.benchmarkService];
     [self.navigationController pushViewController:testVC animated:YES];
+}
+
+#pragma mark - Button handlers
+
+- (IBAction)addTest:(id)sender
+{
+    NSLog(@"addTest");
 }
 
 @end

@@ -16,6 +16,4 @@
 extern NSString * const kUrlPreference;
 extern NSString * const kTestDataPreference;
 
-
-
 @end

@@ -37,6 +37,10 @@
     self.runs = [NSArray array];
     self.navigationItem.title = self.test.name;
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                             target:self
+                                                                             action:@selector(addRun:)];
+    
     [self.benchmarkService retrieveRunsForTest:self.test completionBlock:^(NSArray *runs, NSError *error){
         if (nil == runs)
         {
@@ -190,6 +194,13 @@
         RunViewController *runVC = [[RunViewController alloc] initWithRun:run benchmarkService:self.benchmarkService];
         [self.navigationController pushViewController:runVC animated:YES];
     }
+}
+
+#pragma mark - Button handlers
+
+- (IBAction)addRun:(id)sender
+{
+    NSLog(@"addRun");
 }
 
 @end
