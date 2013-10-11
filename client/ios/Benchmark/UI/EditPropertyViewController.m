@@ -84,6 +84,8 @@ NSUInteger DeviceSystemMajorVersion()
     self.textField.placeholder = self.property.originalValue;
     self.textField.borderStyle = UITextBorderStyleRoundedRect;
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     
     if (self.property.type == PropertyTypeInteger)
     {
@@ -122,11 +124,13 @@ NSUInteger DeviceSystemMajorVersion()
 {
     self.property.currentValue = self.textField.text;
     
+    NSLog(@"saving property...");
     [self.benchmarkService updateProperty:self.property
                         ofBenchmarkObject:self.benchmarkObject
                           completionBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
+            NSLog(@"property successfully saved");
             [self.navigationController popViewControllerAnimated:YES];
         }
         else

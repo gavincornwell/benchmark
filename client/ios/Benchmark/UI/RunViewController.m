@@ -48,22 +48,10 @@
                                                                                                action:@selector(refresh:)];
     }
     
-    [self.benchmarkService retrieveStatusForRun:self.run completionBlock:^(RunStatus *status, NSError *error) {
-        if (nil == status)
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Failed to retrieve run status"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
-        else
-        {
-            self.runStatus = status;
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
-        }
-    }];
+    if (self.run.hasStarted)
+    {
+        [self fetchRunStatus];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,7 +65,14 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    if (self.runStatus == nil)
+    {
+        return 1;
+    }
+    else
+    {
+        return 2;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -181,8 +176,10 @@
                 }
                 else
                 {
-                    // TODO: Format date properly
-                    cell.detailTextLabel.text = [self.runStatus.startTime description];
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+                    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+                    cell.detailTextLabel.text = [dateFormatter stringFromDate:self.runStatus.startTime];
                 }
             }
             else if (indexPath.row == 1)
@@ -205,8 +202,6 @@
     
     return cell;
 }
-
-
 
 #pragma mark - Table view delegate
 
@@ -234,12 +229,57 @@
 
 - (IBAction)start:(id)sender
 {
-    NSLog(@"start");
+    NSLog(@"starting run...");
+    [self.benchmarkService startRun:self.run completionHandler:^(BOOL succeeded, NSError *error) {
+        if (succeeded)
+        {
+            NSLog(@"run successfully started");
+            
+            // change the start button to a refresh button
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                                   target:self
+                                                                                                   action:@selector(refresh:)];
+            
+            // fetch the latest status
+            [self fetchRunStatus];
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Failed to start run"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+    }];
 }
 
 - (IBAction)refresh:(id)sender
 {
-    NSLog(@"refresh");
+    [self fetchRunStatus];
+}
+
+- (void)fetchRunStatus
+{
+    NSLog(@"fetching run status...");
+    [self.benchmarkService retrieveStatusForRun:self.run completionBlock:^(RunStatus *status, NSError *error) {
+        if (nil == status)
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Failed to retrieve run status"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+        else
+        {
+            NSLog(@"run status successfully retrieved");
+            self.runStatus = status;
+            [self.tableView reloadData];
+        }
+    }];
 }
 
 @end

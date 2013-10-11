@@ -37,15 +37,12 @@
     self.runs = [NSArray array];
     self.navigationItem.title = self.test.name;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                             target:self
-                                                                             action:@selector(addRun:)];
-    
+    NSLog(@"fetching runs...");
     [self.benchmarkService retrieveRunsForTest:self.test completionBlock:^(NSArray *runs, NSError *error){
         if (nil == runs)
         {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Failed to retrieve test runs"
+                                                            message:@"Failed to retrieve runs"
                                                            delegate:nil
                                                   cancelButtonTitle:@"Cancel"
                                                   otherButtonTitles:nil];
@@ -53,6 +50,7 @@
         }
         else
         {
+            NSLog(@"runs successfully retrieved");
             self.runs = [NSArray arrayWithArray:runs];
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
         }
@@ -194,13 +192,6 @@
         RunViewController *runVC = [[RunViewController alloc] initWithRun:run benchmarkService:self.benchmarkService];
         [self.navigationController pushViewController:runVC animated:YES];
     }
-}
-
-#pragma mark - Button handlers
-
-- (IBAction)addRun:(id)sender
-{
-    NSLog(@"addRun");
 }
 
 @end

@@ -170,4 +170,11 @@
     completionBlock(YES, nil);
 }
 
+- (void)startRun:(Run *)run completionHandler:(BOOLCompletionBlock)completionHandler
+{
+    [Utils assertArgumentNotNil:run argumentName:@"run"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    completionHandler(YES, nil);
+}
+
 @end

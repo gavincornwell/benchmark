@@ -38,4 +38,6 @@ typedef void (^RunStatusCompletionBlock)(RunStatus *status, NSError *error);
 
 - (void)retrieveStatusForRun:(Run *)run completionBlock:(RunStatusCompletionBlock)completionBlock;
 
+- (void)startRun:(Run *)run completionHandler:(BOOLCompletionBlock)completionHandler;
+
 @end

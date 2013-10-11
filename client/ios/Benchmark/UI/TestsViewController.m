@@ -35,10 +35,7 @@
     self.tests = [NSArray array];
     self.navigationItem.title = @"Tests";
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                           target:self
-                                                                                           action:@selector(addTest:)];
-    
+    NSLog(@"fetching tests...");
     [self.benchmarkService retrieveTestsWithCompletionBlock:^(NSArray *tests, NSError *error){
         if (nil == tests)
         {
@@ -51,6 +48,7 @@
         }
         else
         {
+            NSLog(@"tests successfully retrieved");
             self.tests = [NSArray arrayWithArray:tests];
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
         }
@@ -112,13 +110,6 @@
     Test *test = [self.tests objectAtIndex:indexPath.row];
     TestViewController *testVC = [[TestViewController alloc] initWithTest:test benchmarkService:self.benchmarkService];
     [self.navigationController pushViewController:testVC animated:YES];
-}
-
-#pragma mark - Button handlers
-
-- (IBAction)addTest:(id)sender
-{
-    NSLog(@"addTest");
 }
 
 @end
