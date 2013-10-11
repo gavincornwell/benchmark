@@ -17,27 +17,27 @@
 /**---------------------------------------------------------------------------------------
  * @name Block definitions
  --------------------------------------------------------------------------------------- */
-typedef void (^ArrayCompletionBlock)(NSArray *array, NSError *error);
-typedef void (^BOOLCompletionBlock)(BOOL succeeded, NSError *error);
+typedef void (^ArrayCompletionHandler)(NSArray *array, NSError *error);
+typedef void (^BOOLCompletionHandler)(BOOL succeeded, NSError *error);
 
-typedef void (^TestCompletionBlock)(Test *test, NSError *error);
-typedef void (^RunCompletionBlock)(Run *run, NSError *error);
-typedef void (^RunStatusCompletionBlock)(RunStatus *status, NSError *error);
+typedef void (^TestCompletionHandler)(Test *test, NSError *error);
+typedef void (^RunCompletionHandler)(Run *run, NSError *error);
+typedef void (^RunStatusCompletionHandler)(RunStatus *status, NSError *error);
 
 @protocol BenchmarkService <NSObject>
 
-- (void)createTestWithName:(NSString *)name notes:(NSString *)notes completionBlock:(TestCompletionBlock)completionBlock;
+- (void)createTestWithName:(NSString *)name notes:(NSString *)notes completionHandler:(TestCompletionHandler)completionHandler;
 
-- (void)createRunForTest:(Test *)test name:(NSString *)name notes:(NSString *)notes completionBlock:(RunCompletionBlock)completionBlock;
+- (void)createRunForTest:(Test *)test name:(NSString *)name notes:(NSString *)notes completionHandler:(RunCompletionHandler)completionHandler;
 
-- (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionBlock:(BOOLCompletionBlock)completionBlock;
+- (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionHandler:(BOOLCompletionHandler)completionHandler;
 
-- (void)retrieveTestsWithCompletionBlock:(ArrayCompletionBlock)completionBlock;
+- (void)retrieveTestsWithCompletionBlock:(ArrayCompletionHandler)completionHandler;
 
-- (void)retrieveRunsForTest:(Test *)test completionBlock:(ArrayCompletionBlock)completionBlock;
+- (void)retrieveRunsForTest:(Test *)test completionHandler:(ArrayCompletionHandler)completionHandler;
 
-- (void)retrieveStatusForRun:(Run *)run completionBlock:(RunStatusCompletionBlock)completionBlock;
+- (void)retrieveStatusForRun:(Run *)run completionHandler:(RunStatusCompletionHandler)completionHandler;
 
-- (void)startRun:(Run *)run completionHandler:(BOOLCompletionBlock)completionHandler;
+- (void)startRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler;
 
 @end

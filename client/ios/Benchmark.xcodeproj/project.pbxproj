@@ -66,7 +66,7 @@
 
 /* Begin PBXFileReference section */
 		582E39F217EF85BD00A53ED3 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestViewController.h; path = UI/TestViewController.h; sourceTree = "<group>"; };
-		582E39F317EF85BD00A53ED3 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestViewController.m; path = UI/TestViewController.m; sourceTree = "<group>"; };
+		582E39F317EF85BD00A53ED3 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = TestViewController.m; path = UI/TestViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5831F87217E43AAC00ADFE98 /* Benchmark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Benchmark.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5831F87517E43AAC00ADFE98 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5831F87717E43AAC00ADFE98 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -87,9 +87,9 @@
 		5831F8A817E43AAD00ADFE98 /* BenchmarkTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BenchmarkTests.h; sourceTree = "<group>"; };
 		5831F8A917E43AAD00ADFE98 /* BenchmarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BenchmarkTests.m; sourceTree = "<group>"; };
 		587A9A3A17F34AB200D6D57B /* EditPropertyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditPropertyViewController.h; path = UI/EditPropertyViewController.h; sourceTree = "<group>"; };
-		587A9A3B17F34AB200D6D57B /* EditPropertyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditPropertyViewController.m; path = UI/EditPropertyViewController.m; sourceTree = "<group>"; };
+		587A9A3B17F34AB200D6D57B /* EditPropertyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = EditPropertyViewController.m; path = UI/EditPropertyViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5884706917E514AD00F89A6B /* BenchmarkLabService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BenchmarkLabService.h; path = Service/BenchmarkLabService.h; sourceTree = "<group>"; };
-		5884706A17E514AD00F89A6B /* BenchmarkLabService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BenchmarkLabService.m; path = Service/BenchmarkLabService.m; sourceTree = "<group>"; };
+		5884706A17E514AD00F89A6B /* BenchmarkLabService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = BenchmarkLabService.m; path = Service/BenchmarkLabService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5884706C17E5160700F89A6B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		5884706E17E519BA00F89A6B /* Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Run.h; path = Model/Run.h; sourceTree = "<group>"; };
 		5884706F17E519BA00F89A6B /* Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Run.m; path = Model/Run.m; sourceTree = "<group>"; };
@@ -111,9 +111,9 @@
 		58E2334E17E79D66006F941E /* Property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Property.m; path = Model/Property.m; sourceTree = "<group>"; };
 		58E2335017E79F77006F941E /* RunStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RunStatus.h; path = Model/RunStatus.h; sourceTree = "<group>"; };
 		58E2335117E79F77006F941E /* RunStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RunStatus.m; path = Model/RunStatus.m; sourceTree = "<group>"; };
-		58E2335317E9059F006F941E /* BenchmarkService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BenchmarkService.h; path = Service/BenchmarkService.h; sourceTree = "<group>"; };
+		58E2335317E9059F006F941E /* BenchmarkService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BenchmarkService.h; path = Service/BenchmarkService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		58E2335717E90AC7006F941E /* MockBenchmarkService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockBenchmarkService.h; path = Service/MockBenchmarkService.h; sourceTree = "<group>"; };
-		58E2335817E90AC7006F941E /* MockBenchmarkService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MockBenchmarkService.m; path = Service/MockBenchmarkService.m; sourceTree = "<group>"; };
+		58E2335817E90AC7006F941E /* MockBenchmarkService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MockBenchmarkService.m; path = Service/MockBenchmarkService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		58E2335D17EA4E31006F941E /* TestsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestsViewController.h; path = UI/TestsViewController.h; sourceTree = "<group>"; };
 		58E2335E17EA4E31006F941E /* TestsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestsViewController.m; path = UI/TestsViewController.m; sourceTree = "<group>"; };
 		58E2336417EC9CA4006F941E /* completed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = completed.png; sourceTree = "<group>"; };
@@ -127,7 +127,7 @@
 		58E2338217ECA2AC006F941E /* app_icon_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_small.png; sourceTree = "<group>"; };
 		58E2338317ECA2AC006F941E /* app_icon_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app_icon_small@2x.png"; sourceTree = "<group>"; };
 		58E2338817ECA326006F941E /* RunViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RunViewController.h; path = UI/RunViewController.h; sourceTree = "<group>"; };
-		58E2338917ECA327006F941E /* RunViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RunViewController.m; path = UI/RunViewController.m; sourceTree = "<group>"; };
+		58E2338917ECA327006F941E /* RunViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = RunViewController.m; path = UI/RunViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		58E2338B17ECC520006F941E /* PropertiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertiesViewController.h; path = UI/PropertiesViewController.h; sourceTree = "<group>"; };
 		58E2338C17ECC520006F941E /* PropertiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertiesViewController.m; path = UI/PropertiesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */

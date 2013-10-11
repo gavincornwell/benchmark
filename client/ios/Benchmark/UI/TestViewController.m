@@ -38,7 +38,7 @@
     self.navigationItem.title = self.test.name;
     
     NSLog(@"fetching runs...");
-    [self.benchmarkService retrieveRunsForTest:self.test completionBlock:^(NSArray *runs, NSError *error){
+    [self.benchmarkService retrieveRunsForTest:self.test completionHandler:^(NSArray *runs, NSError *error){
         if (nil == runs)
         {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"

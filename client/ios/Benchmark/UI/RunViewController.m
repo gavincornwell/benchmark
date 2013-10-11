@@ -263,7 +263,7 @@
 - (void)fetchRunStatus
 {
     NSLog(@"fetching run status...");
-    [self.benchmarkService retrieveStatusForRun:self.run completionBlock:^(RunStatus *status, NSError *error) {
+    [self.benchmarkService retrieveStatusForRun:self.run completionHandler:^(RunStatus *status, NSError *error) {
         if (nil == status)
         {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"

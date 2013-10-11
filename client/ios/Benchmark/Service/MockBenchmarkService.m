@@ -74,27 +74,27 @@
 
 #pragma mark - Protocol methods
 
-- (void)retrieveTestsWithCompletionBlock:(ArrayCompletionBlock)completionBlock
+- (void)retrieveTestsWithCompletionBlock:(ArrayCompletionHandler)completionHandler
 {
-    [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     NSArray *results = [self.tests allValues];
-    completionBlock(results, nil);
+    completionHandler(results, nil);
 }
 
-- (void)retrieveRunsForTest:(Test *)test completionBlock:(ArrayCompletionBlock)completionBlock
+- (void)retrieveRunsForTest:(Test *)test completionHandler:(ArrayCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:test argumentName:@"test"];
-    [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
     // return runs as an array
     NSArray *results = [self.runs objectForKey:test.name];
-    completionBlock(results, nil);
+    completionHandler(results, nil);
 }
 
-- (void)retrieveStatusForRun:(Run *)run completionBlock:(RunStatusCompletionBlock)completionBlock
+- (void)retrieveStatusForRun:(Run *)run completionHandler:(RunStatusCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:run argumentName:@"run"];
-    [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
     RunStatus *status = nil;
     
@@ -127,13 +127,13 @@
     }
     
     // return the status
-    completionBlock(status, nil);
+    completionHandler(status, nil);
 }
 
-- (void)createTestWithName:(NSString *)name notes:(NSString *)notes completionBlock:(TestCompletionBlock)completionBlock
+- (void)createTestWithName:(NSString *)name notes:(NSString *)notes completionHandler:(TestCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:name argumentName:@"name"];
-    [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
     // create the test
     Test *test = [[Test alloc] initWithName:name notes:notes properties:nil];
@@ -142,14 +142,14 @@
     [self.tests setObject:test forKey:test.name];
     
     // call the completion handler
-    completionBlock(test, nil);
+    completionHandler(test, nil);
 }
 
-- (void)createRunForTest:(Test *)test name:(NSString *)name notes:(NSString *)notes completionBlock:(RunCompletionBlock)completionBlock
+- (void)createRunForTest:(Test *)test name:(NSString *)name notes:(NSString *)notes completionHandler:(RunCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:name argumentName:@"test"];
     [Utils assertArgumentNotNil:name argumentName:@"name"];
-    [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
     // create the test run
     Run *run = [[Run alloc] initWithName:name notes:notes properties:nil hasStarted:NO hasCompleted:NO];
@@ -159,18 +159,18 @@
     [runs addObject:run];
     
     // call the completion handler
-    completionBlock(run, nil);
+    completionHandler(run, nil);
 }
 
-- (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionBlock:(BOOLCompletionBlock)completionBlock
+- (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionHandler:(BOOLCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:property argumentName:@"property"];
     [Utils assertArgumentNotNil:object argumentName:@"object"];
-    [Utils assertArgumentNotNil:completionBlock argumentName:@"completionBlock"];
-    completionBlock(YES, nil);
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    completionHandler(YES, nil);
 }
 
-- (void)startRun:(Run *)run completionHandler:(BOOLCompletionBlock)completionHandler
+- (void)startRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:run argumentName:@"run"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];

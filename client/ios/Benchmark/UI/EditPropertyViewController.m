@@ -127,7 +127,7 @@ NSUInteger DeviceSystemMajorVersion()
     NSLog(@"saving property...");
     [self.benchmarkService updateProperty:self.property
                         ofBenchmarkObject:self.benchmarkObject
-                          completionBlock:^(BOOL succeeded, NSError *error) {
+                          completionHandler:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
             NSLog(@"property successfully saved");
