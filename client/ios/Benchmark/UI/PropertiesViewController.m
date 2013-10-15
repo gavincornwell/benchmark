@@ -26,10 +26,12 @@
     if (self)
     {
         self.benchmarkObject = object;
-        self.properties = object.properties;
         self.editingAllowed = editable;
         self.benchmarkService = service;
         self.loadingForFirstTime = YES;
+        
+        // TODO: process properties i.e. don't include hidden properties and group
+        self.properties = object.properties;
     }
     
     return self;
@@ -94,7 +96,7 @@
     
     // set cell text
     Property *property = [self.properties objectAtIndex:indexPath.row];
-    cell.textLabel.text = property.name;
+    cell.textLabel.text = property.title;
     if (property.currentValue != nil)
     {
         cell.detailTextLabel.text = property.currentValue;

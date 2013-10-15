@@ -63,13 +63,22 @@
 
 - (NSArray *)initialiseProperties
 {
-    Property *prop1 = [[Property alloc] initWithName:@"share.protocol" originalValue:@"http" type:PropertyTypeString];
-    Property *prop2 = [[Property alloc] initWithName:@"share.host" originalValue:@"lab.alfresco.me" type:PropertyTypeString];
-    Property *prop3 = [[Property alloc] initWithName:@"share.port" originalValue:@"8080" type:PropertyTypeInteger];
-    Property *prop4 = [[Property alloc] initWithName:@"number.users" originalValue:@"20" type:PropertyTypeInteger];
-    Property *prop5 = [[Property alloc] initWithName:@"frequency" originalValue:@"2.5" type:PropertyTypeDecimal];
+    Property *prop1 = [[Property alloc] initWithName:@"share.protocol" title:@"Share Protocol"
+                                       originalValue:@"http" type:PropertyTypeString];
+    Property *prop2 = [[Property alloc] initWithName:@"share.host" title:@"Share Host"
+                                       originalValue:@"lab.alfresco.me" type:PropertyTypeString];
+    Property *prop3 = [[Property alloc] initWithName:@"share.port" title:@"Share Port"
+                                       originalValue:@"8080" type:PropertyTypeInteger];
+    Property *prop4 = [[Property alloc] initWithName:@"number.users" title:@"Number of Users"
+                                       originalValue:@"20" type:PropertyTypeInteger];
+    Property *prop5 = [[Property alloc] initWithName:@"frequency" title:@"Frequency"
+                                       originalValue:@"2.5" type:PropertyTypeDecimal];
     
-    return [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, nil];
+    // TODO: create with dictionary initialiser to set the secret property
+    Property *prop6 = [[Property alloc] initWithName:@"password" title:@"Password"
+                                       originalValue:@"secret" type:PropertyTypeString];
+    
+    return [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, prop6, nil];
 }
 
 #pragma mark - Protocol methods
