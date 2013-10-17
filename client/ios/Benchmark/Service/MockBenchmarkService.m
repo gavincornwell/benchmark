@@ -16,6 +16,7 @@
 @interface MockBenchmarkService ()
 @property (nonatomic, strong, readwrite) NSMutableDictionary *tests;
 @property (nonatomic, strong, readwrite) NSMutableDictionary *runs;
+@property (nonatomic, strong, readwrite) NSMutableDictionary *properties;
 @end
 
 
@@ -38,27 +39,34 @@
     // create dictionaries
     self.tests = [NSMutableDictionary dictionary];
     self.runs = [NSMutableDictionary dictionary];
+    self.properties = [NSMutableDictionary dictionary];
     
     // create test1
-    Test *test1 = [[Test alloc] initWithName:@"BM-01" notes:@"Test signup rate of new users" properties:[self initialiseProperties]];
-    Run *run1ForTest1 = [[Run alloc] initWithName:@"Completed Run" notes:@"1000 users" properties:[self initialiseProperties] hasStarted:YES hasCompleted:YES];
-    Run *run2ForTest1 = [[Run alloc] initWithName:@"In Progress Run" notes:@"10000 users" properties:[self initialiseProperties] hasStarted:YES hasCompleted:NO];
+    Test *test1 = [[Test alloc] initWithName:@"BM-01" summary:@"Test signup rate of new users" identifier:@"526041740364a60bea599f71"];
+    Run *run1ForTest1 = [[Run alloc] initWithName:@"Completed Run" summary:@"1000 users" identifier:@"526041740364a60bea599f71" hasStarted:YES hasCompleted:YES];
+    Run *run2ForTest1 = [[Run alloc] initWithName:@"In Progress Run" summary:@"10000 users" identifier:@"526041740364a60bea599f71" hasStarted:YES hasCompleted:NO];
     NSMutableArray *runsForTest1 = [NSMutableArray arrayWithObjects:run1ForTest1, run2ForTest1, nil];
     [self.tests setObject:test1 forKey:test1.name];
     [self.runs setObject:runsForTest1 forKey:test1.name];
+    [self.properties setObject:[self initialiseProperties] forKey:test1.name];
+    [self.properties setObject:[self initialiseProperties] forKey:run1ForTest1.name];
+    [self.properties setObject:[self initialiseProperties] forKey:run2ForTest1.name];
     
     // create test2
-    Test *test2 = [[Test alloc] initWithName:@"BM-15" notes:@"Test performance of public API" properties:[self initialiseProperties]];
-    Run *run1ForTest2 = [[Run alloc] initWithName:@"Not Started Run" notes:@"50000 users" properties:[self initialiseProperties] hasStarted:NO hasCompleted:NO];
+    Test *test2 = [[Test alloc] initWithName:@"BM-15" summary:@"Test performance of public API" identifier:@"526041740364a60bea599f71"];
+    Run *run1ForTest2 = [[Run alloc] initWithName:@"Not Started Run" summary:@"50000 users" identifier:@"526041740364a60bea599f71" hasStarted:NO hasCompleted:NO];
     NSMutableArray *runsForTest2 = [NSMutableArray arrayWithObjects:run1ForTest2, nil];
     [self.tests setObject:test2 forKey:test2.name];
     [self.runs setObject:runsForTest2 forKey:test2.name];
+    [self.properties setObject:[self initialiseProperties] forKey:test2.name];
+    [self.properties setObject:[self initialiseProperties] forKey:run1ForTest2.name];
     
     // create test3
-    Test *test3 = [[Test alloc] initWithName:@"Soak" notes:@"Cloud soak tests" properties:[self initialiseProperties]];
+    Test *test3 = [[Test alloc] initWithName:@"Soak" summary:@"Cloud soak tests" identifier:@"526041740364a60bea599f71"];
     NSMutableArray *runsForTest3 = [NSMutableArray array];
     [self.tests setObject:test3 forKey:test3.name];
     [self.runs setObject:runsForTest3 forKey:test3.name];
+    [self.properties setObject:[self initialiseProperties] forKey:test3.name];
 }
 
 - (NSArray *)initialiseProperties
@@ -88,6 +96,20 @@
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     NSArray *results = [self.tests allValues];
     completionHandler(results, nil);
+}
+
+- (void)retrievePropertiesOfBenchmarkObject:(BenchmarkObject *)object completionHandler:(ArrayCompletionHandler)completionHandler
+{
+    [Utils assertArgumentNotNil:object argumentName:@"object"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    NSArray *properties = [self.properties objectForKey:object.name];
+    if (properties == nil)
+    {
+        properties = [NSArray array];
+    }
+    
+    completionHandler(properties, nil);
 }
 
 - (void)retrieveRunsForTest:(Test *)test completionHandler:(ArrayCompletionHandler)completionHandler
@@ -139,13 +161,13 @@
     completionHandler(status, nil);
 }
 
-- (void)createTestWithName:(NSString *)name notes:(NSString *)notes completionHandler:(TestCompletionHandler)completionHandler
+- (void)createTestWithName:(NSString *)name summary:(NSString *)summary completionHandler:(TestCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:name argumentName:@"name"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
     // create the test
-    Test *test = [[Test alloc] initWithName:name notes:notes properties:nil];
+    Test *test = [[Test alloc] initWithName:name summary:summary identifier:@"2"];
     
     // add to internal dictionary
     [self.tests setObject:test forKey:test.name];
@@ -154,14 +176,14 @@
     completionHandler(test, nil);
 }
 
-- (void)createRunForTest:(Test *)test name:(NSString *)name notes:(NSString *)notes completionHandler:(RunCompletionHandler)completionHandler
+- (void)createRunForTest:(Test *)test name:(NSString *)name summary:(NSString *)summary completionHandler:(RunCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:name argumentName:@"test"];
     [Utils assertArgumentNotNil:name argumentName:@"name"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
     // create the test run
-    Run *run = [[Run alloc] initWithName:name notes:notes properties:nil hasStarted:NO hasCompleted:NO];
+    Run *run = [[Run alloc] initWithName:name summary:summary identifier:@"1" hasStarted:NO hasCompleted:NO];
     
     // add to the internal dictionary
     NSMutableArray *runs = [self.runs objectForKey:test.name];

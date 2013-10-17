@@ -29,9 +29,7 @@
         self.editingAllowed = editable;
         self.benchmarkService = service;
         self.loadingForFirstTime = YES;
-        
-        // TODO: process properties i.e. don't include hidden properties and group
-        self.properties = object.properties;
+        self.properties = [NSArray array];
     }
     
     return self;
@@ -42,6 +40,8 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"Properties";
+    
+    [self fetchProperties];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -130,6 +130,30 @@
                                                                                 ofBenchmarkObject:self.benchmarkObject
                                                                                  benchmarkService:self.benchmarkService];
     [self.navigationController pushViewController:editPropVC animated:YES];
+}
+
+#pragma mark - Property handling
+
+- (void)fetchProperties
+{
+    NSLog(@"fetching properties...");
+    [self.benchmarkService retrievePropertiesOfBenchmarkObject:self.benchmarkObject completionHandler:^(NSArray *array, NSError *error) {
+        if (nil == array)
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Failed to retrieve properties"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+        else
+        {
+            NSLog(@"properties successfully retrieved");
+            self.properties = array;
+            [self.tableView reloadData];
+        }
+    }];
 }
 
 @end

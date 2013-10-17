@@ -118,7 +118,7 @@
             }
             
             cell.textLabel.text = self.run.name;
-            cell.detailTextLabel.text = self.run.notes;
+            cell.detailTextLabel.text = self.run.summary;
             UIImage *img = [UIImage imageNamed:@"samples.png"];
             cell.imageView.image = img;
             

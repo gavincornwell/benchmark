@@ -96,7 +96,7 @@
     // set cell text
     Test *test = [self.tests objectAtIndex:indexPath.row];
     cell.textLabel.text = test.name;
-    cell.detailTextLabel.text = test.notes;
+    cell.detailTextLabel.text = test.summary;
     
     return cell;
 }

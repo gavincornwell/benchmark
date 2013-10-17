@@ -107,7 +107,7 @@
             }
             
             cell.textLabel.text = self.test.name;
-            cell.detailTextLabel.text = self.test.notes;
+            cell.detailTextLabel.text = self.test.summary;
             UIImage *img = [UIImage imageNamed:@"learn-more.png"];
             cell.imageView.image = img;
         }
@@ -139,7 +139,7 @@
         // set cell text
         Run *run = [self.runs objectAtIndex:indexPath.row];
         cell.textLabel.text = run.name;
-        cell.detailTextLabel.text = run.notes;
+        cell.detailTextLabel.text = run.summary;
         
         // set appropriate icon
         NSString *iconName = nil;

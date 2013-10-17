@@ -16,12 +16,12 @@
 @implementation Run
 
 - (id)initWithName:(NSString *)name
-             notes:(NSString *)notes
-        properties:(NSArray *)properties
+             summary:(NSString *)summary
+        identifier:(NSString *)identifier
         hasStarted:(BOOL)hasStarted
       hasCompleted:(BOOL)hasCompleted
 {
-    self = [super initWithName:name notes:notes properties:properties];
+    self = [super initWithName:name summary:summary identifier:identifier];
     if (self)
     {
         self.hasStarted = hasStarted;

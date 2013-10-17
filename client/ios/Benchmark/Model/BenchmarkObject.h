@@ -10,12 +10,12 @@
 
 @interface BenchmarkObject : NSObject
 
+@property (strong, nonatomic, readonly) NSString *identifier;
 @property (strong, nonatomic, readonly) NSString *name;
-@property (strong, nonatomic, readonly) NSString *notes;
-@property (strong, nonatomic, readonly) NSArray *properties;
+@property (strong, nonatomic, readonly) NSString *summary;
 
 - (id)initWithName:(NSString *)name
-             notes:(NSString *)notes
-        properties:(NSArray *)properties;
+             summary:(NSString *)summary
+        identifier:(NSString *)identifier;
 
 @end

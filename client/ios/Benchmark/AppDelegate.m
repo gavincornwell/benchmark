@@ -16,17 +16,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // set the application defaults
-    // TODO: only do this if we need to!!
+    // set the application defaults, if necessary
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *appDefaults = [NSMutableDictionary dictionaryWithObject:@"YES" forKey:kTestDataPreference];
-    [appDefaults setValue:@"http://localhost" forKey:kUrlPreference];
-    [defaults registerDefaults:appDefaults];
-    [defaults synchronize];
+    if ([defaults objectForKey:kUrlPreference] == nil)
+    {
+        NSMutableDictionary *appDefaults = [NSMutableDictionary dictionaryWithObject:@"YES" forKey:kTestDataPreference];
+        [appDefaults setValue:@"http://localhost:9080/alfresco-benchmark-server" forKey:kUrlPreference];
+        [defaults registerDefaults:appDefaults];
+        [defaults synchronize];
+    }
     
     // get the defaults
-    NSString *urlString = [appDefaults objectForKey:kUrlPreference];
-    BOOL useTestData = [[appDefaults objectForKey:kTestDataPreference] boolValue];
+    NSString *urlString = [defaults objectForKey:kUrlPreference];
+    BOOL useTestData = [[defaults objectForKey:kTestDataPreference] boolValue];
     
     // determine which benchmark service implementation to use
     id<BenchmarkService> benchmarkService = nil;

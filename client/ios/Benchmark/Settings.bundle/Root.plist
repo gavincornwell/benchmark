@@ -16,7 +16,7 @@
 			<key>AutocorrectionType</key>
 			<string>No</string>
 			<key>DefaultValue</key>
-			<string>http://localhost</string>
+			<string>http://localhost:9080/alfresco-benchmark-server</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>Key</key>
@@ -36,7 +36,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<integer>0</integer>
+			<real>1</real>
 			<key>Key</key>
 			<string>test_data_preference</string>
 			<key>Type</key>

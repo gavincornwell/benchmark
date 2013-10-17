@@ -15,8 +15,8 @@
 @property (nonatomic, assign, readonly) BOOL hasCompleted;
 
 - (id)initWithName:(NSString *)name
-             notes:(NSString *)notes
-        properties:(NSArray *)properties
+             summary:(NSString *)summary
+        identifier:(NSString *)identifier
         hasStarted:(BOOL)hasStarted
       hasCompleted:(BOOL)hasCompleted;
 

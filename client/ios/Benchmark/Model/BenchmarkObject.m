@@ -9,23 +9,23 @@
 #import "BenchmarkObject.h"
 
 @interface BenchmarkObject()
+@property (strong, nonatomic, readwrite) NSString *identifier;
 @property (strong, nonatomic, readwrite) NSString *name;
-@property (strong, nonatomic, readwrite) NSString *notes;
-@property (strong, nonatomic, readwrite) NSArray *properties;
+@property (strong, nonatomic, readwrite) NSString *summary;
 @end
 
 @implementation BenchmarkObject
 
 - (id)initWithName:(NSString *)name
-             notes:(NSString *)notes
-        properties:(NSArray *)properties
+           summary:(NSString *)summary
+        identifier:(NSString *)identifier
 {
     self = [super init];
     if (self)
     {
         self.name = name;
-        self.notes = notes;
-        self.properties = properties;
+        self.summary = summary;
+        self.identifier = identifier;
     }
     return self;
 }
