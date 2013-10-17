@@ -10,8 +10,11 @@
 #import "Test.h"
 #import "Utils.h"
 
+#import "AFHTTPRequestOperationManager.h"
+
 @interface BenchmarkLabService ()
-@property (nonatomic, strong, readwrite) NSURL* url;
+@property (nonatomic, strong, readwrite) NSURL *url;
+@property (nonatomic, strong, readwrite) NSString *baseApiUrl;
 @end
 
 @implementation BenchmarkLabService
@@ -22,6 +25,7 @@
     if (self)
     {
         self.url = url;
+        self.baseApiUrl = [self.url.absoluteString stringByAppendingString:kUrlApiV1];
     }
     return self;
 }
@@ -30,54 +34,59 @@
 
 - (void)retrieveTestsWithCompletionBlock:(ArrayCompletionHandler)completionHandler
 {
-    /*
-    [
-     {
-         "_id": {
-             "$oid": "526041740364a60bea599f71"
-         },
-         "name": "SAMPLE1",
-         "version": 0,
-         "description": "A first sample",
-         "release": "alfresco-benchmark-bm-sample-2.0-SNAPSHOT",
-         "schema": 1
-     },
-     {
-         "_id": {
-             "$oid": "5260425f0364a60bea599f72"
-         },
-         "name": "SAMPLE2",
-         "version": 0,
-         "description": "A second sample",
-         "release": "alfresco-benchmark-bm-sample-2.0-SNAPSHOT",
-         "schema": 1
-     }
-     ]
-    */
-    
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
-    completionHandler(nil, nil);
+    
+    NSString *testsUrl = [self.baseApiUrl stringByAppendingString:kUrlTests];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager GET:testsUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        
+        if ([responseObject isKindOfClass:[NSArray class]])
+        {
+            NSArray *results = (NSArray *)responseObject;
+            NSMutableArray *tests = [NSMutableArray arrayWithCapacity:results.count];
+            for (NSDictionary *test in results)
+            {
+                [tests addObject:[self constructTestObjectFromDictionary:test]];
+            }
+            
+            completionHandler(tests, nil);
+        }
+        else
+        {
+            // TODO: create an error object
+            completionHandler(nil, nil);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionHandler(nil, error);
+    }];
 }
 
 - (void)retrievePropertiesOfBenchmarkObject:(BenchmarkObject *)object completionHandler:(ArrayCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:object argumentName:@"object"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
-    completionHandler(nil, nil);
+    completionHandler([NSArray array], nil);
 }
 
 - (void)retrieveRunsForTest:(Test *)test completionHandler:(ArrayCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:test argumentName:@"test"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
-    completionHandler(nil, nil);
+    completionHandler([NSArray array], nil);
 }
 
 - (void)retrieveStatusForRun:(Run *)run completionHandler:(RunStatusCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:run argumentName:@"run"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
-    completionHandler(nil, nil);
+    
+    RunStatus *status = [[RunStatus alloc] initWithState:RunStateNotStarted startTime:nil duration:0 successRate:0 resultCount:0 eventQueue:0];
+    
+    completionHandler(status, nil);
 }
 
 - (void)createTestWithName:(NSString *)name summary:(NSString *)summary completionHandler:(TestCompletionHandler)completionHandler
@@ -110,14 +119,20 @@
     completionHandler(YES, nil);
 }
 
-#pragma mark - Generation methods
+#pragma mark - Object construction methods
 
-- (Property *)generatePropertyFromProperties:(NSDictionary *)json
+- (Test *)constructTestObjectFromDictionary:(NSDictionary *)json
 {
-    NSData *data = nil;
-    NSError *error = nil;
-    id jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    NSString *idPath = [NSString stringWithFormat:@"%@.%@", kJSONId, kJSONOId];
+    NSString *identifier = [json valueForKeyPath:idPath];
+    NSString *name = [json objectForKey:kJSONName];
+    NSString *summary = [json objectForKey:kJSONDescription];
     
+    return [[Test alloc] initWithName:name summary:summary identifier:identifier];
+}
+            
+- (Property *)constructPropertyFromDictionary:(NSDictionary *)json
+{
     return nil;
 }
 
