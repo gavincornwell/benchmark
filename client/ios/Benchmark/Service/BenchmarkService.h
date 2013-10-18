@@ -26,12 +26,6 @@ typedef void (^RunStatusCompletionHandler)(RunStatus *status, NSError *error);
 
 @protocol BenchmarkService <NSObject>
 
-- (void)createTestWithName:(NSString *)name summary:(NSString *)summary completionHandler:(TestCompletionHandler)completionHandler;
-
-- (void)createRunForTest:(Test *)test name:(NSString *)name summary:(NSString *)summary completionHandler:(RunCompletionHandler)completionHandler;
-
-- (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionHandler:(BOOLCompletionHandler)completionHandler;
-
 - (void)retrieveTestsWithCompletionBlock:(ArrayCompletionHandler)completionHandler;
 
 - (void)retrievePropertiesOfBenchmarkObject:(BenchmarkObject *)object completionHandler:(ArrayCompletionHandler)completionHandler;
@@ -39,6 +33,8 @@ typedef void (^RunStatusCompletionHandler)(RunStatus *status, NSError *error);
 - (void)retrieveRunsForTest:(Test *)test completionHandler:(ArrayCompletionHandler)completionHandler;
 
 - (void)retrieveStatusForRun:(Run *)run completionHandler:(RunStatusCompletionHandler)completionHandler;
+
+- (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionHandler:(BOOLCompletionHandler)completionHandler;
 
 - (void)startRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler;
 

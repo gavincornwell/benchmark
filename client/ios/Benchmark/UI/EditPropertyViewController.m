@@ -81,7 +81,6 @@ NSUInteger DeviceSystemMajorVersion()
     
     self.textField = [[UITextField alloc] initWithFrame:frame];
     self.textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.textField.placeholder = self.property.originalValue;
     self.textField.borderStyle = UITextBorderStyleRoundedRect;
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -94,6 +93,15 @@ NSUInteger DeviceSystemMajorVersion()
     else if (self.property.type == PropertyTypeDecimal)
     {
         [self.textField setKeyboardType:UIKeyboardTypeDecimalPad];
+    }
+    
+    if (self.property.isSecret)
+    {
+        self.textField.secureTextEntry = YES;
+    }
+    else
+    {
+        self.textField.placeholder = self.property.originalValue;
     }
     
     [self.view addSubview:self.textField];

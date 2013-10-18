@@ -19,15 +19,31 @@ extern NSString * const kTestDataPreference;
 /**---------------------------------------------------------------------------------------
  * @name URL constants
  --------------------------------------------------------------------------------------- */
-extern NSString * const kUrlApiV1;
-extern NSString * const kUrlTests;
+extern NSString * const kUrlPathApiV1;
+extern NSString * const kUrlPathTests;
+extern NSString * const kUrlPathRuns;
 
 /**---------------------------------------------------------------------------------------
  * @name JSON constants
  --------------------------------------------------------------------------------------- */
 extern NSString * const kJSONId;
 extern NSString * const kJSONOId;
-extern NSString * const kJSONDescription;
 extern NSString * const kJSONName;
+extern NSString * const kJSONTitle;
+extern NSString * const kJSONDescription;
+extern NSString * const kJSONProperties;
+extern NSString * const kJSONGroup;
+extern NSString * const kJSONType;
+extern NSString * const kJSONDefault;
+extern NSString * const kJSONHide;
+extern NSString * const kJSONMask;
+
+
+/**---------------------------------------------------------------------------------------
+ * @name Error constants
+ --------------------------------------------------------------------------------------- */
+extern NSString * const kErrorBenchmarkDomain;
+extern NSString * const kErrorInvalidJSONReceived;
+
 
 @end

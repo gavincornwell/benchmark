@@ -177,7 +177,7 @@
                 else
                 {
                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+                    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
                     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
                     cell.detailTextLabel.text = [dateFormatter stringFromDate:self.runStatus.startTime];
                 }

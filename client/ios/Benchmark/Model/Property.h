@@ -20,7 +20,7 @@ typedef enum
 
 @property (strong, nonatomic, readonly) NSString *name;
 @property (strong, nonatomic, readonly) NSString *title;
-@property (strong, nonatomic, readonly) NSString *description;
+@property (strong, nonatomic, readonly) NSString *summary;
 @property (strong, nonatomic, readonly) NSString *originalValue;
 @property (strong, nonatomic, readonly) NSString *group;
 @property (assign, nonatomic, readonly) PropertyType type;

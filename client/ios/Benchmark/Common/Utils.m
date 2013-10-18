@@ -7,6 +7,7 @@
 //
 
 #import "Utils.h"
+#import "Constants.h"
 
 @implementation Utils
 
@@ -18,6 +19,36 @@
         NSException *exception = [NSException exceptionWithName:NSInvalidArgumentException reason:message userInfo:nil];
         @throw exception;
     }
+}
+
++ (NSError *)createErrorWithMessage:(NSString *)message
+{
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey];
+    return [NSError errorWithDomain:kErrorBenchmarkDomain code:1000 userInfo:userInfo];
+}
+
++ (BOOL)retrieveBoolFromDictionary:(NSDictionary *)dictionary withKey:(NSString *)key
+{
+    BOOL result = NO;
+    
+    id obj = [dictionary objectForKey:key];
+    if (obj != nil)
+    {
+        if ([obj isKindOfClass:[NSString class]])
+        {
+            NSString *secretStr = (NSString *)obj;            
+            if ([[secretStr lowercaseString] isEqualToString:@"true"])
+            {
+                result = YES;
+            }
+        }
+        else
+        {
+            result = [obj boolValue];
+        }
+    }
+    
+    return result;
 }
 
 @end

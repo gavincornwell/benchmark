@@ -82,9 +82,10 @@
     Property *prop5 = [[Property alloc] initWithName:@"frequency" title:@"Frequency"
                                        originalValue:@"2.5" type:PropertyTypeDecimal];
     
-    // TODO: create with dictionary initialiser to set the secret property
-    Property *prop6 = [[Property alloc] initWithName:@"password" title:@"Password"
-                                       originalValue:@"secret" type:PropertyTypeString];
+    // create with dictionary initialiser to set the secret property
+    NSDictionary *prop6Dict = @{kJSONName: @"password", kJSONTitle: @"Password", kJSONDescription: @"Password to login to repository",
+                                kJSONType: @"STRING", kJSONDefault: @"admin", kJSONMask: @YES};
+    Property *prop6 = [[Property alloc] initWithDictionary:prop6Dict];
     
     return [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, prop6, nil];
 }
@@ -159,38 +160,6 @@
     
     // return the status
     completionHandler(status, nil);
-}
-
-- (void)createTestWithName:(NSString *)name summary:(NSString *)summary completionHandler:(TestCompletionHandler)completionHandler
-{
-    [Utils assertArgumentNotNil:name argumentName:@"name"];
-    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
-    
-    // create the test
-    Test *test = [[Test alloc] initWithName:name summary:summary identifier:@"2"];
-    
-    // add to internal dictionary
-    [self.tests setObject:test forKey:test.name];
-    
-    // call the completion handler
-    completionHandler(test, nil);
-}
-
-- (void)createRunForTest:(Test *)test name:(NSString *)name summary:(NSString *)summary completionHandler:(RunCompletionHandler)completionHandler
-{
-    [Utils assertArgumentNotNil:name argumentName:@"test"];
-    [Utils assertArgumentNotNil:name argumentName:@"name"];
-    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
-    
-    // create the test run
-    Run *run = [[Run alloc] initWithName:name summary:summary identifier:@"1" hasStarted:NO hasCompleted:NO];
-    
-    // add to the internal dictionary
-    NSMutableArray *runs = [self.runs objectForKey:test.name];
-    [runs addObject:run];
-    
-    // call the completion handler
-    completionHandler(run, nil);
 }
 
 - (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionHandler:(BOOLCompletionHandler)completionHandler

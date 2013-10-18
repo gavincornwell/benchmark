@@ -41,7 +41,7 @@
     
     self.navigationItem.title = @"Properties";
     
-    [self fetchProperties];
+    [self fetchAndProcessProperties];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -97,13 +97,20 @@
     // set cell text
     Property *property = [self.properties objectAtIndex:indexPath.row];
     cell.textLabel.text = property.title;
-    if (property.currentValue != nil)
+    if (property.isSecret)
     {
-        cell.detailTextLabel.text = property.currentValue;
+        cell.detailTextLabel.text = @"*******";
     }
     else
     {
-        cell.detailTextLabel.text = property.originalValue;
+        if (property.currentValue != nil)
+        {
+            cell.detailTextLabel.text = property.currentValue;
+        }
+        else
+        {
+            cell.detailTextLabel.text = property.originalValue;
+        }
     }
     
     return cell;
@@ -134,7 +141,7 @@
 
 #pragma mark - Property handling
 
-- (void)fetchProperties
+- (void)fetchAndProcessProperties
 {
     NSLog(@"fetching properties...");
     [self.benchmarkService retrievePropertiesOfBenchmarkObject:self.benchmarkObject completionHandler:^(NSArray *array, NSError *error) {
@@ -149,8 +156,13 @@
         }
         else
         {
-            NSLog(@"properties successfully retrieved");
+            NSLog(@"properties successfully retrieved, processing...");
+            
+            // TODO: construct internal arrays ignoring hidden properties and grouping
+            
             self.properties = array;
+            
+            NSLog(@"properties processed");
             [self.tableView reloadData];
         }
     }];
