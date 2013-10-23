@@ -17,7 +17,7 @@
 @property (assign, nonatomic, readwrite) PropertyType type;
 @property (strong, nonatomic, readwrite) NSString *summary;
 @property (strong, nonatomic, readwrite) NSString *group;
-@property (assign, nonatomic, readwrite) BOOL isVisible;
+@property (assign, nonatomic, readwrite) BOOL isHidden;
 @property (assign, nonatomic, readwrite) BOOL isSecret;
 
 @end
@@ -37,7 +37,7 @@
         self.originalValue = originalValue;
         self.type = type;
         self.currentValue = nil;
-        self.isVisible = YES;
+        self.isHidden = NO;
         self.isSecret = NO;
     }
     return self;
@@ -49,7 +49,7 @@
     if (self)
     {
         self.currentValue = nil;
-        self.isVisible = YES;
+        self.isHidden = NO;
         self.isSecret = NO;
         
         // pull out the values from the dictionary (typically from JSON)
@@ -78,7 +78,7 @@
         // handle string and boolean objects
         if ([properties objectForKey:kJSONHide] != nil)
         {
-            self.isVisible = [Utils retrieveBoolFromDictionary:properties withKey:kJSONHide];
+            self.isHidden = [Utils retrieveBoolFromDictionary:properties withKey:kJSONHide];
         }
         
         if ([properties objectForKey:kJSONMask] != nil)

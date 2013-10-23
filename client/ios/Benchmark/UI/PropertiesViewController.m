@@ -14,6 +14,8 @@
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
 @property (nonatomic, strong, readwrite) BenchmarkObject *benchmarkObject;
 @property (nonatomic, strong, readwrite) NSArray *properties;
+@property (nonatomic, strong, readwrite) NSMutableArray *groupNames;
+@property (nonatomic, strong, readwrite) NSMutableDictionary *groupedProperties;
 @property (nonatomic, assign, readwrite) BOOL editingAllowed;
 @property (nonatomic, assign, readwrite) BOOL loadingForFirstTime;
 @end
@@ -30,6 +32,8 @@
         self.benchmarkService = service;
         self.loadingForFirstTime = YES;
         self.properties = [NSArray array];
+        self.groupNames = [NSMutableArray array];
+        self.groupedProperties = [NSMutableDictionary dictionary];
     }
     
     return self;
@@ -67,13 +71,15 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return self.groupNames.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.properties.count;
+    NSString *groupName = [self.groupNames objectAtIndex:section];
+    NSArray *props = [self.groupedProperties objectForKey:groupName];
+    return props.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -139,6 +145,19 @@
     [self.navigationController pushViewController:editPropVC animated:YES];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *groupTitle = [self.groupNames objectAtIndex:section];
+    
+    // for the default group use a title of "General"
+    if ([groupTitle isEqualToString:@""])
+    {
+        groupTitle = @"General";
+    }
+    
+    return groupTitle;
+}
+
 #pragma mark - Property handling
 
 - (void)fetchAndProcessProperties
@@ -158,9 +177,32 @@
         {
             NSLog(@"properties successfully retrieved, processing...");
             
-            // TODO: construct internal arrays ignoring hidden properties and grouping
-            
             self.properties = array;
+            
+            // process properties, group them and ignore hidden properties
+            for (Property *prop in self.properties)
+            {
+                if (!prop.isHidden)
+                {
+                    NSString *group = prop.group;
+                    if (group == nil)
+                    {
+                        group = @"";
+                    }
+                    
+                    NSMutableArray *propsForGroup = [self.groupedProperties objectForKey:group];
+                    if (propsForGroup == nil)
+                    {
+                        propsForGroup = [NSMutableArray arrayWithObject:prop];
+                        [self.groupNames addObject:group];
+                        [self.groupedProperties setObject:propsForGroup forKey:group];
+                    }
+                    else
+                    {
+                        [propsForGroup addObject:prop];
+                    }
+                }
+            }
             
             NSLog(@"properties processed");
             [self.tableView reloadData];

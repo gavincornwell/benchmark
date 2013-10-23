@@ -84,10 +84,18 @@
     
     // create with dictionary initialiser to set the secret property
     NSDictionary *prop6Dict = @{kJSONName: @"password", kJSONTitle: @"Password", kJSONDescription: @"Password to login to repository",
-                                kJSONType: @"STRING", kJSONDefault: @"admin", kJSONMask: @YES};
+                                kJSONType: @"STRING", kJSONDefault: @"admin", kJSONGroup:@"Connection", kJSONMask: @YES};
     Property *prop6 = [[Property alloc] initWithDictionary:prop6Dict];
     
-    return [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, prop6, nil];
+    NSDictionary *prop7Dict = @{kJSONName: @"username", kJSONTitle: @"Username", kJSONDescription: @"Username to login to repository",
+                                kJSONType: @"STRING", kJSONDefault: @"admin", kJSONGroup:@"Connection"};
+    Property *prop7 = [[Property alloc] initWithDictionary:prop7Dict];
+    
+    NSDictionary *prop8Dict = @{kJSONName: @"hidden", kJSONTitle: @"Hidden", kJSONDescription: @"A property the UI should not show",
+                                kJSONType: @"STRING", kJSONHide: @YES};
+    Property *prop8 = [[Property alloc] initWithDictionary:prop8Dict];
+    
+    return [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, nil];
 }
 
 #pragma mark - Protocol methods

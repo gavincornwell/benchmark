@@ -24,7 +24,7 @@ typedef enum
 @property (strong, nonatomic, readonly) NSString *originalValue;
 @property (strong, nonatomic, readonly) NSString *group;
 @property (assign, nonatomic, readonly) PropertyType type;
-@property (assign, nonatomic, readonly) BOOL isVisible;
+@property (assign, nonatomic, readonly) BOOL isHidden;
 @property (assign, nonatomic, readonly) BOOL isSecret;
 @property (strong, nonatomic, readwrite) NSString *currentValue;
 
