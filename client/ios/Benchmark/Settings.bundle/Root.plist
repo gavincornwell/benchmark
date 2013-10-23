@@ -20,7 +20,7 @@
 			<key>IsSecure</key>
 			<false/>
 			<key>Key</key>
-			<string>url_preference</string>
+			<string>preference_url</string>
 			<key>KeyboardType</key>
 			<string>URL</string>
 			<key>Title</key>
@@ -38,11 +38,27 @@
 			<key>DefaultValue</key>
 			<real>1</real>
 			<key>Key</key>
-			<string>test_data_preference</string>
+			<string>preference_test_data</string>
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
 			<string>Use Test Data</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Info</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<string>0.0</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Version</string>
+			<key>Key</key>
+			<string>preference_version</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

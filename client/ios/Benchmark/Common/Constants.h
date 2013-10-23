@@ -13,8 +13,9 @@
 /**---------------------------------------------------------------------------------------
  * @name Preference constants
  --------------------------------------------------------------------------------------- */
-extern NSString * const kUrlPreference;
-extern NSString * const kTestDataPreference;
+extern NSString * const kPreferenceVersion;
+extern NSString * const kPreferenceUrl;
+extern NSString * const kPreferenceTestData;
 
 /**---------------------------------------------------------------------------------------
  * @name URL constants

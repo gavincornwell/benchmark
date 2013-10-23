@@ -16,19 +16,26 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // get the app version string
+    NSString *appVersionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    
     // set the application defaults, if necessary
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kUrlPreference] == nil)
+    if ([defaults objectForKey:kPreferenceVersion] == nil)
     {
-        NSMutableDictionary *appDefaults = [NSMutableDictionary dictionaryWithObject:@"YES" forKey:kTestDataPreference];
-        [appDefaults setValue:@"http://localhost:9080/alfresco-benchmark-server" forKey:kUrlPreference];
+        NSMutableDictionary *appDefaults = [NSMutableDictionary dictionaryWithObject:appVersionString forKey:kPreferenceVersion];
+        [appDefaults setValue:@YES forKey:kPreferenceTestData];
+        [appDefaults setValue:@"http://localhost:9080/alfresco-benchmark-server" forKey:kPreferenceUrl];
         [defaults registerDefaults:appDefaults];
         [defaults synchronize];
     }
     
+    // make sure the version string is always up to date
+    [defaults setObject:appVersionString forKey:kPreferenceVersion];
+    
     // get the defaults
-    NSString *urlString = [defaults objectForKey:kUrlPreference];
-    BOOL useTestData = [[defaults objectForKey:kTestDataPreference] boolValue];
+    NSString *urlString = [defaults objectForKey:kPreferenceUrl];
+    BOOL useTestData = [[defaults objectForKey:kPreferenceTestData] boolValue];
     
     // determine which benchmark service implementation to use
     id<BenchmarkService> benchmarkService = nil;

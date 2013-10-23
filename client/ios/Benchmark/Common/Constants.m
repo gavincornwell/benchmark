@@ -11,10 +11,11 @@
 @implementation Constants
 
 /**
- String constants
+ Preference constants
  */
-NSString * const kUrlPreference = @"url_preference";
-NSString * const kTestDataPreference = @"test_data_preference";
+NSString * const kPreferenceVersion = @"preference_version";
+NSString * const kPreferenceUrl = @"preference_url";
+NSString * const kPreferenceTestData = @"preference_test_data";
 
 /**
  URL constants
