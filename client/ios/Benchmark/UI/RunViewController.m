@@ -8,6 +8,7 @@
 
 #import "RunViewController.h"
 #import "PropertiesViewController.h"
+#import "Utils.h"
 
 @interface RunViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
@@ -245,12 +246,7 @@
         }
         else
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Failed to start run"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [Utils displayError:error];
         }
     }];
 }
@@ -266,12 +262,7 @@
     [self.benchmarkService retrieveStatusForRun:self.run completionHandler:^(RunStatus *status, NSError *error) {
         if (nil == status)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Failed to retrieve run status"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [Utils displayError:error];
         }
         else
         {

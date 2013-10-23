@@ -13,5 +13,7 @@
 + (void)assertArgumentNotNil:(id)argument argumentName:(NSString *)argumentName;
 + (NSError *)createErrorWithMessage:(NSString *)message;
 + (BOOL)retrieveBoolFromDictionary:(NSDictionary *)dictionary withKey:(NSString *)key;
++ (void)displayErrorMessage:(NSString *)message;
++ (void)displayError:(NSError *)error;
 
 @end

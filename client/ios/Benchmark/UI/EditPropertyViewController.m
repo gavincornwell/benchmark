@@ -7,6 +7,7 @@
 //
 
 #import "EditPropertyViewController.h"
+#import "Utils.h"
 
 @interface EditPropertyViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
@@ -143,12 +144,7 @@ NSUInteger DeviceSystemMajorVersion()
         }
         else
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Failed to update property"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [Utils displayError:error];
         }
     }];
 }

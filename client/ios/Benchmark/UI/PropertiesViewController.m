@@ -9,6 +9,7 @@
 #import "EditPropertyViewController.h"
 #import "PropertiesViewController.h"
 #import "Property.h"
+#import "Utils.h"
 
 @interface PropertiesViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
@@ -166,12 +167,7 @@
     [self.benchmarkService retrievePropertiesOfBenchmarkObject:self.benchmarkObject completionHandler:^(NSArray *array, NSError *error) {
         if (nil == array)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Failed to retrieve properties"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [Utils displayError:error];
         }
         else
         {

@@ -9,6 +9,7 @@
 #import "TestsViewController.h"
 #import "TestViewController.h"
 #import "Test.h"
+#import "Utils.h"
 
 @interface TestsViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
@@ -39,12 +40,7 @@
     [self.benchmarkService retrieveTestsWithCompletionBlock:^(NSArray *tests, NSError *error){
         if (nil == tests)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Failed to retrieve tests"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [Utils displayError:error];
         }
         else
         {

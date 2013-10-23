@@ -51,4 +51,20 @@
     return result;
 }
 
++ (void)displayErrorMessage:(NSString *)message
+{
+    [Utils displayError:[Utils createErrorWithMessage:message]];
+}
+
++ (void)displayError:(NSError *)error
+{
+    NSString *message = [error.userInfo objectForKey:NSLocalizedDescriptionKey];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 @end

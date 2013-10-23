@@ -9,6 +9,7 @@
 #import "TestViewController.h"
 #import "PropertiesViewController.h"
 #import "RunViewController.h"
+#import "Utils.h"
 
 @interface TestViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
@@ -41,12 +42,7 @@
     [self.benchmarkService retrieveRunsForTest:self.test completionHandler:^(NSArray *runs, NSError *error){
         if (nil == runs)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Failed to retrieve runs"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [Utils displayError:error];
         }
         else
         {
