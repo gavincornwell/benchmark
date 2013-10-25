@@ -10,6 +10,7 @@
 #import "PropertiesViewController.h"
 #import "Property.h"
 #import "Utils.h"
+#import "MBProgressHUD.h"
 
 @interface PropertiesViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
@@ -164,6 +165,9 @@
 - (void)fetchAndProcessProperties
 {
     NSLog(@"fetching properties...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading";
+    
     [self.benchmarkService retrievePropertiesOfBenchmarkObject:self.benchmarkObject completionHandler:^(NSArray *array, NSError *error) {
         if (nil == array)
         {
@@ -201,6 +205,8 @@
             }
             
             NSLog(@"properties processed");
+            [hud hide:YES];
+            
             [self.tableView reloadData];
         }
     }];

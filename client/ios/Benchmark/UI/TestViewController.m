@@ -10,6 +10,7 @@
 #import "PropertiesViewController.h"
 #import "RunViewController.h"
 #import "Utils.h"
+#import "MBProgressHUD.h"
 
 @interface TestViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
@@ -39,6 +40,9 @@
     self.navigationItem.title = self.test.name;
     
     NSLog(@"fetching runs...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading";
+    
     [self.benchmarkService retrieveRunsForTest:self.test completionHandler:^(NSArray *runs, NSError *error){
         if (nil == runs)
         {
@@ -47,6 +51,7 @@
         else
         {
             NSLog(@"runs successfully retrieved");
+            [hud hide:YES];
             self.runs = [NSArray arrayWithArray:runs];
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
         }

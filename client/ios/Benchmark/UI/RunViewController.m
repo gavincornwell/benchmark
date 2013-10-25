@@ -9,6 +9,7 @@
 #import "RunViewController.h"
 #import "PropertiesViewController.h"
 #import "Utils.h"
+#import "MBProgressHUD.h"
 
 @interface RunViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
@@ -231,10 +232,14 @@
 - (IBAction)start:(id)sender
 {
     NSLog(@"starting run...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading";
+    
     [self.benchmarkService startRun:self.run completionHandler:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
             NSLog(@"run successfully started");
+            [hud hide:YES];
             
             // change the start button to a refresh button
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
@@ -259,6 +264,9 @@
 - (void)fetchRunStatus
 {
     NSLog(@"fetching run status...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading";
+    
     [self.benchmarkService retrieveStatusForRun:self.run completionHandler:^(RunStatus *status, NSError *error) {
         if (nil == status)
         {
@@ -267,6 +275,8 @@
         else
         {
             NSLog(@"run status successfully retrieved");
+            [hud hide:YES];
+            
             self.runStatus = status;
             [self.tableView reloadData];
         }

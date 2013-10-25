@@ -8,6 +8,7 @@
 
 #import "EditPropertyViewController.h"
 #import "Utils.h"
+#import "MBProgressHUD.h"
 
 @interface EditPropertyViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
@@ -134,12 +135,17 @@ NSUInteger DeviceSystemMajorVersion()
     self.property.currentValue = self.textField.text;
     
     NSLog(@"saving property...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading";
+    
     [self.benchmarkService updateProperty:self.property
                         ofBenchmarkObject:self.benchmarkObject
                           completionHandler:^(BOOL succeeded, NSError *error) {
         if (succeeded)
         {
             NSLog(@"property successfully saved");
+            [hud hide:YES];
+            
             [self.navigationController popViewControllerAnimated:YES];
         }
         else
