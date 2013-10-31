@@ -59,6 +59,12 @@
 + (void)displayError:(NSError *)error
 {
     NSString *message = [error.userInfo objectForKey:NSLocalizedDescriptionKey];
+    
+    if (message == nil)
+    {
+        message = error.localizedDescription;
+    }
+    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                     message:message
                                                    delegate:nil

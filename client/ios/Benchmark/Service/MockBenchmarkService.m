@@ -71,29 +71,23 @@
 
 - (NSArray *)initialiseProperties
 {
-    Property *prop1 = [[Property alloc] initWithName:@"share.protocol" title:@"Share Protocol"
-                                       originalValue:@"http" type:PropertyTypeString];
-    Property *prop2 = [[Property alloc] initWithName:@"share.host" title:@"Share Host"
-                                       originalValue:@"lab.alfresco.me" type:PropertyTypeString];
-    Property *prop3 = [[Property alloc] initWithName:@"share.port" title:@"Share Port"
-                                       originalValue:@"8080" type:PropertyTypeInteger];
-    Property *prop4 = [[Property alloc] initWithName:@"number.users" title:@"Number of Users"
-                                       originalValue:@"20" type:PropertyTypeInteger];
-    Property *prop5 = [[Property alloc] initWithName:@"frequency" title:@"Frequency"
-                                       originalValue:@"2.5" type:PropertyTypeDecimal];
-    
-    // create with dictionary initialiser to set the secret property
-    NSDictionary *prop6Dict = @{kJSONName: @"password", kJSONTitle: @"Password", kJSONDescription: @"Password to login to repository",
-                                kJSONType: @"STRING", kJSONDefault: @"admin", kJSONGroup:@"Connection", kJSONMask: @YES};
-    Property *prop6 = [[Property alloc] initWithDictionary:prop6Dict];
-    
-    NSDictionary *prop7Dict = @{kJSONName: @"username", kJSONTitle: @"Username", kJSONDescription: @"Username to login to repository",
-                                kJSONType: @"STRING", kJSONDefault: @"admin", kJSONGroup:@"Connection"};
-    Property *prop7 = [[Property alloc] initWithDictionary:prop7Dict];
-    
-    NSDictionary *prop8Dict = @{kJSONName: @"hidden", kJSONTitle: @"Hidden", kJSONDescription: @"A property the UI should not show",
-                                kJSONType: @"STRING", kJSONHide: @YES};
-    Property *prop8 = [[Property alloc] initWithDictionary:prop8Dict];
+    Property *prop1 = [[Property alloc] initWithName:@"share.protocol" defaultValue:@"http" type:PropertyTypeString];
+    Property *prop2 = [[Property alloc] initWithName:@"share.host" defaultValue:@"lab.alfresco.me" type:PropertyTypeString];
+    Property *prop3 = [[Property alloc] initWithName:@"share.port" title:@"Share Port" summary:nil defaultValue:@"8080" currentValue:nil
+                                               group:nil type:PropertyTypeInteger version:@"0" isHidden:NO isSecret:NO];
+    Property *prop4 = [[Property alloc] initWithName:@"number.users" title:@"Number of Users" summary:nil defaultValue:@"20" currentValue:nil
+                                               group:@"" type:PropertyTypeInteger version:nil isHidden:NO isSecret:NO];
+    Property *prop5 = [[Property alloc] initWithName:@"frequency" title:@"Frequency" summary:nil defaultValue:@"2.5" currentValue:nil
+                                               group:nil type:PropertyTypeDecimal version:nil isHidden:NO isSecret:NO];
+    Property *prop6 = [[Property alloc] initWithName:@"password" title:@"Password" summary:@"Password to login to repository"
+                                        defaultValue:@"admin" currentValue:nil group:@"Connection" type:PropertyTypeString version:nil
+                                            isHidden:NO isSecret:YES];
+    Property *prop7 = [[Property alloc] initWithName:@"username" title:@"Username" summary:@"Username to login to repository"
+                                        defaultValue:@"admin" currentValue:nil group:@"Connection" type:PropertyTypeString version:nil
+                                            isHidden:NO isSecret:NO];
+    Property *prop8 = [[Property alloc] initWithName:@"hidden" title:@"Hidden" summary:@"A property the UI should not show"
+                                        defaultValue:nil currentValue:nil group:nil type:PropertyTypeString version:nil
+                                            isHidden:YES isSecret:NO];
     
     return [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, nil];
 }
@@ -175,6 +169,9 @@
     [Utils assertArgumentNotNil:property argumentName:@"property"];
     [Utils assertArgumentNotNil:object argumentName:@"object"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    // TODO: increase the version number when the property is updated or set back to 0 if the property is reset
+    
     completionHandler(YES, nil);
 }
 

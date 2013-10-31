@@ -84,7 +84,7 @@ NSUInteger DeviceSystemMajorVersion()
     self.textField = [[UITextField alloc] initWithFrame:frame];
     self.textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.textField.borderStyle = UITextBorderStyleRoundedRect;
-    self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.textField.clearButtonMode = UITextFieldViewModeAlways;
     self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     
@@ -103,7 +103,12 @@ NSUInteger DeviceSystemMajorVersion()
     }
     else
     {
-        self.textField.placeholder = self.property.originalValue;
+        self.textField.placeholder = self.property.defaultValue;
+        
+        if (self.property.currentValue != nil)
+        {
+            self.textField.text = self.property.currentValue;
+        }
     }
     
     [self.view addSubview:self.textField];
@@ -134,17 +139,17 @@ NSUInteger DeviceSystemMajorVersion()
 {
     self.property.currentValue = self.textField.text;
     
-    NSLog(@"saving property...");
+    NSLog(@"saving property %@...", self.property.name);
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading";
+    hud.labelText = @"Saving";
     
     [self.benchmarkService updateProperty:self.property
                         ofBenchmarkObject:self.benchmarkObject
                           completionHandler:^(BOOL succeeded, NSError *error) {
+        [hud hide:YES];
         if (succeeded)
         {
             NSLog(@"property successfully saved");
-            [hud hide:YES];
             
             [self.navigationController popViewControllerAnimated:YES];
         }

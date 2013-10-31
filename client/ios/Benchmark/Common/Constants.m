@@ -38,6 +38,8 @@ NSString * const kJSONType = @"type";
 NSString * const kJSONDefault = @"default";
 NSString * const kJSONHide = @"hide";
 NSString * const kJSONMask = @"mask";
+NSString * const kJSONVersion = @"version";
+NSString * const kJSONValue = @"value";
 
 /**
  Error constants

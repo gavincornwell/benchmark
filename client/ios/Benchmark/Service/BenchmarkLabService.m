@@ -38,6 +38,7 @@
     
     NSString *testsGetUrl = [self.baseApiUrl stringByAppendingString:kUrlPathTests];
     
+    NSLog(@"Tests URL: %@", testsGetUrl);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager GET:testsGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -81,6 +82,8 @@
     {
         objectGetUrl = [NSString stringWithFormat:@"%@%@%@/%@", self.baseApiUrl, kUrlPathTests, kUrlPathRuns, object.name];
     }
+    
+    NSLog(@"Object URL: %@", objectGetUrl);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -134,7 +137,62 @@
     [Utils assertArgumentNotNil:property argumentName:@"property"];
     [Utils assertArgumentNotNil:object argumentName:@"object"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
-    completionHandler(YES, nil);
+    
+    // generate the appropriate URL
+    NSString *propertyUrl = nil;
+    if ([object isKindOfClass:[Test class]])
+    {
+        propertyUrl = [NSString stringWithFormat:@"%@%@/%@/props/%@", self.baseApiUrl, kUrlPathTests, object.name, property.name];
+    }
+    else
+    {
+        propertyUrl = [NSString stringWithFormat:@"%@%@%@/%@/props/%@", self.baseApiUrl, kUrlPathTests, kUrlPathRuns, object.name, property.name];
+    }
+
+    NSLog(@"Property URL: %@", propertyUrl);
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        
+    // create the dictionary to represent the JSON body
+    NSMutableDictionary *jsonBody = [NSMutableDictionary dictionaryWithObject:property.version forKey:kJSONVersion];
+    
+    // only include the value in the body if it is set
+    if (property.currentValue == nil || [property.currentValue isEqualToString:@""])
+    {
+        // make sure current value of property is reset
+        property.currentValue = nil;
+    }
+    else
+    {
+        [jsonBody setValue:property.currentValue forKey:kJSONValue];
+    }
+    
+    NSLog(@"JSON body: %@", jsonBody);
+    
+    // PUT the new property value
+    [manager PUT:propertyUrl parameters:jsonBody success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON response: %@", responseObject);
+        
+        // make sure response is a dictionary
+        if ([responseObject isKindOfClass:[NSDictionary class]])
+        {
+            // update the property object with the latest version
+            NSDictionary *results = (NSDictionary *)responseObject;
+            NSString *updatedVersion = [results objectForKey:kJSONVersion];
+            property.version = updatedVersion;
+            
+            completionHandler(YES, nil);
+        }
+        else
+        {
+            completionHandler(NO, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionHandler(NO, error);
+    }];
 }
 
 - (void)startRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
@@ -159,7 +217,47 @@
             
 - (Property *)constructPropertyFromDictionary:(NSDictionary *)json
 {
-    return [[Property alloc] initWithDictionary:json];
+    // determine type
+    PropertyType type;
+    NSString *typeString = [json objectForKey:kJSONType];
+    if ([@"INT" isEqualToString:typeString])
+    {
+        type = PropertyTypeInteger;
+    }
+    else if ([@"DECIMAL" isEqualToString:typeString])
+    {
+        type = PropertyTypeDecimal;
+    }
+    else
+    {
+        // default to string
+        type = PropertyTypeString;
+    }
+    
+    // handle string and boolean objects
+    BOOL isHidden = NO;
+    BOOL isSecret = NO;
+    if ([json objectForKey:kJSONHide] != nil)
+    {
+        isHidden = [Utils retrieveBoolFromDictionary:json withKey:kJSONHide];
+    }
+    
+    if ([json objectForKey:kJSONMask] != nil)
+    {
+        isSecret = [Utils retrieveBoolFromDictionary:json withKey:kJSONMask];
+    }
+    
+    // construct and return the property object
+    return [[Property alloc] initWithName:[json objectForKey:kJSONName]
+                                    title:[json objectForKey:kJSONTitle]
+                                  summary:[json objectForKey:kJSONDescription]
+                             defaultValue:[json objectForKey:kJSONDefault]
+                             currentValue:[json objectForKey:kJSONValue]
+                                    group:[json objectForKey:kJSONGroup]
+                                     type:type
+                                  version:[json objectForKey:kJSONVersion]
+                                 isHidden:isHidden
+                                 isSecret:isSecret];
 }
 
 @end

@@ -44,6 +44,7 @@
     hud.labelText = @"Loading";
     
     [self.benchmarkService retrieveRunsForTest:self.test completionHandler:^(NSArray *runs, NSError *error){
+        [hud hide:YES];
         if (nil == runs)
         {
             [Utils displayError:error];
@@ -51,7 +52,6 @@
         else
         {
             NSLog(@"runs successfully retrieved");
-            [hud hide:YES];
             self.runs = [NSArray arrayWithArray:runs];
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
         }

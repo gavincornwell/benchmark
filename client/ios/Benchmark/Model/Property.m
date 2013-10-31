@@ -13,7 +13,7 @@
 @interface Property ()
 @property (strong, nonatomic, readwrite) NSString *name;
 @property (strong, nonatomic, readwrite) NSString *title;
-@property (strong, nonatomic, readwrite) NSString *originalValue;
+@property (strong, nonatomic, readwrite) NSString *defaultValue;
 @property (assign, nonatomic, readwrite) PropertyType type;
 @property (strong, nonatomic, readwrite) NSString *summary;
 @property (strong, nonatomic, readwrite) NSString *group;
@@ -25,65 +25,42 @@
 @implementation Property
 
 - (id)initWithName:(NSString *)name
-             title:(NSString *)title
-     originalValue:(NSString *)originalValue
+      defaultValue:(NSString *)defaultValue
               type:(PropertyType)type;
+
+{
+    return [self initWithName:name title:nil summary:nil defaultValue:defaultValue currentValue:nil
+                        group:nil type:type version:nil isHidden:NO isSecret:NO];
+}
+
+- (id)initWithName:(NSString *)name
+             title:(NSString *)title
+           summary:(NSString *)summary
+      defaultValue:(NSString *)defaultValue
+      currentValue:(NSString *)currentValue
+             group:(NSString *)group
+              type:(PropertyType)type
+           version:(NSString *)version
+          isHidden:(BOOL)isHidden
+          isSecret:(BOOL)isSecret
 {
     self = [super init];
     if (self)
     {
         self.name = name;
         self.title = title;
-        self.originalValue = originalValue;
+        self.summary = summary;
+        self.defaultValue = defaultValue;
+        self.currentValue = currentValue;
+        self.group = group;
+        self.version = version;
         self.type = type;
-        self.currentValue = nil;
-        self.isHidden = NO;
-        self.isSecret = NO;
-    }
-    return self;
-}
-
-- (id)initWithDictionary:(NSDictionary *)properties
-{
-    self = [super init];
-    if (self)
-    {
-        self.currentValue = nil;
-        self.isHidden = NO;
-        self.isSecret = NO;
+        self.isHidden = isHidden;
+        self.isSecret = isSecret;
         
-        // pull out the values from the dictionary (typically from JSON)
-        self.name = [properties objectForKey:kJSONName];
-        self.title = [properties objectForKey:kJSONTitle];
-        self.summary = [properties objectForKey:kJSONDescription];
-        self.originalValue = [properties objectForKey:kJSONDefault];
-        self.group = [properties objectForKey:kJSONGroup];
-        
-        // determine type
-        NSString *type = [properties objectForKey:kJSONType];
-        if ([@"INT" isEqualToString:type])
+        if (self.version == nil)
         {
-            self.type = PropertyTypeInteger;
-        }
-        else if ([@"DECIMAL" isEqualToString:type])
-        {
-            self.type = PropertyTypeDecimal;
-        }
-        else
-        {
-            // default to string
-            self.type = PropertyTypeString;
-        }
-        
-        // handle string and boolean objects
-        if ([properties objectForKey:kJSONHide] != nil)
-        {
-            self.isHidden = [Utils retrieveBoolFromDictionary:properties withKey:kJSONHide];
-        }
-        
-        if ([properties objectForKey:kJSONMask] != nil)
-        {
-            self.isSecret = [Utils retrieveBoolFromDictionary:properties withKey:kJSONMask];
+            self.version = @"0";
         }
     }
     return self;

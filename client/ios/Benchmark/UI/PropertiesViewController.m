@@ -102,8 +102,12 @@
         }
     }
     
+    // retrieve appropriate property object
+    NSString *groupName = [self.groupNames objectAtIndex:indexPath.section];
+    NSArray *props = [self.groupedProperties objectForKey:groupName];
+    Property *property = [props objectAtIndex:indexPath.row];
+    
     // set cell text
-    Property *property = [self.properties objectAtIndex:indexPath.row];
     cell.textLabel.text = property.title;
     if (property.isSecret)
     {
@@ -117,7 +121,7 @@
         }
         else
         {
-            cell.detailTextLabel.text = property.originalValue;
+            cell.detailTextLabel.text = property.defaultValue;
         }
     }
     
@@ -140,7 +144,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Property *property = [self.properties objectAtIndex:indexPath.row];
+    // retrieve appropriate property object
+    NSString *groupName = [self.groupNames objectAtIndex:indexPath.section];
+    NSArray *props = [self.groupedProperties objectForKey:groupName];
+    Property *property = [props objectAtIndex:indexPath.row];
+    
     EditPropertyViewController *editPropVC = [[EditPropertyViewController alloc] initWithProperty:property
                                                                                 ofBenchmarkObject:self.benchmarkObject
                                                                                  benchmarkService:self.benchmarkService];
@@ -171,6 +179,7 @@
     [self.benchmarkService retrievePropertiesOfBenchmarkObject:self.benchmarkObject completionHandler:^(NSArray *array, NSError *error) {
         if (nil == array)
         {
+            [hud hide:YES];
             [Utils displayError:error];
         }
         else

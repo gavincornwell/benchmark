@@ -236,10 +236,10 @@
     hud.labelText = @"Loading";
     
     [self.benchmarkService startRun:self.run completionHandler:^(BOOL succeeded, NSError *error) {
+        [hud hide:YES];
         if (succeeded)
         {
             NSLog(@"run successfully started");
-            [hud hide:YES];
             
             // change the start button to a refresh button
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
@@ -268,6 +268,7 @@
     hud.labelText = @"Loading";
     
     [self.benchmarkService retrieveStatusForRun:self.run completionHandler:^(RunStatus *status, NSError *error) {
+        [hud hide:YES];
         if (nil == status)
         {
             [Utils displayError:error];
@@ -275,7 +276,6 @@
         else
         {
             NSLog(@"run status successfully retrieved");
-            [hud hide:YES];
             
             self.runStatus = status;
             [self.tableView reloadData];
