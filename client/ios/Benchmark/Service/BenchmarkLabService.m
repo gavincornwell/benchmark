@@ -42,7 +42,7 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager GET:testsGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"JSON response: %@", responseObject);
         
         // make sure response is an array
         if ([responseObject isKindOfClass:[NSArray class]])
@@ -80,7 +80,8 @@
     }
     else
     {
-        objectGetUrl = [NSString stringWithFormat:@"%@%@%@/%@", self.baseApiUrl, kUrlPathTests, kUrlPathRuns, object.name];
+        Run *run = (Run *)object;
+        objectGetUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, object.name];
     }
     
     NSLog(@"Object URL: %@", objectGetUrl);
@@ -88,7 +89,7 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager GET:objectGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"JSON response: %@", responseObject);
         
         // make sure response is a dictionary
         if ([responseObject isKindOfClass:[NSDictionary class]])
@@ -119,7 +120,40 @@
 {
     [Utils assertArgumentNotNil:test argumentName:@"test"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
-    completionHandler([NSArray array], nil);
+    
+    NSString *runsGetUrl = [NSString stringWithFormat:@"%@%@/%@%@", self.baseApiUrl, kUrlPathTests, test.name, kUrlPathRuns];
+    
+    NSLog(@"Runs URL: %@", runsGetUrl);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager GET:runsGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON response: %@", responseObject);
+        
+        // make sure response is an array
+        if ([responseObject isKindOfClass:[NSArray class]])
+        {
+            NSArray *results = (NSArray *)responseObject;
+            NSMutableArray *runs = [NSMutableArray arrayWithCapacity:results.count];
+            // convert each run to an object
+            for (NSDictionary *run in results)
+            {
+                [runs addObject:[self constructRunObjectFromDictionary:run test:test]];
+            }
+            
+            completionHandler(runs, nil);
+        }
+        else
+        {
+            // TODO: This should really be an error as different responses are being returned!
+//            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
+            completionHandler([NSArray array], nil);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionHandler(nil, error);
+    }];
+    
+    
 }
 
 - (void)retrieveStatusForRun:(Run *)run completionHandler:(RunStatusCompletionHandler)completionHandler
@@ -146,7 +180,8 @@
     }
     else
     {
-        propertyUrl = [NSString stringWithFormat:@"%@%@%@/%@/props/%@", self.baseApiUrl, kUrlPathTests, kUrlPathRuns, object.name, property.name];
+        Run *run = (Run *)object;
+        propertyUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@/props/%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, object.name, property.name];
     }
 
     NSLog(@"Property URL: %@", propertyUrl);
@@ -199,6 +234,10 @@
 {
     [Utils assertArgumentNotNil:run argumentName:@"run"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    // change the started flag on the run
+    run.hasStarted = YES;
+    
     completionHandler(YES, nil);
 }
 
@@ -209,10 +248,24 @@
     // extract the data from the dictionary representing the JSON
     NSString *idPath = [NSString stringWithFormat:@"%@.%@", kJSONId, kJSONOId];
     NSString *identifier = [json valueForKeyPath:idPath];
-    NSString *name = [json objectForKey:kJSONName];
-    NSString *summary = [json objectForKey:kJSONDescription];
     
-    return [[Test alloc] initWithName:name summary:summary identifier:identifier];
+    return [[Test alloc] initWithName:[json objectForKey:kJSONName]
+                              summary:[json objectForKey:kJSONDescription]
+                           identifier:identifier];
+}
+
+- (Run *)constructRunObjectFromDictionary:(NSDictionary *)json test:(Test *)test
+{
+    // extract the data from the dictionary representing the JSON
+    NSString *idPath = [NSString stringWithFormat:@"%@.%@", kJSONId, kJSONOId];
+    NSString *identifier = [json valueForKeyPath:idPath];
+    
+    return [[Run alloc] initWithName:[json objectForKey:kJSONName]
+                             summary:[json objectForKey:kJSONDescription]
+                          identifier:identifier
+                          hasStarted:[Utils retrieveBoolFromDictionary:json withKey:kJSONStarted]
+                         hasCompleted:[Utils retrieveBoolFromDictionary:json withKey:kJSONCompleted]
+                                 test:test];
 }
             
 - (Property *)constructPropertyFromDictionary:(NSDictionary *)json

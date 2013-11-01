@@ -9,8 +9,7 @@
 #import "Run.h"
 
 @interface Run ()
-@property (nonatomic, assign, readwrite) BOOL hasStarted;
-@property (nonatomic, assign, readwrite) BOOL hasCompleted;
+@property (nonatomic, assign, readwrite) Test *test;
 @end
 
 @implementation Run
@@ -20,12 +19,14 @@
         identifier:(NSString *)identifier
         hasStarted:(BOOL)hasStarted
       hasCompleted:(BOOL)hasCompleted
+              test:(Test *)test
 {
     self = [super initWithName:name summary:summary identifier:identifier];
     if (self)
     {
         self.hasStarted = hasStarted;
         self.hasCompleted = hasCompleted;
+        self.test = test;
     }
     return self;
 }

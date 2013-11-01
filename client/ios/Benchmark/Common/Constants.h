@@ -40,6 +40,8 @@ extern NSString * const kJSONHide;
 extern NSString * const kJSONMask;
 extern NSString * const kJSONVersion;
 extern NSString * const kJSONValue;
+extern NSString * const kJSONStarted;
+extern NSString * const kJSONCompleted;
 
 /**---------------------------------------------------------------------------------------
  * @name Error constants

@@ -58,6 +58,10 @@
         self.isHidden = isHidden;
         self.isSecret = isSecret;
         
+        if (self.title == nil)
+        {
+            self.title = self.name;
+        }
         if (self.version == nil)
         {
             self.version = @"0";

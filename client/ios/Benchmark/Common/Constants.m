@@ -40,6 +40,8 @@ NSString * const kJSONHide = @"hide";
 NSString * const kJSONMask = @"mask";
 NSString * const kJSONVersion = @"version";
 NSString * const kJSONValue = @"value";
+NSString * const kJSONStarted = @"started";
+NSString * const kJSONCompleted = @"completed";
 
 /**
  Error constants

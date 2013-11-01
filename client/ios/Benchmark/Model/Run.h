@@ -8,16 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import "BenchmarkObject.h"
+#import "Test.h"
 
 @interface Run : BenchmarkObject
 
-@property (nonatomic, assign, readonly) BOOL hasStarted;
-@property (nonatomic, assign, readonly) BOOL hasCompleted;
+@property (nonatomic, assign, readwrite) BOOL hasStarted;
+@property (nonatomic, assign, readwrite) BOOL hasCompleted;
+@property (nonatomic, assign, readonly) Test *test;
 
 - (id)initWithName:(NSString *)name
              summary:(NSString *)summary
         identifier:(NSString *)identifier
         hasStarted:(BOOL)hasStarted
-      hasCompleted:(BOOL)hasCompleted;
+      hasCompleted:(BOOL)hasCompleted
+              test:(Test *)test;
 
 @end

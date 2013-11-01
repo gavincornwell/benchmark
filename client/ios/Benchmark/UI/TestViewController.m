@@ -53,7 +53,7 @@
         {
             NSLog(@"runs successfully retrieved");
             self.runs = [NSArray arrayWithArray:runs];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
         }
     }];
 }

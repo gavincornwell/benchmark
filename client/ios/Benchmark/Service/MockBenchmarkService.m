@@ -43,8 +43,8 @@
     
     // create test1
     Test *test1 = [[Test alloc] initWithName:@"BM-01" summary:@"Test signup rate of new users" identifier:@"526041740364a60bea599f71"];
-    Run *run1ForTest1 = [[Run alloc] initWithName:@"Completed Run" summary:@"1000 users" identifier:@"526041740364a60bea599f71" hasStarted:YES hasCompleted:YES];
-    Run *run2ForTest1 = [[Run alloc] initWithName:@"In Progress Run" summary:@"10000 users" identifier:@"526041740364a60bea599f71" hasStarted:YES hasCompleted:NO];
+    Run *run1ForTest1 = [[Run alloc] initWithName:@"Completed Run" summary:@"1000 users" identifier:@"526041740364a60bea599f71" hasStarted:YES hasCompleted:YES test:test1];
+    Run *run2ForTest1 = [[Run alloc] initWithName:@"In Progress Run" summary:@"10000 users" identifier:@"526041740364a60bea599f71" hasStarted:YES hasCompleted:NO test:test1];
     NSMutableArray *runsForTest1 = [NSMutableArray arrayWithObjects:run1ForTest1, run2ForTest1, nil];
     [self.tests setObject:test1 forKey:test1.name];
     [self.runs setObject:runsForTest1 forKey:test1.name];
@@ -54,7 +54,7 @@
     
     // create test2
     Test *test2 = [[Test alloc] initWithName:@"BM-15" summary:@"Test performance of public API" identifier:@"526041740364a60bea599f71"];
-    Run *run1ForTest2 = [[Run alloc] initWithName:@"Not Started Run" summary:@"50000 users" identifier:@"526041740364a60bea599f71" hasStarted:NO hasCompleted:NO];
+    Run *run1ForTest2 = [[Run alloc] initWithName:@"Not Started Run" summary:@"50000 users" identifier:@"526041740364a60bea599f71" hasStarted:NO hasCompleted:NO test:test2];
     NSMutableArray *runsForTest2 = [NSMutableArray arrayWithObjects:run1ForTest2, nil];
     [self.tests setObject:test2 forKey:test2.name];
     [self.runs setObject:runsForTest2 forKey:test2.name];
@@ -179,6 +179,10 @@
 {
     [Utils assertArgumentNotNil:run argumentName:@"run"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    // change the started flag on the run
+    run.hasStarted = YES;
+    
     completionHandler(YES, nil);
 }
 
