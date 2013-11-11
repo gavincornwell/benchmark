@@ -22,7 +22,7 @@
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>org.alfresco.mobile.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.alfresco.benchmark</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
