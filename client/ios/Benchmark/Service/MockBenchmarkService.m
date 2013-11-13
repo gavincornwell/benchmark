@@ -74,20 +74,21 @@
     Property *prop1 = [[Property alloc] initWithName:@"share.protocol" defaultValue:@"http" type:PropertyTypeString];
     Property *prop2 = [[Property alloc] initWithName:@"share.host" defaultValue:@"lab.alfresco.me" type:PropertyTypeString];
     Property *prop3 = [[Property alloc] initWithName:@"share.port" title:@"Share Port" summary:nil defaultValue:@"8080" currentValue:nil
-                                               group:nil type:PropertyTypeInteger version:@"0" isHidden:NO isSecret:NO];
+                                               group:nil type:PropertyTypeInteger version:@"0" isHidden:NO isSecret:NO
+                                         constraints:nil];
     Property *prop4 = [[Property alloc] initWithName:@"number.users" title:@"Number of Users" summary:nil defaultValue:@"20" currentValue:nil
-                                               group:@"" type:PropertyTypeInteger version:nil isHidden:NO isSecret:NO];
+                                               group:@"" type:PropertyTypeInteger version:nil isHidden:NO isSecret:NO constraints:nil];
     Property *prop5 = [[Property alloc] initWithName:@"frequency" title:@"Frequency" summary:nil defaultValue:@"2.5" currentValue:nil
-                                               group:nil type:PropertyTypeDecimal version:nil isHidden:NO isSecret:NO];
+                                               group:nil type:PropertyTypeDecimal version:nil isHidden:NO isSecret:NO constraints:nil];
     Property *prop6 = [[Property alloc] initWithName:@"password" title:@"Password" summary:@"Password to login to repository"
                                         defaultValue:@"admin" currentValue:nil group:@"Connection" type:PropertyTypeString version:nil
-                                            isHidden:NO isSecret:YES];
+                                            isHidden:NO isSecret:YES constraints:nil];
     Property *prop7 = [[Property alloc] initWithName:@"username" title:@"Username" summary:@"Username to login to repository"
                                         defaultValue:@"admin" currentValue:nil group:@"Connection" type:PropertyTypeString version:nil
-                                            isHidden:NO isSecret:NO];
+                                            isHidden:NO isSecret:NO constraints:nil];
     Property *prop8 = [[Property alloc] initWithName:@"hidden" title:@"Hidden" summary:@"A property the UI should not show"
                                         defaultValue:nil currentValue:nil group:nil type:PropertyTypeString version:nil
-                                            isHidden:YES isSecret:NO];
+                                            isHidden:YES isSecret:NO constraints:nil];
     
     return [NSArray arrayWithObjects:prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, nil];
 }

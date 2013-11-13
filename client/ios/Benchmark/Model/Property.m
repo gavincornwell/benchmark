@@ -19,6 +19,7 @@
 @property (strong, nonatomic, readwrite) NSString *group;
 @property (assign, nonatomic, readwrite) BOOL isHidden;
 @property (assign, nonatomic, readwrite) BOOL isSecret;
+@property (assign, nonatomic, readwrite) NSArray *constraints;
 
 @end
 
@@ -30,7 +31,7 @@
 
 {
     return [self initWithName:name title:nil summary:nil defaultValue:defaultValue currentValue:nil
-                        group:nil type:type version:nil isHidden:NO isSecret:NO];
+                        group:nil type:type version:nil isHidden:NO isSecret:NO constraints:nil];
 }
 
 - (id)initWithName:(NSString *)name
@@ -43,6 +44,7 @@
            version:(NSString *)version
           isHidden:(BOOL)isHidden
           isSecret:(BOOL)isSecret
+       constraints:(NSArray *)constraints;
 {
     self = [super init];
     if (self)
@@ -57,6 +59,7 @@
         self.type = type;
         self.isHidden = isHidden;
         self.isSecret = isSecret;
+        self.constraints = constraints;
         
         if (self.title == nil)
         {

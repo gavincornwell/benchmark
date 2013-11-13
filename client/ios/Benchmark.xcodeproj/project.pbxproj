@@ -35,6 +35,7 @@
 		5884708417E5237B00F89A6B /* samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 5884707C17E5237B00F89A6B /* samples.png */; };
 		5884708517E5237B00F89A6B /* samples@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5884707D17E5237B00F89A6B /* samples@2x.png */; };
 		5884708817E662B700F89A6B /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5884708717E662B700F89A6B /* Utils.m */; };
+		588659221832988000B2B295 /* NumberRangeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 588659211832988000B2B295 /* NumberRangeConstraint.m */; };
 		58C90F2F17FF16A800DF23C4 /* BenchmarkObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */; };
 		58E2334C17E79B8B006F941E /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2334B17E79B8B006F941E /* Test.m */; };
 		58E2334F17E79D66006F941E /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2334E17E79D66006F941E /* Property.m */; };
@@ -105,6 +106,9 @@
 		5884707D17E5237B00F89A6B /* samples@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "samples@2x.png"; sourceTree = "<group>"; };
 		5884708617E662B700F89A6B /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = Common/Utils.h; sourceTree = "<group>"; };
 		5884708717E662B700F89A6B /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = Common/Utils.m; sourceTree = "<group>"; };
+		5886591D183294FD00B2B295 /* Constraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constraint.h; path = Model/Constraint.h; sourceTree = "<group>"; };
+		588659201832988000B2B295 /* NumberRangeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberRangeConstraint.h; sourceTree = "<group>"; };
+		588659211832988000B2B295 /* NumberRangeConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberRangeConstraint.m; sourceTree = "<group>"; };
 		58C90F2D17FF16A800DF23C4 /* BenchmarkObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BenchmarkObject.h; path = Model/BenchmarkObject.h; sourceTree = "<group>"; };
 		58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BenchmarkObject.m; path = Model/BenchmarkObject.m; sourceTree = "<group>"; };
 		58E2334A17E79B8B006F941E /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test.h; path = Model/Test.h; sourceTree = "<group>"; };
@@ -254,6 +258,9 @@
 				58E2334E17E79D66006F941E /* Property.m */,
 				58E2335017E79F77006F941E /* RunStatus.h */,
 				58E2335117E79F77006F941E /* RunStatus.m */,
+				5886591D183294FD00B2B295 /* Constraint.h */,
+				588659201832988000B2B295 /* NumberRangeConstraint.h */,
+				588659211832988000B2B295 /* NumberRangeConstraint.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -486,6 +493,7 @@
 				5884707417E51FE400F89A6B /* Constants.m in Sources */,
 				5884708817E662B700F89A6B /* Utils.m in Sources */,
 				58E2334C17E79B8B006F941E /* Test.m in Sources */,
+				588659221832988000B2B295 /* NumberRangeConstraint.m in Sources */,
 				58E2334F17E79D66006F941E /* Property.m in Sources */,
 				58E2335217E79F77006F941E /* RunStatus.m in Sources */,
 				58E2335917E90AC7006F941E /* MockBenchmarkService.m in Sources */,

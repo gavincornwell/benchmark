@@ -10,6 +10,7 @@
 #import "BenchmarkService.h"
 #import "Utils.h"
 #import "Property.h"
+#import "NumberRangeConstraint.h"
 
 @implementation BenchmarkTests
 
@@ -68,6 +69,34 @@
     STAssertFalse(property1.isSecret, @"Expected isSecret property to be NO");
     STAssertNil(property1.summary, @"Expected summary property to be nil");
     STAssertNil(property1.currentValue, @"Expected currentValue property to be nil");
+}
+
+- (void)testConstraints
+{
+    // create a range constraint from 0 to 10
+    NumberRangeConstraint *nrc = [[NumberRangeConstraint alloc] initWithMin:[NSNumber numberWithInt:1]
+                                                                        max:[NSNumber numberWithInt:10]];
+    // check valid values
+    STAssertTrue([nrc isValidString:@"1"], @"Expected 1 to be valid");
+    STAssertTrue([nrc isValidString:@"5"], @"Expected 5 to be valid");
+    STAssertTrue([nrc isValidString:@"10"], @"Expected 10 to be valid");
+    
+    // check invalid values
+    STAssertFalse([nrc isValidString:@"0"], @"Expected 0 to be invalid");
+    STAssertFalse([nrc isValidString:@"11"], @"Expected 11 to be invalid");
+    
+    // create a range constraint from 0.0 to 1.0
+    nrc = [[NumberRangeConstraint alloc] initWithMin:[NSNumber numberWithInt:0]
+                                                 max:[NSNumber numberWithInt:1]];
+    // check valid values
+    STAssertTrue([nrc isValidString:@"0"], @"Expected 0 to be valid");
+    STAssertTrue([nrc isValidString:@"0.5"], @"Expected 0.5 to be valid");
+    STAssertTrue([nrc isValidString:@"1"], @"Expected 1 to be valid");
+    
+    // check invalid values
+    STAssertFalse([nrc isValidString:@"-1"], @"Expected -1 to be invalid");
+    STAssertFalse([nrc isValidString:@"1.1"], @"Expected 1.1 to be invalid");
+    STAssertFalse([nrc isValidString:@"2"], @"Expected 2 to be invalid");
 }
 
 @end

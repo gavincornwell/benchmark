@@ -310,7 +310,8 @@
                                      type:type
                                   version:[json objectForKey:kJSONVersion]
                                  isHidden:isHidden
-                                 isSecret:isSecret];
+                                 isSecret:isSecret
+                              constraints:nil];
 }
 
 @end

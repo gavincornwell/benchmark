@@ -26,6 +26,7 @@ typedef enum
 @property (assign, nonatomic, readonly) PropertyType type;
 @property (assign, nonatomic, readonly) BOOL isHidden;
 @property (assign, nonatomic, readonly) BOOL isSecret;
+@property (assign, nonatomic, readonly) NSArray *constraints;
 @property (strong, nonatomic, readwrite) NSString *currentValue;
 @property (strong, nonatomic, readwrite) NSString *version;
 
@@ -42,6 +43,7 @@ typedef enum
               type:(PropertyType)type
            version:(NSString *)version
           isHidden:(BOOL)isHidden
-          isSecret:(BOOL)isSecret;
+          isSecret:(BOOL)isSecret
+       constraints:(NSArray *)constraints;
 
 @end
