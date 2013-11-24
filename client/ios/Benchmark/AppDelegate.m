@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "MockBenchmarkService.h"
 #import "TestsViewController.h"
+#import "Utils.h"
 
 @implementation AppDelegate
 
@@ -46,9 +47,16 @@
     }
     else
     {
-        // create the "real" service
-        NSURL *url = [NSURL URLWithString:urlString];
-        benchmarkService = [[BenchmarkLabService alloc] initWithURL:url];
+        // create the "real" service, as long as a URL has been provided
+        if (urlString != nil && urlString.length > 0)
+        {
+            NSURL *url = [NSURL URLWithString:urlString];
+            benchmarkService = [[BenchmarkLabService alloc] initWithURL:url];
+        }
+        else
+        {
+            [Utils displayErrorMessage:@"Test data is disabled but a URL has not been provided, please configure one in the Settings app."];
+        }
     }
     
     // create the initial UI

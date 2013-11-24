@@ -9,32 +9,32 @@
 #import "RunStatus.h"
 
 @interface RunStatus ()
-@property (assign, nonatomic, readwrite) RunState state;
-@property (strong, nonatomic, readwrite) NSDate *startTime;
-@property (assign, nonatomic, readwrite) NSInteger duration;
-@property (assign, nonatomic, readwrite) NSInteger successRate;
-@property (assign, nonatomic, readwrite) NSInteger resultCount;
-@property (assign, nonatomic, readwrite) NSInteger eventQueue;
+@property (strong, nonatomic, readwrite) NSDate *scheduledStartTime;
+@property (strong, nonatomic, readwrite) NSDate *timeStarted;
 @end
 
 @implementation RunStatus
 
 - (id)initWithState:(RunState)state
-          startTime:(NSDate *)startTime
+ scheduledStartTime:(NSDate *)scheduledStartTime
+        timeStarted:(NSDate *)timeStarted
            duration:(NSInteger)duration
         successRate:(NSInteger)successRate
-        resultCount:(NSInteger)resultCount
-         eventQueue:(NSInteger)eventQueue
+           progress:(NSInteger)progress
+  resultsTotalCount:(NSInteger)resultsTotalCount
+   resultsFailCount:(NSInteger)resultsFailCount
 {
     self = [super init];
     if (self)
     {
         self.state = state;
-        self.startTime = startTime;
+        self.scheduledStartTime = scheduledStartTime;
+        self.timeStarted = timeStarted;
         self.duration = duration;
         self.successRate = successRate;
-        self.resultCount = resultCount;
-        self.eventQueue = eventQueue;
+        self.resultsTotalCount = resultsTotalCount;
+        self.resultsFailCount = resultsFailCount;
+        self.progess = progress;
     }
     return self;
 }

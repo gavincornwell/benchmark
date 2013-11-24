@@ -63,7 +63,7 @@
     STAssertTrue([property1.name isEqualToString:@"test"], @"Expected name property to be 'test'");
     STAssertTrue([property1.defaultValue isEqualToString:@"default"], @"Expected defaultValue property to be 'default'");
     STAssertTrue(property1.type == PropertyTypeInteger, @"Expected type property to be of type Integer");
-    STAssertTrue([property1.version isEqualToString:@"0"], @"Expected version property to be '0'");
+    STAssertTrue(property1.version == 0, @"Expected version property to be 0");
     STAssertFalse(property1.isHidden, @"Expected isHidden property to be NO");
     STAssertFalse(property1.isSecret, @"Expected isSecret property to be NO");
     STAssertNil(property1.summary, @"Expected summary property to be nil");

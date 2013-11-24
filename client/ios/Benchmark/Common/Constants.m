@@ -23,6 +23,7 @@ NSString * const kPreferenceTestData = @"preference_test_data";
 NSString * const kUrlPathApiV1 = @"/api/v1";
 NSString * const kUrlPathTests = @"/tests";
 NSString * const kUrlPathRuns = @"/runs";
+NSString * const kUrlPathState = @"/state";
 
 /**
  JSON constants
@@ -40,7 +41,13 @@ NSString * const kJSONHide = @"hide";
 NSString * const kJSONMask = @"mask";
 NSString * const kJSONVersion = @"version";
 NSString * const kJSONValue = @"value";
+NSString * const kJSONScheduled = @"scheduled";
 NSString * const kJSONStarted = @"started";
+NSString * const kJSONDuration = @"duration";
+NSString * const kJSONResultsTotal = @"resultsTotal";
+NSString * const kJSONResultsFail = @"resultsFail";
+NSString * const kJSONSuccessRate = @"successRate";
+NSString * const kJSONProgress = @"progress";
 NSString * const kJSONCompleted = @"completed";
 
 /**

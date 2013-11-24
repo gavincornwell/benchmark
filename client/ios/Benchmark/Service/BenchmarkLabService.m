@@ -161,9 +161,27 @@
     [Utils assertArgumentNotNil:run argumentName:@"run"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
-    RunStatus *status = [[RunStatus alloc] initWithState:RunStateNotStarted startTime:nil duration:0 successRate:0 resultCount:0 eventQueue:0];
+    NSString *runStateGetUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name, kUrlPathState];
     
-    completionHandler(status, nil);
+    NSLog(@"Run state URL: %@", runStateGetUrl);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager GET:runStateGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON response: %@", responseObject);
+        
+        // make sure response is an array
+        if ([responseObject isKindOfClass:[NSDictionary class]])
+        {
+            completionHandler([self constructRunStatusObjectFromDictionary:responseObject], nil);
+        }
+        else
+        {
+            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionHandler(nil, error);
+    }];
 }
 
 - (void)updateProperty:(Property *)property ofBenchmarkObject:(BenchmarkObject *)object completionHandler:(BOOLCompletionHandler)completionHandler
@@ -214,7 +232,7 @@
         {
             // update the property object with the latest version
             NSDictionary *results = (NSDictionary *)responseObject;
-            NSString *updatedVersion = [results objectForKey:kJSONVersion];
+            NSNumber *updatedVersion = [results objectForKey:kJSONVersion];
             property.version = updatedVersion;
             
             completionHandler(YES, nil);
@@ -237,6 +255,17 @@
     
     // change the started flag on the run
     run.hasStarted = YES;
+    
+    completionHandler(YES, nil);
+}
+
+- (void)stopRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
+{
+    [Utils assertArgumentNotNil:run argumentName:@"run"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    // change the started flag on the run
+    run.hasStarted = NO;
     
     completionHandler(YES, nil);
 }
@@ -311,6 +340,60 @@
                                   version:[json objectForKey:kJSONVersion]
                                  isHidden:isHidden
                                  isSecret:isSecret];
+}
+
+- (RunStatus *)constructRunStatusObjectFromDictionary:(NSDictionary *)json
+{
+    NSDate *scheduledStartTime;
+    NSDate *timeStarted;
+    NSInteger duration = 0;
+    NSInteger successRate = 0;
+    NSInteger progress = 0;
+    
+    // convert scheduled start time to NSDate
+    if ([json objectForKey:kJSONScheduled])
+    {
+        NSTimeInterval seconds = [[json objectForKey:kJSONScheduled] doubleValue];
+        scheduledStartTime = [NSDate dateWithTimeIntervalSince1970:seconds];
+    }
+    
+    // convert start time to NSDate
+    if ([json objectForKey:kJSONStarted])
+    {
+        NSTimeInterval seconds = [[json objectForKey:kJSONStarted] doubleValue];
+        timeStarted = [NSDate dateWithTimeIntervalSince1970:seconds];
+    }
+    
+    // convert the duration to seconds
+    if ([json objectForKey:kJSONDuration])
+    {
+        duration = [[json objectForKey:kJSONDuration] integerValue];
+        if (duration > 0)
+        {
+            duration = duration / 1000;
+        }
+    }
+    
+    // convert success rate to a percentage
+    if ([json objectForKey:kJSONSuccessRate])
+    {
+        successRate = [[json objectForKey:kJSONSuccessRate] floatValue] * 100;
+    }
+    
+    // convert progress to a percentage
+    if ([json objectForKey:kJSONProgress])
+    {
+        progress = [[json objectForKey:kJSONProgress] floatValue] * 100;
+    }
+    
+    return [[RunStatus alloc] initWithState:RunStateNotStarted
+                                      scheduledStartTime:scheduledStartTime
+                                             timeStarted:timeStarted
+                                                duration:duration
+                                             successRate:successRate
+                                                progress:progress
+                                       resultsTotalCount:[[json objectForKey:kJSONResultsTotal] integerValue]
+                                        resultsFailCount:[[json objectForKey:kJSONResultsFail] integerValue]];
 }
 
 @end

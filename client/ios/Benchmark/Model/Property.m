@@ -40,7 +40,7 @@
       currentValue:(NSString *)currentValue
              group:(NSString *)group
               type:(PropertyType)type
-           version:(NSString *)version
+           version:(NSNumber *)version
           isHidden:(BOOL)isHidden
           isSecret:(BOOL)isSecret
 {
@@ -64,7 +64,7 @@
         }
         if (self.version == nil)
         {
-            self.version = @"0";
+            self.version = 0;
         }
     }
     return self;

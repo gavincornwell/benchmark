@@ -19,19 +19,22 @@ typedef enum
 
 @interface RunStatus : NSObject
 
-@property (assign, nonatomic, readonly) RunState state;
-@property (strong, nonatomic, readonly) NSDate *startTime;
-@property (assign, nonatomic, readonly) NSInteger duration;
-@property (assign, nonatomic, readonly) NSInteger successRate;
-@property (assign, nonatomic, readonly) NSInteger resultCount;
-@property (assign, nonatomic, readonly) NSInteger eventQueue;
+@property (assign, nonatomic, readwrite) RunState state;
+@property (strong, nonatomic, readonly) NSDate *scheduledStartTime;
+@property (strong, nonatomic, readonly) NSDate *timeStarted;
+@property (assign, nonatomic, readwrite) NSInteger duration;
+@property (assign, nonatomic, readwrite) NSInteger successRate;
+@property (assign, nonatomic, readwrite) NSInteger progess;
+@property (assign, nonatomic, readwrite) NSInteger resultsTotalCount;
+@property (assign, nonatomic, readwrite) NSInteger resultsFailCount;
 
 - (id)initWithState:(RunState)state
-          startTime:(NSDate *)startTime
+ scheduledStartTime:(NSDate *)scheduledStartTime
+        timeStarted:(NSDate *)timeStarted
            duration:(NSInteger)duration
         successRate:(NSInteger)successRate
-        resultCount:(NSInteger)resultCount
-         eventQueue:(NSInteger)eventQueue;
-
+           progress:(NSInteger)progress
+  resultsTotalCount:(NSInteger)resultsTotalCount
+   resultsFailCount:(NSInteger)resultsFailCount;
 
 @end

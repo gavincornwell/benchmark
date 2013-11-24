@@ -45,9 +45,15 @@
     }
     else if (self.run.hasStarted && !self.run.hasCompleted)
     {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                               target:self
-                                                                                               action:@selector(refresh:)];
+        UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                       target:self
+                                                                                       action:@selector(refresh:)];
+        UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+                                                                                       target:self
+                                                                                       action:@selector(stop:)];
+        
+        
+        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:refreshButton, stopButton, nil];
     }
     
     if (self.run.hasStarted)
@@ -86,7 +92,7 @@
     }
     else
     {
-        return 4;
+        return 6;
     }
 }
 
@@ -172,7 +178,7 @@
             if (indexPath.row == 0)
             {
                 cell.textLabel.text = @"Started At";
-                if (self.runStatus.startTime == nil)
+                if (self.runStatus.timeStarted == nil)
                 {
                     cell.detailTextLabel.text = @"-";
                 }
@@ -181,23 +187,33 @@
                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                     [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
                     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-                    cell.detailTextLabel.text = [dateFormatter stringFromDate:self.runStatus.startTime];
+                    cell.detailTextLabel.text = [dateFormatter stringFromDate:self.runStatus.timeStarted];
                 }
             }
             else if (indexPath.row == 1)
             {
                 cell.textLabel.text = @"Running Time";
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", self.runStatus.duration];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d seconds", self.runStatus.duration];
             }
             else if (indexPath.row == 2)
+            {
+                cell.textLabel.text = @"Progress";
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d%%", self.runStatus.progess];
+            }
+            else if (indexPath.row == 3)
             {
                 cell.textLabel.text = @"Success Rate";
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%d%%", self.runStatus.successRate];
             }
-            else if (indexPath.row == 3)
+            else if (indexPath.row == 4)
             {
                 cell.textLabel.text = @"Result Count";
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.runStatus.resultCount];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.runStatus.resultsTotalCount];
+            }
+            else if (indexPath.row == 5)
+            {
+                cell.textLabel.text = @"Fail Count";
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.runStatus.resultsFailCount];
             }
         }
     }
@@ -233,7 +249,7 @@
 {
     NSLog(@"starting run...");
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading";
+    hud.labelText = @"Starting";
     
     [self.benchmarkService startRun:self.run completionHandler:^(BOOL succeeded, NSError *error) {
         [hud hide:YES];
@@ -241,10 +257,44 @@
         {
             NSLog(@"run successfully started");
             
+            // replace the start button with stop and refresh buttons
+            UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                           target:self
+                                                                                           action:@selector(refresh:)];
+            UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+                                                                                        target:self
+                                                                                        action:@selector(stop:)];
+            
+            
+            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:refreshButton, stopButton, nil];
+            
+            // fetch the latest status
+            [self fetchRunStatus];
+        }
+        else
+        {
+            [Utils displayError:error];
+        }
+    }];
+}
+
+- (IBAction)stop:(id)sender
+{
+    NSLog(@"stopping run...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Stopping";
+    
+    [self.benchmarkService stopRun:self.run completionHandler:^(BOOL succeeded, NSError *error) {
+        [hud hide:YES];
+        if (succeeded)
+        {
+            NSLog(@"run successfully stopped");
+            
             // change the start button to a refresh button
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+            self.navigationItem.rightBarButtonItems = nil;
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
                                                                                                    target:self
-                                                                                                   action:@selector(refresh:)];
+                                                                                                   action:@selector(start:)];
             
             // fetch the latest status
             [self fetchRunStatus];

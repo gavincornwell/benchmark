@@ -74,7 +74,7 @@
     Property *prop1 = [[Property alloc] initWithName:@"share.protocol" defaultValue:@"http" type:PropertyTypeString];
     Property *prop2 = [[Property alloc] initWithName:@"share.host" defaultValue:@"lab.alfresco.me" type:PropertyTypeString];
     Property *prop3 = [[Property alloc] initWithName:@"share.port" title:@"Share Port" summary:nil defaultValue:@"8080" currentValue:nil
-                                               group:nil type:PropertyTypeInteger version:@"0" isHidden:NO isSecret:NO];
+                                               group:nil type:PropertyTypeInteger version:0 isHidden:NO isSecret:NO];
     Property *prop4 = [[Property alloc] initWithName:@"number.users" title:@"Number of Users" summary:nil defaultValue:@"20" currentValue:nil
                                                group:@"" type:PropertyTypeInteger version:nil isHidden:NO isSecret:NO];
     Property *prop5 = [[Property alloc] initWithName:@"frequency" title:@"Frequency" summary:nil defaultValue:@"2.5" currentValue:nil
@@ -135,29 +135,35 @@
     if ([run.name isEqualToString:@"Completed Run"])
     {
         status = [[RunStatus alloc] initWithState:RunStateComplete
-                                        startTime:[NSDate date]
+                               scheduledStartTime:nil
+                                        timeStarted:[NSDate date]
                                          duration:500
-                                      successRate:100
-                                      resultCount:98
-                                       eventQueue:0];
+                                      successRate:95
+                                         progress:100
+                                      resultsTotalCount:98
+                                      resultsFailCount:5];
     }
     else if ([run.name isEqualToString:@"In Progress Run"])
     {
         status = [[RunStatus alloc] initWithState:RunStateInProgress
-                                        startTime:[NSDate date]
+                               scheduledStartTime:nil
+                                        timeStarted:[NSDate date]
                                          duration:6783
                                       successRate:90
-                                      resultCount:45000
-                                       eventQueue:2];
+                                         progress:78
+                                      resultsTotalCount:45000
+                                      resultsFailCount:40000];
     }
     else
     {
         status = [[RunStatus alloc] initWithState:RunStateNotStarted
-                                        startTime:nil
+                                        scheduledStartTime:nil
+                                      timeStarted:nil
                                          duration:0
                                       successRate:0
-                                      resultCount:0
-                                       eventQueue:0];
+                                         progress:0
+                                      resultsTotalCount:0
+                                      resultsFailCount:0];
     }
     
     // return the status
@@ -182,6 +188,17 @@
     
     // change the started flag on the run
     run.hasStarted = YES;
+    
+    completionHandler(YES, nil);
+}
+
+- (void)stopRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
+{
+    [Utils assertArgumentNotNil:run argumentName:@"run"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    // change the started flag on the run
+    run.hasStarted = NO;
     
     completionHandler(YES, nil);
 }

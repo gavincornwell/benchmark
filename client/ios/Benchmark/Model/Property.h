@@ -27,7 +27,7 @@ typedef enum
 @property (assign, nonatomic, readonly) BOOL isHidden;
 @property (assign, nonatomic, readonly) BOOL isSecret;
 @property (strong, nonatomic, readwrite) NSString *currentValue;
-@property (strong, nonatomic, readwrite) NSString *version;
+@property (strong, nonatomic, readwrite) NSNumber *version;
 
 - (id)initWithName:(NSString *)name
       defaultValue:(NSString *)defaultValue
@@ -40,7 +40,7 @@ typedef enum
       currentValue:(NSString *)currentValue
              group:(NSString *)group
               type:(PropertyType)type
-           version:(NSString *)version
+           version:(NSNumber *)version
           isHidden:(BOOL)isHidden
           isSecret:(BOOL)isSecret;
 
