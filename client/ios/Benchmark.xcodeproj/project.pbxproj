@@ -370,6 +370,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Alfresco;
+				TargetAttributes = {
+					5831F87117E43AAC00ADFE98 = {
+						DevelopmentTeam = W8N95J537P;
+					};
+				};
 			};
 			buildConfigurationList = 5831F86D17E43AAC00ADFE98 /* Build configuration list for PBXProject "Benchmark" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -565,10 +570,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5BE3C7056AEF4A7EBF81FEB7 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Alfresco Software, Inc. (W8N95J537P)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Benchmark/Benchmark-Prefix.pch";
 				INFOPLIST_FILE = "Benchmark/Benchmark-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "556AD78D-968F-4C01-833B-75405F0AA969";
 				WRAPPER_EXTENSION = app;
@@ -656,6 +662,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Benchmark/Benchmark-Prefix.pch";
 				INFOPLIST_FILE = "Benchmark/Benchmark-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -669,6 +676,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Benchmark/Benchmark-Prefix.pch";
 				INFOPLIST_FILE = "Benchmark/Benchmark-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

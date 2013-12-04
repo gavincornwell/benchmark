@@ -22,7 +22,7 @@
     
     // set the application defaults, if necessary
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kPreferenceVersion] == nil)
+    if ([defaults objectForKey:kPreferenceUrl] == nil)
     {
         NSMutableDictionary *appDefaults = [NSMutableDictionary dictionaryWithObject:appVersionString forKey:kPreferenceVersion];
         [appDefaults setValue:@YES forKey:kPreferenceTestData];

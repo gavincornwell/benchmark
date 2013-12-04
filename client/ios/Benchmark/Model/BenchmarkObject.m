@@ -26,6 +26,11 @@
         self.name = name;
         self.summary = summary;
         self.identifier = identifier;
+        
+        if (self.summary == (id)[NSNull null])
+        {
+            self.summary = nil;
+        }
     }
     return self;
 }

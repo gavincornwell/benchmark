@@ -39,23 +39,13 @@
     
     if (self.benchmarkService != nil)
     {
-        NSLog(@"fetching tests...");
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = @"Loading";
+        // retrieve tests
+        [self fetchTests];
         
-        [self.benchmarkService retrieveTestsWithCompletionBlock:^(NSArray *tests, NSError *error){
-            [hud hide:YES];
-            if (nil == tests)
-            {
-                [Utils displayError:error];
-            }
-            else
-            {
-                NSLog(@"tests successfully retrieved");
-                self.tests = [NSArray arrayWithArray:tests];
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
-            }
-        }];
+        // provide refresh button
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                               target:self
+                                                                                            action:@selector(refresh:)];
     }
 }
 
@@ -114,6 +104,34 @@
     Test *test = [self.tests objectAtIndex:indexPath.row];
     TestViewController *testVC = [[TestViewController alloc] initWithTest:test benchmarkService:self.benchmarkService];
     [self.navigationController pushViewController:testVC animated:YES];
+}
+
+#pragma mark - Button handlers
+
+- (IBAction)refresh:(id)sender
+{
+    [self fetchTests];
+}
+
+- (void)fetchTests
+{
+    NSLog(@"fetching tests...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading";
+    
+    [self.benchmarkService retrieveTestsWithCompletionBlock:^(NSArray *tests, NSError *error){
+        [hud hide:YES];
+        if (nil == tests)
+        {
+            [Utils displayError:error];
+        }
+        else
+        {
+            NSLog(@"tests successfully retrieved");
+            self.tests = [NSArray arrayWithArray:tests];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }];
 }
 
 @end
