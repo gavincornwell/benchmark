@@ -21,12 +21,6 @@
     }
 }
 
-+ (NSError *)createErrorWithMessage:(NSString *)message
-{
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey];
-    return [NSError errorWithDomain:kErrorBenchmarkDomain code:1000 userInfo:userInfo];
-}
-
 + (BOOL)retrieveBoolFromDictionary:(NSDictionary *)dictionary withKey:(NSString *)key
 {
     BOOL result = NO;
@@ -49,6 +43,33 @@
     }
     
     return result;
+}
+
++ (NSDate *)retrieveDateFromDictionary:(NSDictionary *)dictionary withKey:(NSString *)key
+{
+    NSDate *date;
+    
+    id obj = [dictionary objectForKey:key];
+    if (obj != nil)
+    {
+        if ([obj isKindOfClass:[NSNumber class]])
+        {
+            NSNumber *seconds = (NSNumber *)obj;
+            if ([seconds doubleValue] != -1)
+            {
+                NSTimeInterval timeInterval = [seconds doubleValue];
+                date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+            }
+        }
+    }
+    
+    return date;
+}
+
++ (NSError *)createErrorWithMessage:(NSString *)message
+{
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey];
+    return [NSError errorWithDomain:kErrorBenchmarkDomain code:1000 userInfo:userInfo];
 }
 
 + (void)displayErrorMessage:(NSString *)message

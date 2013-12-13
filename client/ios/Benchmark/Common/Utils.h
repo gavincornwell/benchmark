@@ -11,9 +11,11 @@
 @interface Utils : NSObject
 
 + (void)assertArgumentNotNil:(id)argument argumentName:(NSString *)argumentName;
-+ (NSError *)createErrorWithMessage:(NSString *)message;
 + (BOOL)retrieveBoolFromDictionary:(NSDictionary *)dictionary withKey:(NSString *)key;
++ (NSDate *)retrieveDateFromDictionary:(NSDictionary *)dictionary withKey:(NSString *)key;
++ (NSError *)createErrorWithMessage:(NSString *)message;
 + (void)displayErrorMessage:(NSString *)message;
 + (void)displayError:(NSError *)error;
+
 
 @end

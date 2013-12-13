@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "BenchmarkLabService.h"
 #import "Constants.h"
-#import "MockBenchmarkService.h"
 #import "TestsViewController.h"
 #import "Utils.h"
 
@@ -25,7 +24,6 @@
     if ([defaults objectForKey:kPreferenceUrl] == nil)
     {
         NSMutableDictionary *appDefaults = [NSMutableDictionary dictionaryWithObject:appVersionString forKey:kPreferenceVersion];
-        [appDefaults setValue:@YES forKey:kPreferenceTestData];
         [appDefaults setValue:@"http://localhost:9080/alfresco-benchmark-server" forKey:kPreferenceUrl];
         [defaults registerDefaults:appDefaults];
         [defaults synchronize];
@@ -36,27 +34,19 @@
     
     // get the defaults
     NSString *urlString = [defaults objectForKey:kPreferenceUrl];
-    BOOL useTestData = [[defaults objectForKey:kPreferenceTestData] boolValue];
     
     // determine which benchmark service implementation to use
     id<BenchmarkService> benchmarkService = nil;
-    if (useTestData)
+    if (urlString != nil && urlString.length > 0)
     {
-        // create the mock service with test data
-        benchmarkService = [[MockBenchmarkService alloc] init];
+        NSURL *url = [NSURL URLWithString:urlString];
+        benchmarkService = [[BenchmarkLabService alloc] initWithURL:url];
     }
     else
     {
-        // create the "real" service, as long as a URL has been provided
-        if (urlString != nil && urlString.length > 0)
-        {
-            NSURL *url = [NSURL URLWithString:urlString];
-            benchmarkService = [[BenchmarkLabService alloc] initWithURL:url];
-        }
-        else
-        {
-            [Utils displayErrorMessage:@"Test data is disabled but a URL has not been provided, please configure one in the Settings app."];
-        }
+        // TODO: change this to an information message and change to a "first-run" experience in future release.
+        
+        [Utils displayErrorMessage:@"Please configure a URL to use in the Settings app."];
     }
     
     // create the initial UI

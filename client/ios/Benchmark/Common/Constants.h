@@ -15,7 +15,6 @@
  --------------------------------------------------------------------------------------- */
 extern NSString * const kPreferenceVersion;
 extern NSString * const kPreferenceUrl;
-extern NSString * const kPreferenceTestData;
 
 /**---------------------------------------------------------------------------------------
  * @name URL constants
@@ -24,6 +23,7 @@ extern NSString * const kUrlPathApiV1;
 extern NSString * const kUrlPathTests;
 extern NSString * const kUrlPathRuns;
 extern NSString * const kUrlPathState;
+extern NSString * const kUrlPathSchedule;
 
 /**---------------------------------------------------------------------------------------
  * @name JSON constants
@@ -47,9 +47,17 @@ extern NSString * const kJSONScheduled;
 extern NSString * const kJSONStarted;
 extern NSString * const kJSONDuration;
 extern NSString * const kJSONResultsTotal;
+extern NSString * const kJSONResultsSuccess;
 extern NSString * const kJSONResultsFail;
 extern NSString * const kJSONSuccessRate;
 extern NSString * const kJSONProgress;
+extern NSString * const kJSONStopped;
+extern NSString * const kJSONState;
+extern NSString * const kJSONStateNotScheduled;
+extern NSString * const kJSONStateScheduled;
+extern NSString * const kJSONStateStarted;
+extern NSString * const kJSONStateStopped;
+extern NSString * const kJSONStateCompleted;
 
 /**---------------------------------------------------------------------------------------
  * @name Error constants

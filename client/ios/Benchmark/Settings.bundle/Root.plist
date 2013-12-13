@@ -29,22 +29,6 @@
 			<string>PSTextFieldSpecifier</string>
 		</dict>
 		<dict>
-			<key>Title</key>
-			<string>Debug</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>DefaultValue</key>
-			<real>1</real>
-			<key>Key</key>
-			<string>preference_test_data</string>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Use Test Data</string>
-		</dict>
-		<dict>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>

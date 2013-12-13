@@ -8,33 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum
-{
-    RunStateNotStarted = 0,
-    RunStateInProgress,
-    RunStateComplete
-    
-} RunState;
-
-
 @interface RunStatus : NSObject
 
-@property (assign, nonatomic, readwrite) RunState state;
 @property (strong, nonatomic, readonly) NSDate *scheduledStartTime;
 @property (strong, nonatomic, readonly) NSDate *timeStarted;
-@property (assign, nonatomic, readwrite) NSInteger duration;
+@property (assign, nonatomic, readwrite) long long duration;
 @property (assign, nonatomic, readwrite) NSInteger successRate;
 @property (assign, nonatomic, readwrite) NSInteger progess;
 @property (assign, nonatomic, readwrite) NSInteger resultsTotalCount;
+@property (assign, nonatomic, readwrite) NSInteger resultsSuccessCount;
 @property (assign, nonatomic, readwrite) NSInteger resultsFailCount;
 
-- (id)initWithState:(RunState)state
- scheduledStartTime:(NSDate *)scheduledStartTime
+- (id)initWithScheduledStartTime:(NSDate *)scheduledStartTime
         timeStarted:(NSDate *)timeStarted
-           duration:(NSInteger)duration
+           duration:(long long)duration
         successRate:(NSInteger)successRate
            progress:(NSInteger)progress
   resultsTotalCount:(NSInteger)resultsTotalCount
+resultsSuccessCount:(NSInteger)resultsSuccessCount
    resultsFailCount:(NSInteger)resultsFailCount;
 
 @end

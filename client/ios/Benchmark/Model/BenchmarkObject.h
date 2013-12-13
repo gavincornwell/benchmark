@@ -13,9 +13,11 @@
 @property (strong, nonatomic, readonly) NSString *identifier;
 @property (strong, nonatomic, readonly) NSString *name;
 @property (strong, nonatomic, readonly) NSString *summary;
+@property (strong, nonatomic, readwrite) NSNumber *version;
 
 - (id)initWithName:(NSString *)name
              summary:(NSString *)summary
-        identifier:(NSString *)identifier;
+        identifier:(NSString *)identifier
+           version:(NSNumber *)version;
 
 @end

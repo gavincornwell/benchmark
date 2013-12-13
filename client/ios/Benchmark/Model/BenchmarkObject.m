@@ -19,6 +19,7 @@
 - (id)initWithName:(NSString *)name
            summary:(NSString *)summary
         identifier:(NSString *)identifier
+           version:(NSNumber *)version
 {
     self = [super init];
     if (self)
@@ -26,10 +27,16 @@
         self.name = name;
         self.summary = summary;
         self.identifier = identifier;
+        self.version = version;
         
         if (self.summary == (id)[NSNull null])
         {
             self.summary = nil;
+        }
+        
+        if (self.version == nil)
+        {
+            self.version = 0;
         }
     }
     return self;

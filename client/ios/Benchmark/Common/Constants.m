@@ -15,7 +15,6 @@
  */
 NSString * const kPreferenceVersion = @"preference_version";
 NSString * const kPreferenceUrl = @"preference_url";
-NSString * const kPreferenceTestData = @"preference_test_data";
 
 /**
  URL constants
@@ -24,6 +23,7 @@ NSString * const kUrlPathApiV1 = @"/api/v1";
 NSString * const kUrlPathTests = @"/tests";
 NSString * const kUrlPathRuns = @"/runs";
 NSString * const kUrlPathState = @"/state";
+NSString * const kUrlPathSchedule = @"/schedule";
 
 /**
  JSON constants
@@ -45,10 +45,18 @@ NSString * const kJSONScheduled = @"scheduled";
 NSString * const kJSONStarted = @"started";
 NSString * const kJSONDuration = @"duration";
 NSString * const kJSONResultsTotal = @"resultsTotal";
+NSString * const kJSONResultsSuccess = @"resultsSuccess";
 NSString * const kJSONResultsFail = @"resultsFail";
 NSString * const kJSONSuccessRate = @"successRate";
 NSString * const kJSONProgress = @"progress";
 NSString * const kJSONCompleted = @"completed";
+NSString * const kJSONStopped = @"stopped";
+NSString * const kJSONState = @"state";
+NSString * const kJSONStateNotScheduled = @"state.not_scheduled";
+NSString * const kJSONStateScheduled = @"state.scheduled";
+NSString * const kJSONStateStarted = @"state.started";
+NSString * const kJSONStateStopped = @"state.stopped";
+NSString * const kJSONStateCompleted = @"state.completed";
 
 /**
  Error constants

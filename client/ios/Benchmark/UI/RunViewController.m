@@ -37,26 +37,18 @@
     
     self.navigationItem.title = self.run.name;
     
-    if (!self.run.hasStarted)
+    if (self.run.state == RunStateNotScheduled)
     {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
-                                                                                               target:self
-                                                                                               action:@selector(start:)];
+        // show not scheduled controls
+        [self showNotScheduledControls];
     }
-    else if (self.run.hasStarted && !self.run.hasCompleted)
+    else if (self.run.state == RunStateScheduled || self.run.state == RunStateStarted)
     {
-        UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                       target:self
-                                                                                       action:@selector(refresh:)];
-        UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
-                                                                                       target:self
-                                                                                       action:@selector(stop:)];
-        
-        
-        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:refreshButton, stopButton, nil];
+        // show in progress controls
+        [self showInProgressControls];
     }
     
-    if (self.run.hasStarted)
+    if (self.run.state >= RunStateScheduled)
     {
         [self fetchRunStatus];
     }
@@ -92,7 +84,7 @@
     }
     else
     {
-        return 6;
+        return 8;
     }
 }
 
@@ -129,19 +121,23 @@
             cell.detailTextLabel.text = self.run.summary;
             UIImage *img = [UIImage imageNamed:@"samples.png"];
             cell.imageView.image = img;
-            
+
             NSString *iconName = nil;
-            if (self.run.hasStarted && self.run.hasCompleted)
+            if (self.run.state == RunStateNotScheduled)
             {
-                iconName = @"completed.png";
+                iconName = @"not-scheduled.png";
             }
-            else if (self.run.hasStarted && !self.run.hasCompleted)
+            else if (self.run.state == RunStateScheduled)
+            {
+                iconName = @"pending.png";
+            }
+            else if (self.run.state == RunStateStarted)
             {
                 iconName = @"in-progress.png";
             }
             else
             {
-                iconName = @"pending.png";
+                iconName = @"completed.png";
             }
             
             UIImage *statusImg = [UIImage imageNamed:iconName];
@@ -177,8 +173,8 @@
         {
             if (indexPath.row == 0)
             {
-                cell.textLabel.text = @"Started At";
-                if (self.runStatus.timeStarted == nil)
+                cell.textLabel.text = @"Scheduled";
+                if (self.runStatus.scheduledStartTime == nil)
                 {
                     cell.detailTextLabel.text = @"-";
                 }
@@ -187,30 +183,61 @@
                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                     [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
                     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-                    cell.detailTextLabel.text = [dateFormatter stringFromDate:self.runStatus.timeStarted];
+                    cell.detailTextLabel.text = [dateFormatter stringFromDate:self.runStatus.scheduledStartTime];
                 }
             }
-            else if (indexPath.row == 1)
+            if (indexPath.row == 1)
             {
-                cell.textLabel.text = @"Running Time";
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d seconds", self.runStatus.duration];
+                NSDate *date;
+                if (self.run.state == RunStateCompleted)
+                {
+                    date = self.run.timeCompleted;
+                    cell.textLabel.text = @"Completed";
+                }
+                else
+                {
+                    date = self.runStatus.timeStarted;
+                    cell.textLabel.text = @"Started";
+                }
+                
+                if (date == nil)
+                {
+                    cell.detailTextLabel.text = @"-";
+                }
+                else
+                {
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+                    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+                    cell.detailTextLabel.text = [dateFormatter stringFromDate:date];
+                }
             }
             else if (indexPath.row == 2)
+            {
+                cell.textLabel.text = @"Running Time";
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%lld minutes", self.runStatus.duration];
+            }
+            else if (indexPath.row == 3)
             {
                 cell.textLabel.text = @"Progress";
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%d%%", self.runStatus.progess];
             }
-            else if (indexPath.row == 3)
+            else if (indexPath.row == 4)
             {
                 cell.textLabel.text = @"Success Rate";
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%d%%", self.runStatus.successRate];
             }
-            else if (indexPath.row == 4)
+            else if (indexPath.row == 5)
             {
                 cell.textLabel.text = @"Result Count";
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.runStatus.resultsTotalCount];
             }
-            else if (indexPath.row == 5)
+            else if (indexPath.row == 6)
+            {
+                cell.textLabel.text = @"Success Count";
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.runStatus.resultsSuccessCount];
+            }
+            else if (indexPath.row == 7)
             {
                 cell.textLabel.text = @"Fail Count";
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.runStatus.resultsFailCount];
@@ -238,63 +265,27 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PropertiesViewController *propsVC = [[PropertiesViewController alloc] initWithBenchmarkObject:self.run
-                                                                                         editable:!self.run.hasStarted
+                                                                                         editable:self.run.state == RunStateNotScheduled
                                                                                  benchmarkService:self.benchmarkService];
     [self.navigationController pushViewController:propsVC animated:YES];
 }
 
 #pragma mark - Button handlers
 
-- (IBAction)start:(id)sender
+- (IBAction)schedule:(id)sender
 {
-    NSLog(@"starting run...");
+    NSLog(@"scheduling run...");
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Starting";
+    hud.labelText = @"Scheduling";
     
-    [self.benchmarkService startRun:self.run completionHandler:^(BOOL succeeded, NSError *error) {
+    [self.benchmarkService scheduleRun:self.run completionHandler:^(BOOL succeeded, NSError *error) {
         [hud hide:YES];
         if (succeeded)
         {
-            NSLog(@"run successfully started");
+            NSLog(@"run successfully scheduled");
             
-            // replace the start button with stop and refresh buttons
-            UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                           target:self
-                                                                                           action:@selector(refresh:)];
-            UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
-                                                                                        target:self
-                                                                                        action:@selector(stop:)];
-            
-            
-            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:refreshButton, stopButton, nil];
-            
-            // fetch the latest status
-            [self fetchRunStatus];
-        }
-        else
-        {
-            [Utils displayError:error];
-        }
-    }];
-}
-
-- (IBAction)stop:(id)sender
-{
-    NSLog(@"stopping run...");
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Stopping";
-    
-    [self.benchmarkService stopRun:self.run completionHandler:^(BOOL succeeded, NSError *error) {
-        [hud hide:YES];
-        if (succeeded)
-        {
-            NSLog(@"run successfully stopped");
-            
-            // change the start button to a refresh button
-            self.navigationItem.rightBarButtonItems = nil;
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
-                                                                                                   target:self
-                                                                                                   action:@selector(start:)];
+            // show in progress controls
+            [self showInProgressControls];
             
             // fetch the latest status
             [self fetchRunStatus];
@@ -310,6 +301,8 @@
 {
     [self fetchRunStatus];
 }
+
+#pragma mark - Helper methods
 
 - (void)fetchRunStatus
 {
@@ -328,9 +321,38 @@
             NSLog(@"run status successfully retrieved");
             
             self.runStatus = status;
+            
+            // show completed controls when appropriate
+            if (self.run.state == RunStateCompleted)
+            {
+                [self showCompletedControls];
+            }
+            
             [self.tableView reloadData];
         }
     }];
+}
+
+- (void)showNotScheduledControls
+{
+    // show a start button before the run has been scheduled
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
+                                                                                           target:self
+                                                                                           action:@selector(schedule:)];
+}
+
+- (void)showInProgressControls
+{
+    // show a refresh button whilst the run is in progress
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                           target:self
+                                                                                           action:@selector(refresh:)];
+}
+
+- (void)showCompletedControls
+{
+    // don't show any buttons once the run is complete
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 @end

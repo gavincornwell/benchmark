@@ -144,17 +144,21 @@
         
         // set appropriate icon
         NSString *iconName = nil;
-        if (run.hasStarted && run.hasCompleted)
+        if (run.state == RunStateNotScheduled)
         {
-            iconName = @"completed.png";
+            iconName = @"not-scheduled.png";
         }
-        else if (run.hasStarted && !run.hasCompleted)
+        else if (run.state == RunStateScheduled)
+        {
+            iconName = @"pending.png";
+        }
+        else if (run.state == RunStateStarted)
         {
             iconName = @"in-progress.png";
         }
         else
         {
-            iconName = @"pending.png";
+            iconName = @"completed.png";
         }
         
         UIImage *img = [UIImage imageNamed:iconName];

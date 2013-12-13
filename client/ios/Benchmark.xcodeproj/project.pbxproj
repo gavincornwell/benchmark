@@ -35,11 +35,12 @@
 		5884708417E5237B00F89A6B /* samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 5884707C17E5237B00F89A6B /* samples.png */; };
 		5884708517E5237B00F89A6B /* samples@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5884707D17E5237B00F89A6B /* samples@2x.png */; };
 		5884708817E662B700F89A6B /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5884708717E662B700F89A6B /* Utils.m */; };
+		58AA46F7185B6C16004B89B3 /* not-scheduled.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA46F5185B6C16004B89B3 /* not-scheduled.png */; };
+		58AA46F8185B6C16004B89B3 /* not-scheduled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA46F6185B6C16004B89B3 /* not-scheduled@2x.png */; };
 		58C90F2F17FF16A800DF23C4 /* BenchmarkObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */; };
 		58E2334C17E79B8B006F941E /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2334B17E79B8B006F941E /* Test.m */; };
 		58E2334F17E79D66006F941E /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2334E17E79D66006F941E /* Property.m */; };
 		58E2335217E79F77006F941E /* RunStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2335117E79F77006F941E /* RunStatus.m */; };
-		58E2335917E90AC7006F941E /* MockBenchmarkService.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2335817E90AC7006F941E /* MockBenchmarkService.m */; };
 		58E2335F17EA4E31006F941E /* TestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2335E17EA4E31006F941E /* TestsViewController.m */; };
 		58E2336C17EC9CA5006F941E /* completed.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E2336417EC9CA4006F941E /* completed.png */; };
 		58E2336D17EC9CA5006F941E /* completed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E2336517EC9CA4006F941E /* completed@2x.png */; };
@@ -105,6 +106,8 @@
 		5884707D17E5237B00F89A6B /* samples@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "samples@2x.png"; sourceTree = "<group>"; };
 		5884708617E662B700F89A6B /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = Common/Utils.h; sourceTree = "<group>"; };
 		5884708717E662B700F89A6B /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = Common/Utils.m; sourceTree = "<group>"; };
+		58AA46F5185B6C16004B89B3 /* not-scheduled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "not-scheduled.png"; sourceTree = "<group>"; };
+		58AA46F6185B6C16004B89B3 /* not-scheduled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "not-scheduled@2x.png"; sourceTree = "<group>"; };
 		58C90F2D17FF16A800DF23C4 /* BenchmarkObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BenchmarkObject.h; path = Model/BenchmarkObject.h; sourceTree = "<group>"; };
 		58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BenchmarkObject.m; path = Model/BenchmarkObject.m; sourceTree = "<group>"; };
 		58E2334A17E79B8B006F941E /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test.h; path = Model/Test.h; sourceTree = "<group>"; };
@@ -114,8 +117,6 @@
 		58E2335017E79F77006F941E /* RunStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RunStatus.h; path = Model/RunStatus.h; sourceTree = "<group>"; };
 		58E2335117E79F77006F941E /* RunStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RunStatus.m; path = Model/RunStatus.m; sourceTree = "<group>"; };
 		58E2335317E9059F006F941E /* BenchmarkService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BenchmarkService.h; path = Service/BenchmarkService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		58E2335717E90AC7006F941E /* MockBenchmarkService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockBenchmarkService.h; path = Service/MockBenchmarkService.h; sourceTree = "<group>"; };
-		58E2335817E90AC7006F941E /* MockBenchmarkService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MockBenchmarkService.m; path = Service/MockBenchmarkService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		58E2335D17EA4E31006F941E /* TestsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestsViewController.h; path = UI/TestsViewController.h; sourceTree = "<group>"; };
 		58E2335E17EA4E31006F941E /* TestsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestsViewController.m; path = UI/TestsViewController.m; sourceTree = "<group>"; };
 		58E2336417EC9CA4006F941E /* completed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = completed.png; sourceTree = "<group>"; };
@@ -281,8 +282,6 @@
 				5884706917E514AD00F89A6B /* BenchmarkLabService.h */,
 				5884706A17E514AD00F89A6B /* BenchmarkLabService.m */,
 				58E2335317E9059F006F941E /* BenchmarkService.h */,
-				58E2335717E90AC7006F941E /* MockBenchmarkService.h */,
-				58E2335817E90AC7006F941E /* MockBenchmarkService.m */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -301,6 +300,8 @@
 		5884707517E5237B00F89A6B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				58AA46F5185B6C16004B89B3 /* not-scheduled.png */,
+				58AA46F6185B6C16004B89B3 /* not-scheduled@2x.png */,
 				58E2338017ECA2AC006F941E /* app_icon_large.png */,
 				58E2338117ECA2AC006F941E /* app_icon_large@2x.png */,
 				58E2338217ECA2AC006F941E /* app_icon_small.png */,
@@ -411,6 +412,7 @@
 				5884708417E5237B00F89A6B /* samples.png in Resources */,
 				5884708517E5237B00F89A6B /* samples@2x.png in Resources */,
 				58E2336C17EC9CA5006F941E /* completed.png in Resources */,
+				58AA46F8185B6C16004B89B3 /* not-scheduled@2x.png in Resources */,
 				58E2336D17EC9CA5006F941E /* completed@2x.png in Resources */,
 				58E2336E17EC9CA5006F941E /* in-progress.png in Resources */,
 				58E2336F17EC9CA5006F941E /* in-progress@2x.png in Resources */,
@@ -418,6 +420,7 @@
 				58E2337F17ECA0AC006F941E /* pending@2x.png in Resources */,
 				58E2338417ECA2AC006F941E /* app_icon_large.png in Resources */,
 				58E2338517ECA2AC006F941E /* app_icon_large@2x.png in Resources */,
+				58AA46F7185B6C16004B89B3 /* not-scheduled.png in Resources */,
 				58E2338617ECA2AC006F941E /* app_icon_small.png in Resources */,
 				58E2338717ECA2AC006F941E /* app_icon_small@2x.png in Resources */,
 			);
@@ -493,7 +496,6 @@
 				58E2334C17E79B8B006F941E /* Test.m in Sources */,
 				58E2334F17E79D66006F941E /* Property.m in Sources */,
 				58E2335217E79F77006F941E /* RunStatus.m in Sources */,
-				58E2335917E90AC7006F941E /* MockBenchmarkService.m in Sources */,
 				58E2335F17EA4E31006F941E /* TestsViewController.m in Sources */,
 				58E2338A17ECA327006F941E /* RunViewController.m in Sources */,
 				58E2338D17ECC521006F941E /* PropertiesViewController.m in Sources */,
@@ -558,7 +560,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -622,7 +624,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -646,7 +648,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

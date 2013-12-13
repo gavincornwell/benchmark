@@ -172,7 +172,16 @@
         // make sure response is an array
         if ([responseObject isKindOfClass:[NSDictionary class]])
         {
-            completionHandler([self constructRunStatusObjectFromDictionary:responseObject], nil);
+            // construct run status object
+            RunStatus *status = [self constructRunStatusObjectFromDictionary:responseObject];
+            
+            // if progress shows 100% change state on run object
+            if (status.progess == 100)
+            {
+                run.state = RunStateCompleted;
+            }
+            
+            completionHandler(status, nil);
         }
         else
         {
@@ -248,24 +257,13 @@
     }];
 }
 
-- (void)startRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
+- (void)scheduleRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:run argumentName:@"run"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
-    // change the started flag on the run
-    run.hasStarted = YES;
-    
-    completionHandler(YES, nil);
-}
-
-- (void)stopRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
-{
-    [Utils assertArgumentNotNil:run argumentName:@"run"];
-    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
-    
-    // change the started flag on the run
-    run.hasStarted = NO;
+    // change the state of the run object
+    run.state = RunStateScheduled;
     
     completionHandler(YES, nil);
 }
@@ -280,7 +278,8 @@
     
     return [[Test alloc] initWithName:[json objectForKey:kJSONName]
                               summary:[json objectForKey:kJSONDescription]
-                           identifier:identifier];
+                           identifier:identifier
+                              version:[json objectForKey:kJSONVersion]];
 }
 
 - (Run *)constructRunObjectFromDictionary:(NSDictionary *)json test:(Test *)test
@@ -289,14 +288,89 @@
     NSString *idPath = [NSString stringWithFormat:@"%@.%@", kJSONId, kJSONOId];
     NSString *identifier = [json valueForKeyPath:idPath];
     
+    // determine the state of the run
+    RunState state = RunStateNotScheduled;
+    NSString *stateString = [json objectForKey:kJSONState];
+    if (stateString != nil)
+    {
+        if ([stateString isEqualToString:kJSONStateScheduled])
+        {
+            state = RunStateScheduled;
+        }
+        else if ([stateString isEqualToString:kJSONStateStarted])
+        {
+            state = RunStateStarted;
+        }
+        else if ([stateString isEqualToString:kJSONStateStopped])
+        {
+            state = RunStateStopped;
+        }
+        else if ([stateString isEqualToString:kJSONStateCompleted])
+        {
+            state = RunStateCompleted;
+        }
+    }
+    
+    // retrieve times
+    NSDate *scheduledStartTime = [Utils retrieveDateFromDictionary:json withKey:kJSONScheduled];
+    NSDate *timeStarted = [Utils retrieveDateFromDictionary:json withKey:kJSONStarted];
+    NSDate *timeCompleted = [Utils retrieveDateFromDictionary:json withKey:kJSONCompleted];
+    NSDate *timeStopped = [Utils retrieveDateFromDictionary:json withKey:kJSONStopped];
+    
     return [[Run alloc] initWithName:[json objectForKey:kJSONName]
                              summary:[json objectForKey:kJSONDescription]
                           identifier:identifier
-                          hasStarted:[Utils retrieveBoolFromDictionary:json withKey:kJSONStarted]
-                         hasCompleted:[Utils retrieveBoolFromDictionary:json withKey:kJSONCompleted]
-                                 test:test];
+                             version:[json objectForKey:kJSONVersion]
+                                test:test
+                               state:state
+                  scheduledStartTime:scheduledStartTime
+                         timeStarted:timeStarted
+                       timeCompleted:timeCompleted
+                         timeStopped:timeStopped];
 }
-            
+
+- (RunStatus *)constructRunStatusObjectFromDictionary:(NSDictionary *)json
+{
+    // retrieve times
+    NSDate *scheduledStartTime = [Utils retrieveDateFromDictionary:json withKey:kJSONScheduled];
+    NSDate *timeStarted = [Utils retrieveDateFromDictionary:json withKey:kJSONStarted];
+    
+    NSInteger successRate = 0;
+    NSInteger progress = 0;
+    long long duration = 0;
+    
+    // convert the duration to minutes
+    if ([json objectForKey:kJSONDuration])
+    {
+        duration = [[json objectForKey:kJSONDuration] longLongValue];
+        if (duration > 0)
+        {
+            duration = duration / 60000;
+        }
+    }
+    
+    // convert success rate to a percentage
+    if ([json objectForKey:kJSONSuccessRate])
+    {
+        successRate = [[json objectForKey:kJSONSuccessRate] floatValue] * 100;
+    }
+    
+    // convert progress to a percentage
+    if ([json objectForKey:kJSONProgress])
+    {
+        progress = [[json objectForKey:kJSONProgress] floatValue] * 100;
+    }
+    
+    return [[RunStatus alloc] initWithScheduledStartTime:scheduledStartTime
+                                             timeStarted:timeStarted
+                                                duration:duration
+                                             successRate:successRate
+                                                progress:progress
+                                       resultsTotalCount:[[json objectForKey:kJSONResultsTotal] integerValue]
+                                     resultsSuccessCount:[[json objectForKey:kJSONResultsSuccess] integerValue]
+                                        resultsFailCount:[[json objectForKey:kJSONResultsFail] integerValue]];
+}
+
 - (Property *)constructPropertyFromDictionary:(NSDictionary *)json
 {
     // determine type
@@ -340,60 +414,6 @@
                                   version:[json objectForKey:kJSONVersion]
                                  isHidden:isHidden
                                  isSecret:isSecret];
-}
-
-- (RunStatus *)constructRunStatusObjectFromDictionary:(NSDictionary *)json
-{
-    NSDate *scheduledStartTime;
-    NSDate *timeStarted;
-    NSInteger duration = 0;
-    NSInteger successRate = 0;
-    NSInteger progress = 0;
-    
-    // convert scheduled start time to NSDate
-    if ([json objectForKey:kJSONScheduled])
-    {
-        NSTimeInterval seconds = [[json objectForKey:kJSONScheduled] doubleValue];
-        scheduledStartTime = [NSDate dateWithTimeIntervalSince1970:seconds];
-    }
-    
-    // convert start time to NSDate
-    if ([json objectForKey:kJSONStarted])
-    {
-        NSTimeInterval seconds = [[json objectForKey:kJSONStarted] doubleValue];
-        timeStarted = [NSDate dateWithTimeIntervalSince1970:seconds];
-    }
-    
-    // convert the duration to seconds
-    if ([json objectForKey:kJSONDuration])
-    {
-        duration = [[json objectForKey:kJSONDuration] integerValue];
-        if (duration > 0)
-        {
-            duration = duration / 1000;
-        }
-    }
-    
-    // convert success rate to a percentage
-    if ([json objectForKey:kJSONSuccessRate])
-    {
-        successRate = [[json objectForKey:kJSONSuccessRate] floatValue] * 100;
-    }
-    
-    // convert progress to a percentage
-    if ([json objectForKey:kJSONProgress])
-    {
-        progress = [[json objectForKey:kJSONProgress] floatValue] * 100;
-    }
-    
-    return [[RunStatus alloc] initWithState:RunStateNotStarted
-                                      scheduledStartTime:scheduledStartTime
-                                             timeStarted:timeStarted
-                                                duration:duration
-                                             successRate:successRate
-                                                progress:progress
-                                       resultsTotalCount:[[json objectForKey:kJSONResultsTotal] integerValue]
-                                        resultsFailCount:[[json objectForKey:kJSONResultsFail] integerValue]];
 }
 
 @end
