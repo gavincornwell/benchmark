@@ -44,9 +44,7 @@
     }
     else
     {
-        // TODO: change this to an information message and change to a "first-run" experience in future release.
-        
-        [Utils displayErrorMessage:@"Please configure a URL to use in the Settings app."];
+        [Utils displayInfoMessage:@"Please configure a Benchmark Server URL in Settings and then re-launch the app."];
     }
     
     // create the initial UI

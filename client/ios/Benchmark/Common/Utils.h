@@ -16,6 +16,7 @@
 + (NSError *)createErrorWithMessage:(NSString *)message;
 + (void)displayErrorMessage:(NSString *)message;
 + (void)displayError:(NSError *)error;
++ (void)displayInfoMessage:(NSString *)message;
 
 
 @end

@@ -39,23 +39,12 @@
     self.runs = [NSArray array];
     self.navigationItem.title = self.test.name;
     
-    NSLog(@"fetching runs...");
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading";
+    [self fetchRuns];
     
-    [self.benchmarkService retrieveRunsForTest:self.test completionHandler:^(NSArray *runs, NSError *error){
-        [hud hide:YES];
-        if (nil == runs)
-        {
-            [Utils displayError:error];
-        }
-        else
-        {
-            NSLog(@"runs successfully retrieved");
-            self.runs = [NSArray arrayWithArray:runs];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
-        }
-    }];
+    // provide refresh button
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                           target:self
+                                                                                           action:@selector(refresh:)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -197,6 +186,34 @@
         RunViewController *runVC = [[RunViewController alloc] initWithRun:run benchmarkService:self.benchmarkService];
         [self.navigationController pushViewController:runVC animated:YES];
     }
+}
+
+#pragma mark - Button handlers
+
+- (IBAction)refresh:(id)sender
+{
+    [self fetchRuns];
+}
+
+- (void)fetchRuns
+{
+    NSLog(@"fetching runs...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading";
+    
+    [self.benchmarkService retrieveRunsForTest:self.test completionHandler:^(NSArray *runs, NSError *error){
+        [hud hide:YES];
+        if (nil == runs)
+        {
+            [Utils displayError:error];
+        }
+        else
+        {
+            NSLog(@"runs successfully retrieved");
+            self.runs = [NSArray arrayWithArray:runs];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }];
 }
 
 @end
