@@ -15,8 +15,6 @@
 			<string>None</string>
 			<key>AutocorrectionType</key>
 			<string>No</string>
-			<key>DefaultValue</key>
-			<string>http://localhost:9080/alfresco-benchmark-server</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>Key</key>

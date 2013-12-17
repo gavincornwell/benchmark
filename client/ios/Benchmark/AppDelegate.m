@@ -19,12 +19,11 @@
     // get the app version string
     NSString *appVersionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     
-    // set the application defaults, if necessary
+    // set the application version in user defaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults objectForKey:kPreferenceUrl] == nil)
     {
         NSMutableDictionary *appDefaults = [NSMutableDictionary dictionaryWithObject:appVersionString forKey:kPreferenceVersion];
-        [appDefaults setValue:@"http://localhost:9080/alfresco-benchmark-server" forKey:kPreferenceUrl];
         [defaults registerDefaults:appDefaults];
         [defaults synchronize];
     }

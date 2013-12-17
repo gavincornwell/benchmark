@@ -144,9 +144,7 @@
         }
         else
         {
-            // TODO: This should really be an error as different responses are being returned!
-//            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
-            completionHandler([NSArray array], nil);
+            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -262,10 +260,48 @@
     [Utils assertArgumentNotNil:run argumentName:@"run"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
-    // change the state of the run object
-    run.state = RunStateScheduled;
+    NSString *scheduleRunUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name, kUrlPathSchedule];
     
-    completionHandler(YES, nil);
+    NSLog(@"Schedule URL: %@", scheduleRunUrl);
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    
+    // create the dictionary to represent the JSON body
+    NSMutableDictionary *jsonBody = [NSMutableDictionary dictionaryWithObject:run.version forKey:kJSONVersion];
+    // calculate now as the number of seconds since Jan 1 1970
+    NSTimeInterval seconds = [[NSDate date] timeIntervalSince1970];
+    NSNumber *secondsSince1970 = [NSNumber numberWithDouble:seconds];
+    [jsonBody setValue:secondsSince1970 forKey:kJSONScheduled];
+    
+    NSLog(@"JSON body: %@", jsonBody);
+    
+    // PUT the new property value
+    [manager POST:scheduleRunUrl parameters:jsonBody success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON response: %@", responseObject);
+        
+        // make sure response is a dictionary
+        if ([responseObject isKindOfClass:[NSDictionary class]])
+        {
+            // update the run object with the latest version
+            NSDictionary *results = (NSDictionary *)responseObject;
+            NSNumber *updatedVersion = [results objectForKey:kJSONVersion];
+            run.version = updatedVersion;
+            
+            // change the state of the run object
+            run.state = RunStateScheduled;
+            
+            completionHandler(YES, nil);
+        }
+        else
+        {
+            completionHandler(NO, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionHandler(NO, error);
+    }];
 }
 
 #pragma mark - Object construction methods

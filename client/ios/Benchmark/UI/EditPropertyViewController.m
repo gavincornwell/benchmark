@@ -34,22 +34,6 @@
 
 #pragma mark - Utilities
 
-/*! Returns the major version of iOS, (i.e. for iOS 6.1.3 it returns 6)
- */
-NSUInteger DeviceSystemMajorVersion()
-{
-    static NSUInteger _deviceSystemMajorVersion = -1;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        _deviceSystemMajorVersion = [[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] objectAtIndex:0] intValue];
-    });
-    
-    return _deviceSystemMajorVersion;
-}
-
-#define IOS7_OR_ABOVE (DeviceSystemMajorVersion() >= 7)
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,27 +41,29 @@ NSUInteger DeviceSystemMajorVersion()
     self.navigationItem.title = @"Edit Property";
     self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     
+    // Please ignore the following hack! This will be replaced with in-place editing in 1.1
     CGRect frame;
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
-        if (IOS7_OR_ABOVE)
+        if (UIInterfaceOrientationIsLandscape(deviceOrientation))
         {
-            frame = CGRectMake(20, 100, 720, 40);
+            frame = CGRectMake(20, 100, 980, 40);
         }
         else
         {
-            frame = CGRectMake(20, 30, 720, 40);
+            frame = CGRectMake(20, 100, 720, 40);
         }
     }
     else
     {
-        if (IOS7_OR_ABOVE)
+        if (UIInterfaceOrientationIsLandscape(deviceOrientation))
         {
-            frame = CGRectMake(20, 100, 280, 40);
+            frame = CGRectMake(20, 100, 440, 40);
         }
         else
         {
-            frame = CGRectMake(20, 30, 280, 40);
+            frame = CGRectMake(20, 100, 280, 40);
         }
     }
     
