@@ -112,7 +112,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
-            cell.textLabel.text = @"Properties";
+            cell.textLabel.text = kUITitleProperties;
         }
     }
     else
@@ -144,6 +144,10 @@
         else if (run.state == RunStateStarted)
         {
             iconName = @"in-progress.png";
+        }
+        else if (run.state == RunStateStopped)
+        {
+            iconName = @"stopped.png";
         }
         else
         {
@@ -199,7 +203,7 @@
 {
     NSLog(@"fetching runs...");
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading";
+    hud.labelText = kUILabelLoading;
     
     [self.benchmarkService retrieveRunsForTest:self.test completionHandler:^(NSArray *runs, NSError *error){
         [hud hide:YES];

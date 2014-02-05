@@ -35,7 +35,7 @@
     [super viewDidLoad];
     
     self.tests = [NSArray array];
-    self.navigationItem.title = @"Tests";
+    self.navigationItem.title = kUITitleTests;
     
     if (self.benchmarkService != nil)
     {
@@ -117,7 +117,7 @@
 {
     NSLog(@"fetching tests...");
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading";
+    hud.labelText = kUILabelLoading;
     
     [self.benchmarkService retrieveTestsWithCompletionBlock:^(NSArray *tests, NSError *error){
         [hud hide:YES];

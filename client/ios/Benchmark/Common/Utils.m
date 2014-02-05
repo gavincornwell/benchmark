@@ -86,10 +86,10 @@
         message = error.localizedDescription;
     }
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kUITitleError
                                                     message:message
                                                    delegate:nil
-                                          cancelButtonTitle:@"Cancel"
+                                          cancelButtonTitle:kUILabelCancel
                                           otherButtonTitles:nil];
     [alert show];
 }
@@ -99,7 +99,7 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:message
                                                    delegate:nil
-                                          cancelButtonTitle:@"OK"
+                                          cancelButtonTitle:kUILabelOK
                                           otherButtonTitles:nil];
     [alert show];
 }

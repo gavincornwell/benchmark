@@ -11,6 +11,38 @@
 @implementation Constants
 
 /**
+ UI constants
+ */
+NSString * const kUITitleTests = @"Tests";
+NSString * const kUITitleGeneral = @"General";
+NSString * const kUITitleProperties = @"Properties";
+NSString * const kUITitleEditProperty = @"Edit Property";
+NSString * const kUITitleError = @"Error";
+
+NSString * const kUILabelOK = @"OK";
+NSString * const kUILabelCancel = @"Cancel";
+NSString * const kUILabelSave = @"Save";
+NSString * const kUILabelSaving = @"Saving";
+NSString * const kUILabelLoading = @"Loading";
+NSString * const kUILabelScheduled = @"Scheduled";
+NSString * const kUILabelStatus = @"Status";
+NSString * const kUILabelStarted = @"Started";
+NSString * const kUILabelCompleted = @"Completed";
+NSString * const kUILabelRunningTime = @"Running Time";
+NSString * const kUILabelProgress = @"Progress";
+NSString * const kUILabelSuccessRate = @"Success Rate";
+NSString * const kUILabelResultCount = @"Result Count";
+NSString * const kUILabelSuccessCount = @"Success Count";
+NSString * const kUILabelFailCount = @"Fail Count";
+NSString * const kUILabelScheduling = @"Scheduling";
+NSString * const kUILabelStopping = @"Stopping";
+NSString * const kUILabelNoValue = @"-";
+
+NSString * const kUIPasswordMask = @"*****";
+NSString * const kUIConfigureUrl = @"Please configure a Benchmark Server URL in Settings and then re-launch the app.";
+NSString * const kUIRunningTimeFormat = @"%lld minutes";
+
+/**
  Preference constants
  */
 NSString * const kPreferenceVersion = @"preference_version";
@@ -24,6 +56,7 @@ NSString * const kUrlPathTests = @"/tests";
 NSString * const kUrlPathRuns = @"/runs";
 NSString * const kUrlPathState = @"/state";
 NSString * const kUrlPathSchedule = @"/schedule";
+NSString * const kUrlPathTerminate = @"/terminate";
 
 /**
  JSON constants
@@ -57,6 +90,10 @@ NSString * const kJSONStateScheduled = @"state.scheduled";
 NSString * const kJSONStateStarted = @"state.started";
 NSString * const kJSONStateStopped = @"state.stopped";
 NSString * const kJSONStateCompleted = @"state.completed";
+NSString * const kJSONTypeString = @"STRING";
+NSString * const kJSONTypeDecimal = @"DECIMAL";
+NSString * const kJSONTypeInt = @"INT";
+NSString * const kJSONTypeBoolean = @"BOOL";
 
 /**
  Error constants

@@ -43,7 +43,7 @@
     }
     else
     {
-        [Utils displayInfoMessage:@"Please configure a Benchmark Server URL in Settings and then re-launch the app."];
+        [Utils displayInfoMessage:kUIConfigureUrl];
     }
     
     // create the initial UI

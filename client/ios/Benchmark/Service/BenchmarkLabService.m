@@ -276,7 +276,7 @@
     
     NSLog(@"JSON body: %@", jsonBody);
     
-    // PUT the new property value
+    // request the run be scheduled
     [manager POST:scheduleRunUrl parameters:jsonBody success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON response: %@", responseObject);
         
@@ -290,6 +290,46 @@
             
             // change the state of the run object
             run.state = RunStateScheduled;
+            
+            completionHandler(YES, nil);
+        }
+        else
+        {
+            completionHandler(NO, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionHandler(NO, error);
+    }];
+}
+
+- (void)stopRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
+{
+    [Utils assertArgumentNotNil:run argumentName:@"run"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    NSString *stopRunUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name, kUrlPathTerminate];
+    
+    NSLog(@"Stop URL: %@", stopRunUrl);
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    
+    // request the run be terminated
+    [manager POST:stopRunUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON response: %@", responseObject);
+        
+        // make sure response is a dictionary
+        if ([responseObject isKindOfClass:[NSDictionary class]])
+        {
+            // update the run object with the latest version
+            NSDictionary *results = (NSDictionary *)responseObject;
+            NSNumber *updatedVersion = [results objectForKey:kJSONVersion];
+            run.version = updatedVersion;
+            
+            // change the state of the run object
+            run.state = RunStateStopped;
             
             completionHandler(YES, nil);
         }

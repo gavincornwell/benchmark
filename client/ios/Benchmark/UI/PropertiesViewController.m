@@ -45,7 +45,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Properties";
+    self.navigationItem.title = kUITitleProperties;
     
     [self fetchAndProcessProperties];
 }
@@ -109,15 +109,21 @@
     
     // set cell text
     cell.textLabel.text = property.title;
+    cell.detailTextLabel.textColor = [UIColor grayColor];
     if (property.isSecret)
     {
-        cell.detailTextLabel.text = @"*******";
+        cell.detailTextLabel.text = kUIPasswordMask;
     }
     else
     {
         if (property.currentValue != nil)
         {
             cell.detailTextLabel.text = property.currentValue;
+            
+            if (property.currentValue != property.defaultValue)
+            {
+                cell.detailTextLabel.textColor = [UIColor blackColor];
+            }
         }
         else
         {
@@ -162,7 +168,7 @@
     // for the default group use a title of "General"
     if ([groupTitle isEqualToString:@""])
     {
-        groupTitle = @"General";
+        groupTitle = kUITitleGeneral;
     }
     
     return groupTitle;
@@ -174,7 +180,7 @@
 {
     NSLog(@"fetching properties...");
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading";
+    hud.labelText = kUILabelLoading;
     
     [self.benchmarkService retrievePropertiesOfBenchmarkObject:self.benchmarkObject completionHandler:^(NSArray *array, NSError *error) {
         if (nil == array)

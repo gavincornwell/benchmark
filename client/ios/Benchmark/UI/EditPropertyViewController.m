@@ -38,7 +38,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Edit Property";
+    self.navigationItem.title = kUITitleEditProperty;
     self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     
     // Please ignore the following hack! This will be replaced with in-place editing in 1.1
@@ -99,12 +99,12 @@
     
     [self.view addSubview:self.textField];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save"
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:kUILabelSave
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:self
                                                                              action:@selector(savePressed:)];
     
-    self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+    self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:kUILabelCancel
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:self
                                                                              action:@selector(cancelPressed:)];
@@ -127,7 +127,7 @@
     
     NSLog(@"saving property %@...", self.property.name);
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Saving";
+    hud.labelText = kUILabelSaving;
     
     [self.benchmarkService updateProperty:self.property
                         ofBenchmarkObject:self.benchmarkObject
