@@ -40,4 +40,8 @@ typedef void (^RunStatusCompletionHandler)(RunStatus *status, NSError *error);
 
 - (void)stopRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler;
 
+- (void)deleteTest:(Test *)test completionHandler:(BOOLCompletionHandler)completionHandler;
+
+- (void)deleteRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler;
+
 @end

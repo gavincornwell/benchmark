@@ -23,6 +23,8 @@ extern NSString * const kUILabelOK;
 extern NSString * const kUILabelCancel;
 extern NSString * const kUILabelSave;
 extern NSString * const kUILabelSaving;
+extern NSString * const kUILabelDelete;
+extern NSString * const kUILabelDeleting;
 extern NSString * const kUILabelLoading;
 extern NSString * const kUILabelScheduled;
 extern NSString * const kUILabelStatus;
@@ -54,7 +56,7 @@ extern NSString * const kPreferenceUrl;
 extern NSString * const kUrlPathApiV1;
 extern NSString * const kUrlPathTests;
 extern NSString * const kUrlPathRuns;
-extern NSString * const kUrlPathState;
+extern NSString * const kUrlPathSummary;
 extern NSString * const kUrlPathSchedule;
 extern NSString * const kUrlPathTerminate;
 

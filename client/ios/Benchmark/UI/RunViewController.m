@@ -224,27 +224,27 @@
             else if (indexPath.row == 3)
             {
                 cell.textLabel.text = kUILabelProgress;
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d%%", self.runStatus.progess];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld%%", (long)self.runStatus.progess];
             }
             else if (indexPath.row == 4)
             {
                 cell.textLabel.text = kUILabelSuccessRate;
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d%%", self.runStatus.successRate];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld%%", (long)self.runStatus.successRate];
             }
             else if (indexPath.row == 5)
             {
                 cell.textLabel.text = kUILabelResultCount;
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.runStatus.resultsTotalCount];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)self.runStatus.resultsTotalCount];
             }
             else if (indexPath.row == 6)
             {
                 cell.textLabel.text = kUILabelSuccessCount;
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.runStatus.resultsSuccessCount];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)self.runStatus.resultsSuccessCount];
             }
             else if (indexPath.row == 7)
             {
                 cell.textLabel.text = kUILabelFailCount;
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.runStatus.resultsFailCount];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)self.runStatus.resultsFailCount];
             }
         }
     }

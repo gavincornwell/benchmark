@@ -159,7 +159,7 @@
     [Utils assertArgumentNotNil:run argumentName:@"run"];
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
-    NSString *runStateGetUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name, kUrlPathState];
+    NSString *runStateGetUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name, kUrlPathSummary];
     
     NSLog(@"Run state URL: %@", runStateGetUrl);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -314,7 +314,6 @@
     NSLog(@"Stop URL: %@", stopRunUrl);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
     
     // request the run be terminated
     [manager POST:stopRunUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -338,6 +337,46 @@
             completionHandler(NO, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
         }
         
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionHandler(NO, error);
+    }];
+}
+
+- (void)deleteTest:(Test *)test completionHandler:(BOOLCompletionHandler)completionHandler
+{
+    [Utils assertArgumentNotNil:test argumentName:@"test"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    NSString *deleteTestUrl = [NSString stringWithFormat:@"%@%@/%@", self.baseApiUrl, kUrlPathTests, test.name];
+    
+    NSLog(@"Delete URL: %@", deleteTestUrl);
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    // request the run be terminated
+    [manager DELETE:deleteTestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        completionHandler(YES, nil);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionHandler(NO, error);
+    }];
+}
+
+- (void)deleteRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
+{
+    [Utils assertArgumentNotNil:run argumentName:@"run"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    NSString *deleteRunUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name];
+    
+    NSLog(@"Delete URL: %@", deleteRunUrl);
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    // request the run be terminated
+    [manager DELETE:deleteRunUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        completionHandler(YES, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         completionHandler(NO, error);

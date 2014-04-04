@@ -15,7 +15,7 @@
 @interface TestViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
 @property (nonatomic, strong, readwrite) Test *test;
-@property (nonatomic, strong, readwrite) NSArray *runs;
+@property (nonatomic, strong, readwrite) NSMutableArray *runs;
 @end
 
 @implementation TestViewController
@@ -36,15 +36,20 @@
 {
     [super viewDidLoad];
     
-    self.runs = [NSArray array];
+    self.runs = [NSMutableArray array];
     self.navigationItem.title = self.test.name;
     
     [self fetchRuns];
     
-    // provide refresh button
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                           target:self
-                                                                                           action:@selector(refresh:)];
+    // enable edit button so we can delete tests
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    // setup the bottom toolbar
+    self.navigationController.toolbarHidden = NO;
+    UIBarButtonItem *flexibleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
+    NSArray *items = [NSArray arrayWithObjects:flexibleItem, item2, nil];
+    self.toolbarItems = items;
 }
 
 - (void)didReceiveMemoryWarning
@@ -192,6 +197,45 @@
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1)
+    {
+        // do not allow deletion of runs that have started
+        Run *run = [self.runs objectAtIndex:indexPath.row];
+        return run.state != RunStateStarted;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        NSLog(@"deleting run...");
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = kUILabelDeleting;
+     
+        // request deletion of the run
+        [self.benchmarkService deleteRun:[self.runs objectAtIndex:indexPath.row] completionHandler:^(BOOL succeeded, NSError *error) {
+            [hud hide:YES];
+            if (succeeded)
+            {
+                NSLog(@"run successfully deleted");
+                [self.runs removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            }
+            else
+            {
+                [Utils displayError:error];
+            }
+        }];
+    }
+}
+
 #pragma mark - Button handlers
 
 - (IBAction)refresh:(id)sender
@@ -214,7 +258,7 @@
         else
         {
             NSLog(@"runs successfully retrieved");
-            self.runs = [NSArray arrayWithArray:runs];
+            self.runs = [NSMutableArray arrayWithArray:runs];
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
         }
     }];

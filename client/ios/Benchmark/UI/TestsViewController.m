@@ -14,7 +14,7 @@
 
 @interface TestsViewController ()
 @property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
-@property (nonatomic, strong, readwrite) NSArray *tests;
+@property (nonatomic, strong, readwrite) NSMutableArray *tests;
 @end
 
 @implementation TestsViewController
@@ -34,7 +34,7 @@
 {
     [super viewDidLoad];
     
-    self.tests = [NSArray array];
+    self.tests = [NSMutableArray array];
     self.navigationItem.title = kUITitleTests;
     
     if (self.benchmarkService != nil)
@@ -42,10 +42,15 @@
         // retrieve tests
         [self fetchTests];
         
-        // provide refresh button
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                               target:self
-                                                                                            action:@selector(refresh:)];
+        // enable edit button so we can delete tests
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+        
+        // setup the bottom toolbar
+        self.navigationController.toolbarHidden = NO;
+        UIBarButtonItem *flexibleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
+        NSArray *items = [NSArray arrayWithObjects:flexibleItem, item2, nil];
+        self.toolbarItems = items;
     }
 }
 
@@ -95,8 +100,6 @@
     return cell;
 }
 
-
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -104,6 +107,33 @@
     Test *test = [self.tests objectAtIndex:indexPath.row];
     TestViewController *testVC = [[TestViewController alloc] initWithTest:test benchmarkService:self.benchmarkService];
     [self.navigationController pushViewController:testVC animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        NSLog(@"deleting test...");
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = kUILabelDeleting;
+        
+        // request deletion of the test
+        [self.benchmarkService deleteTest:[self.tests objectAtIndex:indexPath.row] completionHandler:^(BOOL succeeded, NSError *error) {
+            [hud hide:YES];
+            if (succeeded)
+            {
+                NSLog(@"test successfully deleted");
+                [self.tests removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            }
+            else
+            {
+                [Utils displayError:error];
+            }
+        }];
+        
+        
+    }
 }
 
 #pragma mark - Button handlers
@@ -128,7 +158,7 @@
         else
         {
             NSLog(@"tests successfully retrieved");
-            self.tests = [NSArray arrayWithArray:tests];
+            self.tests = [NSMutableArray arrayWithArray:tests];
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
         }
     }];
