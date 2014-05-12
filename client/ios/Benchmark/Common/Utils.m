@@ -54,11 +54,11 @@
     {
         if ([obj isKindOfClass:[NSNumber class]])
         {
-            NSNumber *seconds = (NSNumber *)obj;
-            if ([seconds doubleValue] != -1)
+            NSNumber *milliSeconds = (NSNumber *)obj;
+            if ([milliSeconds unsignedLongLongValue] != -1)
             {
-                NSTimeInterval timeInterval = [seconds doubleValue];
-                date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+                unsigned long long seconds = [milliSeconds unsignedLongLongValue] / 1000;
+                date = [NSDate dateWithTimeIntervalSince1970:seconds];
             }
         }
     }

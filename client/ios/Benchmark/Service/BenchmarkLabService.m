@@ -271,8 +271,8 @@
     NSMutableDictionary *jsonBody = [NSMutableDictionary dictionaryWithObject:run.version forKey:kJSONVersion];
     // calculate now as the number of seconds since Jan 1 1970
     NSTimeInterval seconds = [[NSDate date] timeIntervalSince1970];
-    NSNumber *secondsSince1970 = [NSNumber numberWithDouble:seconds];
-    [jsonBody setValue:secondsSince1970 forKey:kJSONScheduled];
+    unsigned long long millSecondsSince1970 = seconds * 1000;
+    [jsonBody setValue:[NSNumber numberWithLongLong:millSecondsSince1970] forKey:kJSONScheduled];
     
     NSLog(@"JSON body: %@", jsonBody);
     
@@ -454,13 +454,13 @@
     NSInteger progress = 0;
     long long duration = 0;
     
-    // convert the duration to minutes
+    // convert the duration to seconds
     if ([json objectForKey:kJSONDuration])
     {
         duration = [[json objectForKey:kJSONDuration] longLongValue];
         if (duration > 0)
         {
-            duration = duration / 60000;
+            duration = duration / 1000;
         }
     }
     

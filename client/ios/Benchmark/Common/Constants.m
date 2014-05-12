@@ -42,7 +42,7 @@ NSString * const kUILabelNoValue = @"-";
 
 NSString * const kUIPasswordMask = @"*****";
 NSString * const kUIConfigureUrl = @"Please configure a Benchmark Server URL in Settings and then re-launch the app.";
-NSString * const kUIRunningTimeFormat = @"%lld minutes";
+NSString * const kUIRunningTimeFormat = @"%lld seconds";
 
 /**
  Preference constants
