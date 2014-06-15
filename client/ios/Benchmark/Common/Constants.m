@@ -54,6 +54,7 @@ NSString * const kPreferenceUrl = @"preference_url";
  URL constants
  */
 NSString * const kUrlPathApiV1 = @"/api/v1";
+NSString * const kUrlPathTestDefinitions = @"/test-defs?activeOnly=false";
 NSString * const kUrlPathTests = @"/tests";
 NSString * const kUrlPathRuns = @"/runs";
 NSString * const kUrlPathSummary = @"/summary";
@@ -65,6 +66,8 @@ NSString * const kUrlPathTerminate = @"/terminate";
  */
 NSString * const kJSONId = @"_id";
 NSString * const kJSONOId = @"$oid";
+NSString * const kJSONRelease = @"release";
+NSString * const kJSONSchema = @"schema";
 NSString * const kJSONName = @"name";
 NSString * const kJSONTitle = @"title";
 NSString * const kJSONDescription = @"description";

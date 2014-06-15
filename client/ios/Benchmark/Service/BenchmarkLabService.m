@@ -8,6 +8,7 @@
 
 #import "BenchmarkLabService.h"
 #import "Test.h"
+#import "TestDefinition.h"
 #import "Utils.h"
 
 #import "AFHTTPRequestOperationManager.h"
@@ -31,6 +32,41 @@
 }
 
 #pragma mark - Protocol methods
+
+- (void)retrieveTestDefinitionsWithCompletionBlock:(ArrayCompletionHandler)completionHandler
+{
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    NSString *testDefinitionsGetUrl = [self.baseApiUrl stringByAppendingString:kUrlPathTestDefinitions];
+    
+    NSLog(@"Test definitions URL: %@", testDefinitionsGetUrl);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager GET:testDefinitionsGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON response: %@", responseObject);
+        
+        // make sure response is an array
+        if ([responseObject isKindOfClass:[NSArray class]])
+        {
+            NSArray *results = (NSArray *)responseObject;
+            NSMutableArray *testDefinitions = [NSMutableArray arrayWithCapacity:results.count];
+            // convert each test to an object
+            for (NSDictionary *testDefinition in results)
+            {
+                [testDefinitions addObject:[self constructTestDefinitionObjectFromDictionary:testDefinition]];
+            }
+            
+            completionHandler(testDefinitions, nil);
+        }
+        else
+        {
+            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionHandler(nil, error);
+    }];
+}
 
 - (void)retrieveTestsWithCompletionBlock:(ArrayCompletionHandler)completionHandler
 {
@@ -343,6 +379,17 @@
     }];
 }
 
+- (void)addTestWithDefinition:(TestDefinition *)definition name:(NSString *)name summary:(NSString *)summary
+            completionHandler:(TestCompletionHandler)completionHandler
+{
+    completionHandler(nil, nil);
+}
+
+- (void)addRunWithName:(NSString *)name summary:(NSString *)summary completionHandler:(RunCompletionHandler)completionHandler
+{
+    completionHandler(nil, nil);
+}
+
 - (void)deleteTest:(Test *)test completionHandler:(BOOLCompletionHandler)completionHandler
 {
     [Utils assertArgumentNotNil:test argumentName:@"test"];
@@ -384,6 +431,17 @@
 }
 
 #pragma mark - Object construction methods
+
+- (TestDefinition *)constructTestDefinitionObjectFromDictionary:(NSDictionary *)json
+{
+    // extract the data from the dictionary representing the JSON
+    NSString *idPath = [NSString stringWithFormat:@"%@.%@", kJSONId, kJSONOId];
+    NSString *identifier = [json valueForKeyPath:idPath];
+    
+    return [[TestDefinition alloc] initWithIdentifier:identifier
+                                                 name:[json objectForKey:kJSONRelease]
+                                               schema:[json objectForKey:kJSONSchema]];
+}
 
 - (Test *)constructTestObjectFromDictionary:(NSDictionary *)json
 {

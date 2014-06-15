@@ -13,8 +13,9 @@
 #import "MBProgressHUD.h"
 
 @interface TestsViewController ()
-@property (nonatomic, strong, readwrite) id<BenchmarkService> benchmarkService;
-@property (nonatomic, strong, readwrite) NSMutableArray *tests;
+@property (nonatomic, strong) id<BenchmarkService> benchmarkService;
+@property (nonatomic, strong) NSMutableArray *tests;
+@property (nonatomic, strong) NSArray *testDefinitions;
 @end
 
 @implementation TestsViewController
@@ -41,6 +42,9 @@
     {
         // retrieve tests
         [self fetchTests];
+        
+        // retrieve test definitions
+        [self fetchTestDefinitions];
         
         // enable edit button so we can delete tests
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -141,6 +145,7 @@
 - (IBAction)refresh:(id)sender
 {
     [self fetchTests];
+    [self fetchTestDefinitions];
 }
 
 - (void)fetchTests
@@ -160,6 +165,26 @@
             NSLog(@"tests successfully retrieved");
             self.tests = [NSMutableArray arrayWithArray:tests];
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }];
+}
+
+- (void)fetchTestDefinitions
+{
+    NSLog(@"fetching test definitions...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = kUILabelLoading;
+    
+    [self.benchmarkService retrieveTestDefinitionsWithCompletionBlock:^(NSArray *testDefinitions, NSError *error){
+        [hud hide:YES];
+        if (nil == testDefinitions)
+        {
+            [Utils displayError:error];
+        }
+        else
+        {
+            NSLog(@"test definitions successfully retrieved");
+            self.testDefinitions = [NSMutableArray arrayWithArray:testDefinitions];
         }
     }];
 }

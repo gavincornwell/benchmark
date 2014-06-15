@@ -54,6 +54,7 @@ extern NSString * const kPreferenceUrl;
  * @name URL constants
  --------------------------------------------------------------------------------------- */
 extern NSString * const kUrlPathApiV1;
+extern NSString * const kUrlPathTestDefinitions;
 extern NSString * const kUrlPathTests;
 extern NSString * const kUrlPathRuns;
 extern NSString * const kUrlPathSummary;
@@ -65,6 +66,8 @@ extern NSString * const kUrlPathTerminate;
  --------------------------------------------------------------------------------------- */
 extern NSString * const kJSONId;
 extern NSString * const kJSONOId;
+extern NSString * const kJSONRelease;
+extern NSString * const kJSONSchema;
 extern NSString * const kJSONName;
 extern NSString * const kJSONTitle;
 extern NSString * const kJSONDescription;

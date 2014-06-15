@@ -16,7 +16,7 @@
 @property (strong, nonatomic, readwrite) NSNumber *version;
 
 - (id)initWithName:(NSString *)name
-             summary:(NSString *)summary
+           summary:(NSString *)summary
         identifier:(NSString *)identifier
            version:(NSNumber *)version;
 
