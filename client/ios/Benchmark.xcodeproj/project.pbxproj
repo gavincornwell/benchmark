@@ -588,12 +588,13 @@
 			baseConfigurationReference = 5BE3C7056AEF4A7EBF81FEB7 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Benchmark/Benchmark-Prefix.pch";
 				INFOPLIST_FILE = "Benchmark/Benchmark-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "556AD78D-968F-4C01-833B-75405F0AA969";
+				PROVISIONING_PROFILE = "086776A2-DC75-444B-8D86-58B442464353";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Ad Hoc";
@@ -676,11 +677,13 @@
 			baseConfigurationReference = 5BE3C7056AEF4A7EBF81FEB7 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Benchmark/Benchmark-Prefix.pch";
 				INFOPLIST_FILE = "Benchmark/Benchmark-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "086776A2-DC75-444B-8D86-58B442464353";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -690,11 +693,13 @@
 			baseConfigurationReference = 5BE3C7056AEF4A7EBF81FEB7 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Benchmark/Benchmark-Prefix.pch";
 				INFOPLIST_FILE = "Benchmark/Benchmark-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "086776A2-DC75-444B-8D86-58B442464353";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
