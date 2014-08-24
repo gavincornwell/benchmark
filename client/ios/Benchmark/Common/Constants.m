@@ -29,6 +29,7 @@ NSString * const kUILabelLoading = @"Loading";
 NSString * const kUILabelScheduled = @"Scheduled";
 NSString * const kUILabelStatus = @"Status";
 NSString * const kUILabelStarted = @"Started";
+NSString * const kUILabelStopped = @"Stopped";
 NSString * const kUILabelCompleted = @"Completed";
 NSString * const kUILabelRunningTime = @"Running Time";
 NSString * const kUILabelProgress = @"Progress";
@@ -100,10 +101,13 @@ NSString * const kJSONTypeDecimal = @"DECIMAL";
 NSString * const kJSONTypeInt = @"INT";
 NSString * const kJSONTypeBoolean = @"BOOL";
 
+NSString * const kRunStatusChangedNotification = @"RunStatusChangedNotification";
+
 /**
  Error constants
  */
 NSString * const kErrorBenchmarkDomain = @"BenchmarkLabErrorDomain";
 NSString * const kErrorInvalidJSONReceived = @"Invalid JSON response received";
+NSString * const kErrorConflict = @"The item has changed on the server, please refresh to get the latest version.";
 
 @end

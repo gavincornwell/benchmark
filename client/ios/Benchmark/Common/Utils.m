@@ -86,6 +86,11 @@
         message = error.localizedDescription;
     }
     
+    if ([message rangeOfString:@"conflict (409)"].location != NSNotFound)
+    {
+        message = kErrorConflict;
+    }
+    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kUITitleError
                                                     message:message
                                                    delegate:nil

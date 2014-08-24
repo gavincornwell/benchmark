@@ -29,6 +29,7 @@ extern NSString * const kUILabelLoading;
 extern NSString * const kUILabelScheduled;
 extern NSString * const kUILabelStatus;
 extern NSString * const kUILabelStarted;
+extern NSString * const kUILabelStopped;
 extern NSString * const kUILabelCompleted;
 extern NSString * const kUILabelRunningTime;
 extern NSString * const kUILabelProgress;
@@ -102,10 +103,16 @@ extern NSString * const kJSONTypeInt;
 extern NSString * const kJSONTypeBoolean;
 
 /**---------------------------------------------------------------------------------------
+ * @name Notification constants
+ --------------------------------------------------------------------------------------- */
+
+extern NSString * const kRunStatusChangedNotification;
+
+/**---------------------------------------------------------------------------------------
  * @name Error constants
  --------------------------------------------------------------------------------------- */
 extern NSString * const kErrorBenchmarkDomain;
 extern NSString * const kErrorInvalidJSONReceived;
-
+extern NSString * const kErrorConflict;
 
 @end

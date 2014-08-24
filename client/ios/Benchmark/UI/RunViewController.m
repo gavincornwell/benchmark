@@ -198,7 +198,12 @@
                     date = self.run.timeCompleted;
                     cell.textLabel.text = kUILabelCompleted;
                 }
-                else
+                else if (self.run.state == RunStateStopped)
+                {
+                    date = self.run.timeStopped;
+                    cell.textLabel.text = kUILabelStopped;
+                }
+                else 
                 {
                     date = self.runStatus.timeStarted;
                     cell.textLabel.text = kUILabelStarted;
@@ -293,6 +298,9 @@
             
             // fetch the latest status
             [self fetchRunStatus];
+            
+            // post notification that run has been scheduled (status has changed)
+            [[NSNotificationCenter defaultCenter] postNotificationName:kRunStatusChangedNotification object:self.run];
         }
         else
         {
@@ -318,6 +326,9 @@
             
             // fetch the latest status
             [self fetchRunStatus];
+            
+            // post notification that run has been scheduled (status has changed)
+            [[NSNotificationCenter defaultCenter] postNotificationName:kRunStatusChangedNotification object:self.run];
         }
         else
         {
@@ -355,6 +366,9 @@
             if (self.run.state == RunStateCompleted)
             {
                 [self showCompletedControls];
+                
+                // fetch the run object again to get the completed date
+                [self refreshRun];
             }
             
             [self.tableView reloadData];
@@ -391,6 +405,40 @@
     // don't show any buttons once the run is complete (or stopped)
     self.navigationItem.rightBarButtonItems = nil;
     self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)refreshRun
+{
+    NSLog(@"refreshing run details...");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = kUILabelLoading;
+    
+    [self.benchmarkService retrieveRunsForTest:self.run.test completionHandler:^(NSArray *runs, NSError *error) {
+        [hud hide:YES];
+        if (runs == nil)
+        {
+            [Utils displayError:error];
+        }
+        else
+        {
+            NSLog(@"runs successfully retrieved");
+            
+            // iterate round the runs to locate this one (we need to add a method to the service to do this)
+            for (Run *run in runs)
+            {
+                if ([run.identifier isEqualToString:self.run.identifier])
+                {
+                    self.run = run;
+                    [self.tableView reloadData];
+                    
+                    // post notification that run has completed (status has changed)
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kRunStatusChangedNotification object:self.run];
+                    
+                    break;
+                }
+            }
+        }
+    }];
 }
 
 @end

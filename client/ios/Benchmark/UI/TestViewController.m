@@ -50,12 +50,23 @@
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
     NSArray *items = [NSArray arrayWithObjects:flexibleItem, item2, nil];
     self.toolbarItems = items;
+    
+    // register for notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refresh:)
+                                                 name:kRunStatusChangedNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table view data source
