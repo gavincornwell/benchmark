@@ -115,6 +115,7 @@
 		5884708717E662B700F89A6B /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = Common/Utils.m; sourceTree = "<group>"; };
 		58AA46F5185B6C16004B89B3 /* not-scheduled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "not-scheduled.png"; sourceTree = "<group>"; };
 		58AA46F6185B6C16004B89B3 /* not-scheduled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "not-scheduled@2x.png"; sourceTree = "<group>"; };
+		58AA490B19ADBF940094185D /* Benchmark.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Benchmark.entitlements; sourceTree = "<group>"; };
 		58C90F2D17FF16A800DF23C4 /* BenchmarkObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BenchmarkObject.h; path = Model/BenchmarkObject.h; sourceTree = "<group>"; };
 		58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BenchmarkObject.m; path = Model/BenchmarkObject.m; sourceTree = "<group>"; };
 		58E2334A17E79B8B006F941E /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test.h; path = Model/Test.h; sourceTree = "<group>"; };
@@ -218,6 +219,7 @@
 		5831F87C17E43AAC00ADFE98 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				58AA490B19ADBF940094185D /* Benchmark.entitlements */,
 				5884706C17E5160700F89A6B /* Settings.bundle */,
 				5831F87D17E43AAC00ADFE98 /* Benchmark-Info.plist */,
 				5831F87E17E43AAC00ADFE98 /* InfoPlist.strings */,
@@ -386,6 +388,11 @@
 				TargetAttributes = {
 					5831F87117E43AAC00ADFE98 = {
 						DevelopmentTeam = W8N95J537P;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -587,6 +594,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5BE3C7056AEF4A7EBF81FEB7 /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Benchmark/Benchmark.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -594,7 +602,7 @@
 				INFOPLIST_FILE = "Benchmark/Benchmark-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "086776A2-DC75-444B-8D86-58B442464353";
+				PROVISIONING_PROFILE = "f94bbf57-91c4-4095-9ee3-4c2b0252e73a";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Ad Hoc";
@@ -676,6 +684,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5BE3C7056AEF4A7EBF81FEB7 /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Benchmark/Benchmark.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -683,7 +692,7 @@
 				INFOPLIST_FILE = "Benchmark/Benchmark-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "086776A2-DC75-444B-8D86-58B442464353";
+				PROVISIONING_PROFILE = "f94bbf57-91c4-4095-9ee3-4c2b0252e73a";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -692,6 +701,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5BE3C7056AEF4A7EBF81FEB7 /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Benchmark/Benchmark.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -699,7 +709,7 @@
 				INFOPLIST_FILE = "Benchmark/Benchmark-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "086776A2-DC75-444B-8D86-58B442464353";
+				PROVISIONING_PROFILE = "f94bbf57-91c4-4095-9ee3-4c2b0252e73a";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
