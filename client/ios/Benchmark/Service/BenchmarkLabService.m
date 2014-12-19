@@ -11,8 +11,6 @@
 #import "TestDefinition.h"
 #import "Utils.h"
 
-#import "AFHTTPRequestOperationManager.h"
-
 @interface BenchmarkLabService ()
 @property (nonatomic, strong, readwrite) NSURL *url;
 @property (nonatomic, strong, readwrite) NSString *baseApiUrl;
