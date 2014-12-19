@@ -55,6 +55,7 @@
 		588AE1621A4430FF0058FEC3 /* AddTestFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 588AE1611A4430FF0058FEC3 /* AddTestFormViewController.m */; };
 		588AE1651A4449AE0058FEC3 /* AddRunFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 588AE1641A4449AE0058FEC3 /* AddRunFormViewController.m */; };
 		588AE16B1A445E320058FEC3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588AE16A1A445E320058FEC3 /* Images.xcassets */; };
+		588AE16E1A447EF30058FEC3 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 588AE16D1A447EF30058FEC3 /* LaunchScreen.xib */; };
 		58C90F2F17FF16A800DF23C4 /* BenchmarkObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */; };
 		58E2334C17E79B8B006F941E /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2334B17E79B8B006F941E /* Test.m */; };
 		58E2334F17E79D66006F941E /* Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E2334E17E79D66006F941E /* Property.m */; };
@@ -158,6 +159,7 @@
 		588AE1631A4449AE0058FEC3 /* AddRunFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddRunFormViewController.h; path = UI/AddRunFormViewController.h; sourceTree = "<group>"; };
 		588AE1641A4449AE0058FEC3 /* AddRunFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddRunFormViewController.m; path = UI/AddRunFormViewController.m; sourceTree = "<group>"; };
 		588AE16A1A445E320058FEC3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		588AE16D1A447EF30058FEC3 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		58AA490B19ADBF940094185D /* Benchmark.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Benchmark.entitlements; sourceTree = "<group>"; };
 		58C90F2D17FF16A800DF23C4 /* BenchmarkObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BenchmarkObject.h; path = Model/BenchmarkObject.h; sourceTree = "<group>"; };
 		58C90F2E17FF16A800DF23C4 /* BenchmarkObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BenchmarkObject.m; path = Model/BenchmarkObject.m; sourceTree = "<group>"; };
@@ -242,7 +244,6 @@
 				5884706517E5138B00F89A6B /* Service */,
 				5831F88417E43AAC00ADFE98 /* AppDelegate.h */,
 				5831F88517E43AAC00ADFE98 /* AppDelegate.m */,
-				588AE16A1A445E320058FEC3 /* Images.xcassets */,
 				5831F87C17E43AAC00ADFE98 /* Supporting Files */,
 			);
 			path = Benchmark;
@@ -308,6 +309,7 @@
 				588AE1611A4430FF0058FEC3 /* AddTestFormViewController.m */,
 				587A9A3A17F34AB200D6D57B /* EditPropertyViewController.h */,
 				587A9A3B17F34AB200D6D57B /* EditPropertyViewController.m */,
+				588AE16D1A447EF30058FEC3 /* LaunchScreen.xib */,
 				58E2338B17ECC520006F941E /* PropertiesViewController.h */,
 				58E2338C17ECC520006F941E /* PropertiesViewController.m */,
 				58E2338817ECA326006F941E /* RunViewController.h */,
@@ -316,6 +318,7 @@
 				582E39F317EF85BD00A53ED3 /* TestViewController.m */,
 				58E2335D17EA4E31006F941E /* TestsViewController.h */,
 				58E2335E17EA4E31006F941E /* TestsViewController.m */,
+				588AE16A1A445E320058FEC3 /* Images.xcassets */,
 				588AE1131A4430400058FEC3 /* Forms */,
 			);
 			name = UI;
@@ -534,6 +537,7 @@
 				5884706D17E5160700F89A6B /* Settings.bundle in Resources */,
 				588AE1501A4430400058FEC3 /* AlfrescoFormBooleanCell.xib in Resources */,
 				588AE1581A4430400058FEC3 /* AlfrescoFormTextCell.xib in Resources */,
+				588AE16E1A447EF30058FEC3 /* LaunchScreen.xib in Resources */,
 				588AE16B1A445E320058FEC3 /* Images.xcassets in Resources */,
 				588AE15C1A4430400058FEC3 /* AlfrescoListOfValuesPickerViewController.xib in Resources */,
 				588AE15A1A4430400058FEC3 /* AlfrescoDatePickerViewController.xib in Resources */,
