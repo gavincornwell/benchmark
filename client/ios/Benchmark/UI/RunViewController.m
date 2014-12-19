@@ -119,7 +119,7 @@
             
             cell.textLabel.text = self.run.name;
             cell.detailTextLabel.text = self.run.summary;
-            UIImage *img = [UIImage imageNamed:@"samples.png"];
+            UIImage *img = [UIImage imageNamed:@"run.png"];
             cell.imageView.image = img;
 
             NSString *iconName = nil;

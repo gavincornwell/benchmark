@@ -10,6 +10,7 @@
 #import "PropertiesViewController.h"
 #import "RunViewController.h"
 #import "Utils.h"
+#import "AddRunFormViewController.h"
 #import "MBProgressHUD.h"
 
 @interface TestViewController ()
@@ -46,15 +47,21 @@
     
     // setup the bottom toolbar
     self.navigationController.toolbarHidden = NO;
+    UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
     UIBarButtonItem *flexibleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
-    NSArray *items = [NSArray arrayWithObjects:flexibleItem, item2, nil];
+    UIBarButtonItem *refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
+    NSArray *items = [NSArray arrayWithObjects:add, flexibleItem, refresh, nil];
     self.toolbarItems = items;
     
     // register for notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refresh:)
                                                  name:kRunStatusChangedNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refresh:)
+                                                 name:kRunAddedNotification
                                                object:nil];
 }
 
@@ -114,7 +121,7 @@
             
             cell.textLabel.text = self.test.name;
             cell.detailTextLabel.text = self.test.summary;
-            UIImage *img = [UIImage imageNamed:@"learn-more.png"];
+            UIImage *img = [UIImage imageNamed:@"test.png"];
             cell.imageView.image = img;
         }
         else
@@ -248,6 +255,13 @@
 }
 
 #pragma mark - Button handlers
+
+- (IBAction)add:(id)sender
+{
+    AddRunFormViewController *addRunVC = [[AddRunFormViewController alloc] initWithTest:self.test
+                                                                       benchmarkService:self.benchmarkService];
+    [self.navigationController pushViewController:addRunVC animated:YES];
+}
 
 - (IBAction)refresh:(id)sender
 {

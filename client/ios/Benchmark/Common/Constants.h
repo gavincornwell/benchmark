@@ -17,6 +17,8 @@ extern NSString * const kUITitleTests;
 extern NSString * const kUITitleGeneral;
 extern NSString * const kUITitleProperties;
 extern NSString * const kUITitleEditProperty;
+extern NSString * const kUITitleAddTest;
+extern NSString * const kUITitleAddRun;
 extern NSString * const kUITitleError;
 
 extern NSString * const kUILabelOK;
@@ -40,6 +42,9 @@ extern NSString * const kUILabelFailCount;
 extern NSString * const kUILabelScheduling;
 extern NSString * const kUILabelStopping;
 extern NSString * const kUILabelNoValue;
+extern NSString * const kUILabelName;
+extern NSString * const kUILabelDescription;
+extern NSString * const kUILabelDefinition;
 
 extern NSString * const kUIPasswordMask;
 extern NSString * const kUIConfigureUrl;
@@ -104,10 +109,20 @@ extern NSString * const kJSONTypeBoolean;
 extern NSString * const kJSONError;
 
 /**---------------------------------------------------------------------------------------
+ * @name Form constants
+ --------------------------------------------------------------------------------------- */
+
+extern NSString * const kFieldIdentifierName;
+extern NSString * const kFieldIdentifierDescription;
+extern NSString * const kFieldIdentifierDefinition;
+
+/**---------------------------------------------------------------------------------------
  * @name Notification constants
  --------------------------------------------------------------------------------------- */
 
 extern NSString * const kRunStatusChangedNotification;
+extern NSString * const kTestAddedNotification;
+extern NSString * const kRunAddedNotification;
 
 /**---------------------------------------------------------------------------------------
  * @name Error constants

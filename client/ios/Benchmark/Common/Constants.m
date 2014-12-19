@@ -17,6 +17,8 @@ NSString * const kUITitleTests = @"Tests";
 NSString * const kUITitleGeneral = @"General";
 NSString * const kUITitleProperties = @"Properties";
 NSString * const kUITitleEditProperty = @"Edit Property";
+NSString * const kUITitleAddTest = @"Add Test";
+NSString * const kUITitleAddRun = @"Add Run";
 NSString * const kUITitleError = @"Error";
 
 NSString * const kUILabelOK = @"OK";
@@ -40,6 +42,9 @@ NSString * const kUILabelFailCount = @"Fail Count";
 NSString * const kUILabelScheduling = @"Scheduling";
 NSString * const kUILabelStopping = @"Stopping";
 NSString * const kUILabelNoValue = @"-";
+NSString * const kUILabelName = @"Name";
+NSString * const kUILabelDescription = @"Description";
+NSString * const kUILabelDefinition = @"Definition";
 
 NSString * const kUIPasswordMask = @"*****";
 NSString * const kUIConfigureUrl = @"Please configure a Benchmark Server URL in Settings and then re-launch the app.";
@@ -102,7 +107,21 @@ NSString * const kJSONTypeInt = @"INT";
 NSString * const kJSONTypeBoolean = @"BOOL";
 NSString * const kJSONError = @"error";
 
+/**
+ Form field constants
+ */
+
+NSString * const kFieldIdentifierName = @"name";
+NSString * const kFieldIdentifierDescription = @"description";
+NSString * const kFieldIdentifierDefinition = @"testdefinition";
+
+/**
+ Notification constants
+ */
+
 NSString * const kRunStatusChangedNotification = @"RunStatusChangedNotification";
+NSString * const kTestAddedNotification = @"TestAddedNotification";
+NSString * const kRunAddedNotification = @"RunAddedNotification";
 
 /**
  Error constants

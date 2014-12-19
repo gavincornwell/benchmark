@@ -10,6 +10,7 @@
 #import "TestViewController.h"
 #import "Test.h"
 #import "Utils.h"
+#import "AddTestFormViewController.h"
 #import "MBProgressHUD.h"
 
 @interface TestsViewController ()
@@ -51,17 +52,29 @@
         
         // setup the bottom toolbar
         self.navigationController.toolbarHidden = NO;
+        UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
         UIBarButtonItem *flexibleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-        UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
-        NSArray *items = [NSArray arrayWithObjects:flexibleItem, item2, nil];
+        UIBarButtonItem *refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
+        NSArray *items = [NSArray arrayWithObjects:add, flexibleItem, refresh, nil];
         self.toolbarItems = items;
     }
+    
+    // register for notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refresh:)
+                                                 name:kTestAddedNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table view data source
@@ -91,7 +104,7 @@
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        UIImage *img = [UIImage imageNamed:@"learn-more.png"];
+        UIImage *img = [UIImage imageNamed:@"test.png"];
         cell.imageView.image = img;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -141,6 +154,13 @@
 }
 
 #pragma mark - Button handlers
+
+- (IBAction)add:(id)sender
+{
+    AddTestFormViewController *addTestVC = [[AddTestFormViewController alloc] initWithTestDefinitons:self.testDefinitions
+                                                                                    benchmarkService:self.benchmarkService];
+    [self.navigationController pushViewController:addTestVC animated:YES];
+}
 
 - (IBAction)refresh:(id)sender
 {
