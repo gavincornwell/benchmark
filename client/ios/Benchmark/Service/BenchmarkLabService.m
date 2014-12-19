@@ -39,32 +39,20 @@
     
     NSString *testDefinitionsGetUrl = [self.baseApiUrl stringByAppendingString:kUrlPathTestDefinitions];
     
-    NSLog(@"Test definitions URL: %@", testDefinitionsGetUrl);
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    [manager GET:testDefinitionsGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON response: %@", responseObject);
+    [self executeArrayGetRequestForUrl:testDefinitionsGetUrl completionHandler:^(NSArray *responseArray, NSError *responseError) {
+        NSMutableArray *testDefinitions = nil;
         
-        // make sure response is an array
-        if ([responseObject isKindOfClass:[NSArray class]])
+        if (responseArray)
         {
-            NSArray *results = (NSArray *)responseObject;
-            NSMutableArray *testDefinitions = [NSMutableArray arrayWithCapacity:results.count];
+            testDefinitions = [NSMutableArray arrayWithCapacity:responseArray.count];
             // convert each test to an object
-            for (NSDictionary *testDefinition in results)
+            for (NSDictionary *testDefinition in responseArray)
             {
                 [testDefinitions addObject:[self constructTestDefinitionObjectFromDictionary:testDefinition]];
             }
-            
-            completionHandler(testDefinitions, nil);
         }
-        else
-        {
-            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(nil, error);
+        
+        completionHandler(testDefinitions, responseError);
     }];
 }
 
@@ -74,32 +62,20 @@
     
     NSString *testsGetUrl = [self.baseApiUrl stringByAppendingString:kUrlPathTests];
     
-    NSLog(@"Tests URL: %@", testsGetUrl);
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    [manager GET:testsGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON response: %@", responseObject);
+    [self executeArrayGetRequestForUrl:testsGetUrl completionHandler:^(NSArray *responseArray, NSError *responseError) {
+        NSMutableArray *tests = nil;
         
-        // make sure response is an array
-        if ([responseObject isKindOfClass:[NSArray class]])
+        if (responseArray)
         {
-            NSArray *results = (NSArray *)responseObject;
-            NSMutableArray *tests = [NSMutableArray arrayWithCapacity:results.count];
+            tests = [NSMutableArray arrayWithCapacity:responseArray.count];
             // convert each test to an object
-            for (NSDictionary *test in results)
+            for (NSDictionary *test in responseArray)
             {
                 [tests addObject:[self constructTestObjectFromDictionary:test]];
             }
-            
-            completionHandler(tests, nil);
         }
-        else
-        {
-            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(nil, error);
+        
+        completionHandler(tests, nil);
     }];
 }
 
@@ -120,35 +96,22 @@
         objectGetUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, object.name];
     }
     
-    NSLog(@"Object URL: %@", objectGetUrl);
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    [manager GET:objectGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON response: %@", responseObject);
+    [self executeDictionaryGetRequestForUrl:objectGetUrl completionHandler:^(NSDictionary *responseDictionary, NSError *responseError) {
+        NSMutableArray *properties = nil;
         
-        // make sure response is a dictionary
-        if ([responseObject isKindOfClass:[NSDictionary class]])
+        if (responseDictionary)
         {
-            NSDictionary *results = (NSDictionary *)responseObject;
             // get the "properties" array
-            NSArray *jsonProperties = [results objectForKey:kJSONProperties];
-            NSMutableArray *properties = [NSMutableArray arrayWithCapacity:jsonProperties.count];
+            NSArray *jsonProperties = [responseDictionary objectForKey:kJSONProperties];
+            properties = [NSMutableArray arrayWithCapacity:jsonProperties.count];
             // convert each property into an object
             for (NSDictionary *property in jsonProperties)
             {
                 [properties addObject:[self constructPropertyFromDictionary:property]];
             }
-            
-            completionHandler(properties, nil);
         }
-        else
-        {
-            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(nil, error);
+        
+        completionHandler(properties, responseError);
     }];
 }
 
@@ -159,35 +122,21 @@
     
     NSString *runsGetUrl = [NSString stringWithFormat:@"%@%@/%@%@", self.baseApiUrl, kUrlPathTests, test.name, kUrlPathRuns];
     
-    NSLog(@"Runs URL: %@", runsGetUrl);
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    [manager GET:runsGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON response: %@", responseObject);
+    [self executeArrayGetRequestForUrl:runsGetUrl completionHandler:^(NSArray *responseArray, NSError *responseError) {
+        NSMutableArray *runs = nil;
         
-        // make sure response is an array
-        if ([responseObject isKindOfClass:[NSArray class]])
+        if (responseArray)
         {
-            NSArray *results = (NSArray *)responseObject;
-            NSMutableArray *runs = [NSMutableArray arrayWithCapacity:results.count];
+            runs = [NSMutableArray arrayWithCapacity:responseArray.count];
             // convert each run to an object
-            for (NSDictionary *run in results)
+            for (NSDictionary *run in responseArray)
             {
                 [runs addObject:[self constructRunObjectFromDictionary:run test:test]];
             }
-            
-            completionHandler(runs, nil);
         }
-        else
-        {
-            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(nil, error);
+        
+        completionHandler(runs, responseError);
     }];
-    
-    
 }
 
 - (void)retrieveStatusForRun:(Run *)run completionHandler:(RunStatusCompletionHandler)completionHandler
@@ -197,33 +146,22 @@
     
     NSString *runStateGetUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name, kUrlPathSummary];
     
-    NSLog(@"Run state URL: %@", runStateGetUrl);
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    [manager GET:runStateGetUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON response: %@", responseObject);
+    [self executeDictionaryGetRequestForUrl:runStateGetUrl completionHandler:^(NSDictionary *responseDictionary, NSError *responseError) {
+        RunStatus *status = nil;
         
-        // make sure response is an array
-        if ([responseObject isKindOfClass:[NSDictionary class]])
+        if (responseDictionary)
         {
             // construct run status object
-            RunStatus *status = [self constructRunStatusObjectFromDictionary:responseObject];
+            status = [self constructRunStatusObjectFromDictionary:responseDictionary];
             
             // if progress shows 100% change state on run object
             if (status.progess == 100)
             {
                 run.state = RunStateCompleted;
             }
-            
-            completionHandler(status, nil);
         }
-        else
-        {
-            completionHandler(nil, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(nil, error);
+        
+        completionHandler(status, responseError);
     }];
 }
 
@@ -244,11 +182,6 @@
         Run *run = (Run *)object;
         propertyUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@/props/%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, object.name, property.name];
     }
-
-    NSLog(@"Property URL: %@", propertyUrl);
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
         
     // create the dictionary to represent the JSON body
     NSMutableDictionary *jsonBody = [NSMutableDictionary dictionaryWithObject:property.version forKey:kJSONVersion];
@@ -261,33 +194,22 @@
     }
     else
     {
-        [jsonBody setValue:property.currentValue forKey:kJSONValue];
+        jsonBody[kJSONValue] = property.currentValue;
     }
     
-    NSLog(@"JSON body: %@", jsonBody);
-    
-    // PUT the new property value
-    [manager PUT:propertyUrl parameters:jsonBody success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON response: %@", responseObject);
+    [self executePutRequestForUrl:propertyUrl bodyDictionary:jsonBody completionHandler:^(NSDictionary *responseDictionary, NSError *responseError) {
+        BOOL succeeded = NO;
         
-        // make sure response is a dictionary
-        if ([responseObject isKindOfClass:[NSDictionary class]])
+        if (responseDictionary)
         {
-            // update the property object with the latest version
-            NSDictionary *results = (NSDictionary *)responseObject;
-            NSNumber *updatedVersion = [results objectForKey:kJSONVersion];
+            // update property version
+            NSNumber *updatedVersion = [responseDictionary objectForKey:kJSONVersion];
             property.version = updatedVersion;
             
-            completionHandler(YES, nil);
-        }
-        else
-        {
-            completionHandler(NO, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
+            succeeded = YES;
         }
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(NO, error);
+        completionHandler(succeeded, responseError);
     }];
 }
 
@@ -298,11 +220,6 @@
     
     NSString *scheduleRunUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name, kUrlPathSchedule];
     
-    NSLog(@"Schedule URL: %@", scheduleRunUrl);
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    
     // create the dictionary to represent the JSON body
     NSMutableDictionary *jsonBody = [NSMutableDictionary dictionaryWithObject:run.version forKey:kJSONVersion];
     // calculate now as the number of seconds since Jan 1 1970
@@ -310,33 +227,22 @@
     unsigned long long millSecondsSince1970 = seconds * 1000;
     [jsonBody setValue:[NSNumber numberWithLongLong:millSecondsSince1970] forKey:kJSONScheduled];
     
-    NSLog(@"JSON body: %@", jsonBody);
-    
-    // request the run be scheduled
-    [manager POST:scheduleRunUrl parameters:jsonBody success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON response: %@", responseObject);
+    [self executePostRequestForUrl:scheduleRunUrl bodyDictionary:jsonBody completionHandler:^(NSDictionary *responseDictionary, NSError *responseError) {
+        BOOL succeeded = NO;
         
-        // make sure response is a dictionary
-        if ([responseObject isKindOfClass:[NSDictionary class]])
+        if (responseDictionary)
         {
             // update the run object with the latest version
-            NSDictionary *results = (NSDictionary *)responseObject;
-            NSNumber *updatedVersion = [results objectForKey:kJSONVersion];
+            NSNumber *updatedVersion = [responseDictionary objectForKey:kJSONVersion];
             run.version = updatedVersion;
             
             // change the state of the run object
             run.state = RunStateScheduled;
             
-            completionHandler(YES, nil);
-        }
-        else
-        {
-            completionHandler(NO, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
+            succeeded = YES;
         }
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(NO, error);
+        completionHandler(succeeded, responseError);
     }];
 }
 
@@ -346,48 +252,82 @@
     [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
     
     NSString *stopRunUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name, kUrlPathTerminate];
-    
-    NSLog(@"Stop URL: %@", stopRunUrl);
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    // request the run be terminated
-    [manager POST:stopRunUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON response: %@", responseObject);
+
+    [self executePostRequestForUrl:stopRunUrl bodyDictionary:nil completionHandler:^(NSDictionary *responseDictionary, NSError *responseError) {
+        BOOL succeeded = NO;
         
-        // make sure response is a dictionary
-        if ([responseObject isKindOfClass:[NSDictionary class]])
+        if (responseDictionary)
         {
             // update the run object with the latest version
-            NSDictionary *results = (NSDictionary *)responseObject;
-            NSNumber *updatedVersion = [results objectForKey:kJSONVersion];
+            NSNumber *updatedVersion = [responseDictionary objectForKey:kJSONVersion];
             run.version = updatedVersion;
             
             // change the state of the run object
             run.state = RunStateStopped;
             
-            completionHandler(YES, nil);
-        }
-        else
-        {
-            completionHandler(NO, [Utils createErrorWithMessage:kErrorInvalidJSONReceived]);
+            succeeded = YES;
         }
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(NO, error);
+        completionHandler(succeeded, responseError);
     }];
 }
 
-- (void)addTestWithDefinition:(TestDefinition *)definition name:(NSString *)name summary:(NSString *)summary
-            completionHandler:(TestCompletionHandler)completionHandler
+- (void)addTestWithDefinition:(TestDefinition *)definition name:(NSString *)name summary:(NSString *)summary completionHandler:(TestCompletionHandler)completionHandler
 {
-    completionHandler(nil, nil);
+    [Utils assertArgumentNotNil:definition argumentName:@"definition"];
+    [Utils assertArgumentNotNil:name argumentName:@"name"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    NSMutableDictionary *bodyDictionary = [NSMutableDictionary dictionary];
+    bodyDictionary[kJSONName] = name;
+    bodyDictionary[kJSONRelease] = definition.name;
+    bodyDictionary[kJSONSchema] = definition.schema;
+    
+    if (summary)
+    {
+        bodyDictionary[kJSONDescription] = summary;
+    }
+    
+    NSString *addTestUrl = [NSString stringWithFormat:@"%@%@", self.baseApiUrl, kUrlPathTests];
+    
+    [self executePostRequestForUrl:addTestUrl bodyDictionary:bodyDictionary completionHandler:^(NSDictionary *responseDictionary, NSError *responseError) {
+        Test *test = nil;
+        
+        if (responseDictionary)
+        {
+            test = [self constructTestObjectFromDictionary:responseDictionary];
+        }
+        
+        completionHandler(test, responseError);
+    }];
 }
 
-- (void)addRunWithName:(NSString *)name summary:(NSString *)summary completionHandler:(RunCompletionHandler)completionHandler
+- (void)addRunToTest:(Test *)test name:(NSString *)name summary:(NSString *)summary completionHandler:(RunCompletionHandler)completionHandler
 {
-    completionHandler(nil, nil);
+    [Utils assertArgumentNotNil:test argumentName:@"test"];
+    [Utils assertArgumentNotNil:name argumentName:@"name"];
+    [Utils assertArgumentNotNil:completionHandler argumentName:@"completionHandler"];
+    
+    NSMutableDictionary *bodyDictionary = [NSMutableDictionary dictionary];
+    bodyDictionary[kJSONName] = name;
+    
+    if (summary)
+    {
+        bodyDictionary[kJSONDescription] = summary;
+    }
+    
+    NSString *addRunUrl = [NSString stringWithFormat:@"%@%@/%@%@", self.baseApiUrl, kUrlPathTests, test.name, kUrlPathRuns];
+    
+    [self executePostRequestForUrl:addRunUrl bodyDictionary:bodyDictionary completionHandler:^(NSDictionary *responseDictionary, NSError *responseError) {
+        Run *run = nil;
+        
+        if (responseDictionary)
+        {
+            run = [self constructRunObjectFromDictionary:responseDictionary test:test];
+        }
+        
+        completionHandler(run, responseError);
+    }];
 }
 
 - (void)deleteTest:(Test *)test completionHandler:(BOOLCompletionHandler)completionHandler
@@ -397,17 +337,7 @@
     
     NSString *deleteTestUrl = [NSString stringWithFormat:@"%@%@/%@", self.baseApiUrl, kUrlPathTests, test.name];
     
-    NSLog(@"Delete URL: %@", deleteTestUrl);
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    // request the run be terminated
-    [manager DELETE:deleteTestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        completionHandler(YES, nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(NO, error);
-    }];
+    [self executeDeleteRequestForUrl:deleteTestUrl completionHandler:completionHandler];
 }
 
 - (void)deleteRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
@@ -417,17 +347,7 @@
     
     NSString *deleteRunUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name];
     
-    NSLog(@"Delete URL: %@", deleteRunUrl);
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    // request the run be terminated
-    [manager DELETE:deleteRunUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        completionHandler(YES, nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionHandler(NO, error);
-    }];
+    [self executeDeleteRequestForUrl:deleteRunUrl completionHandler:completionHandler];
 }
 
 #pragma mark - Object construction methods
@@ -587,6 +507,243 @@
                                   version:[json objectForKey:kJSONVersion]
                                  isHidden:isHidden
                                  isSecret:isSecret];
+}
+
+#pragma mark Network handling methods
+
+- (void)executeDictionaryGetRequestForUrl:(NSString *)url completionHandler:(DictionaryCompletionHandler)completionHandler
+{
+    NSLog(@"GET: %@", url);
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error)
+        {
+            completionHandler(nil, error);
+        }
+        else
+        {
+            NSError *responseError = nil;
+            NSDictionary *responseDictionary = [self dictionaryFromData:data response:response error:&responseError];
+            completionHandler(responseDictionary, responseError);
+        }
+    }];
+    
+    // execute the request
+    [task resume];
+}
+
+- (void)executeArrayGetRequestForUrl:(NSString *)url completionHandler:(ArrayCompletionHandler)completionHandler
+{
+    NSLog(@"GET: %@", url);
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error)
+        {
+            completionHandler(nil, error);
+        }
+        else
+        {
+            NSError *responseError = nil;
+            NSArray *responseArray = [self arrayFromData:data response:response error:&responseError];
+            completionHandler(responseArray, responseError);
+        }
+    }];
+    
+    // execute the request
+    [task resume];
+}
+
+- (void)executePostRequestForUrl:(NSString *)url bodyDictionary:(NSDictionary *)bodyDictionary completionHandler:(DictionaryCompletionHandler)completionHandler
+{
+    NSLog(@"POST: %@", url);
+    
+    NSError *bodyError = nil;
+    NSData *bodyData = nil;
+    
+    if (bodyDictionary)
+    {
+        bodyData = [NSJSONSerialization dataWithJSONObject:bodyDictionary options:0 error:&bodyError];
+    }
+    
+    if (bodyError)
+    {
+        completionHandler(nil, bodyError);
+    }
+    else
+    {
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+        request.HTTPMethod = @"POST";
+        
+        // define block to use as response completion handler
+        void (^responseHandler)(NSData *data,
+                                NSURLResponse *response,
+                                NSError *postError) = ^void(NSData *data, NSURLResponse *response, NSError *postError) {
+            if (postError)
+            {
+                completionHandler(nil, postError);
+            }
+            else
+            {
+                NSError *responseError = nil;
+                NSDictionary *responseDictionary = [self dictionaryFromData:data response:response error:&responseError];
+                completionHandler(responseDictionary, responseError);
+            }
+        };
+        
+        NSURLSessionTask *task = nil;
+        if (bodyData)
+        {
+            [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            task = [session uploadTaskWithRequest:request fromData:bodyData completionHandler:responseHandler];
+        }
+        else
+        {
+            task = [session dataTaskWithRequest:request completionHandler:responseHandler];
+        }
+        
+        // execute the request
+        [task resume];
+    }
+}
+
+- (void)executePutRequestForUrl:(NSString *)url bodyDictionary:(NSDictionary *)bodyDictionary completionHandler:(DictionaryCompletionHandler)completionHandler
+{
+    NSLog(@"PUT: %@", url);
+    
+    NSError *bodyError = nil;
+    NSData *bodyData = [NSJSONSerialization dataWithJSONObject:bodyDictionary options:0 error:&bodyError];
+    
+    if (bodyError)
+    {
+        completionHandler(nil, bodyError);
+    }
+    else
+    {
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+        request.HTTPMethod = @"PUT";
+        [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request
+                                                             fromData:bodyData
+                                                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *putError) {
+            if (putError)
+            {
+                completionHandler(nil, putError);
+            }
+            else
+            {
+                NSError *responseError = nil;
+                NSDictionary *responseDictionary = [self dictionaryFromData:data response:response error:&responseError];
+                completionHandler(responseDictionary, responseError);
+            }
+        }];
+        
+        // execute the request
+        [task resume];
+    }
+}
+
+- (void)executeDeleteRequestForUrl:(NSString *)url completionHandler:(BOOLCompletionHandler)completionHandler
+{
+    NSLog(@"DELETE: %@", url);
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+    request.HTTPMethod = @"DELETE";
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *deleteError) {
+        if (deleteError)
+        {
+            completionHandler(NO, deleteError);
+        }
+        else
+        {
+            NSError *responseError = nil;
+            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+            if (httpResponse.statusCode >= 400)
+            {
+                responseError = [Utils createErrorWithMessage:[self errorMessageForStatusCode:httpResponse.statusCode]];
+            }
+            
+            completionHandler(responseError == nil ? YES : NO, responseError);
+        }
+    }];
+    
+    // execute the request
+    [task resume];
+}
+
+
+- (NSDictionary *)dictionaryFromData:(NSData *)data response:(NSURLResponse *)response error:(NSError **)outError
+{
+    NSDictionary *responseDictionary = nil;
+    
+    if (data != nil)
+    {
+        responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:outError];
+    }
+    
+    // check response status code
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+    if (httpResponse.statusCode >= 400)
+    {
+        NSString *errorMessage = nil;
+        
+        // look for an error message in the data
+        if (responseDictionary && responseDictionary[kJSONError])
+        {
+            errorMessage = responseDictionary[kJSONError];
+        }
+        else
+        {
+            errorMessage = [self errorMessageForStatusCode:httpResponse.statusCode];
+        }
+        
+        *outError = [Utils createErrorWithMessage:errorMessage];
+        responseDictionary = nil;
+    }
+
+    return responseDictionary;
+}
+
+- (NSArray *)arrayFromData:(NSData *)data response:(NSURLResponse *)response error:(NSError **)outError
+{
+    NSArray *responseArray = nil;
+    
+    if (data != nil)
+    {
+        responseArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:outError];
+    }
+    
+    // check response status code
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+    if (httpResponse.statusCode >= 400)
+    {
+        *outError = [Utils createErrorWithMessage:[self errorMessageForStatusCode:httpResponse.statusCode]];
+        responseArray = nil;
+    }
+    
+    return responseArray;
+}
+
+- (NSString *)errorMessageForStatusCode:(NSInteger)statusCode
+{
+    NSString *errorMessage = nil;
+    
+    if (statusCode == 404)
+    {
+        errorMessage = @"Requested item was not found";
+    }
+    else
+    {
+        errorMessage = @"An error occurred on the server";
+    }
+    
+    return errorMessage;
 }
 
 @end

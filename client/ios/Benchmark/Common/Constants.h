@@ -101,6 +101,7 @@ extern NSString * const kJSONTypeString;
 extern NSString * const kJSONTypeDecimal;
 extern NSString * const kJSONTypeInt;
 extern NSString * const kJSONTypeBoolean;
+extern NSString * const kJSONError;
 
 /**---------------------------------------------------------------------------------------
  * @name Notification constants

@@ -100,6 +100,7 @@ NSString * const kJSONTypeString = @"STRING";
 NSString * const kJSONTypeDecimal = @"DECIMAL";
 NSString * const kJSONTypeInt = @"INT";
 NSString * const kJSONTypeBoolean = @"BOOL";
+NSString * const kJSONError = @"error";
 
 NSString * const kRunStatusChangedNotification = @"RunStatusChangedNotification";
 

@@ -19,6 +19,7 @@
  * @name Block definitions
  --------------------------------------------------------------------------------------- */
 typedef void (^ArrayCompletionHandler)(NSArray *array, NSError *error);
+typedef void (^DictionaryCompletionHandler)(NSDictionary *dictionary, NSError *error);
 typedef void (^BOOLCompletionHandler)(BOOL succeeded, NSError *error);
 
 typedef void (^TestCompletionHandler)(Test *test, NSError *error);
@@ -45,7 +46,7 @@ typedef void (^RunStatusCompletionHandler)(RunStatus *status, NSError *error);
 
 - (void)addTestWithDefinition:(TestDefinition *)definition name:(NSString *)name summary:(NSString *)summary completionHandler:(TestCompletionHandler)completionHandler;
 
-- (void)addRunWithName:(NSString *)name summary:(NSString *)summary completionHandler:(RunCompletionHandler)completionHandler;
+- (void)addRunToTest:(Test *)test name:(NSString *)name summary:(NSString *)summary completionHandler:(RunCompletionHandler)completionHandler;
 
 - (void)deleteTest:(Test *)test completionHandler:(BOOLCompletionHandler)completionHandler;
 
