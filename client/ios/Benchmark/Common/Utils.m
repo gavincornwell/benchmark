@@ -25,7 +25,7 @@
 {
     BOOL result = NO;
     
-    id obj = [dictionary objectForKey:key];
+    id obj = dictionary[key];
     if (obj != nil)
     {
         if ([obj isKindOfClass:[NSString class]])
@@ -49,7 +49,7 @@
 {
     NSDate *date;
     
-    id obj = [dictionary objectForKey:key];
+    id obj = dictionary[key];
     if (obj != nil)
     {
         if ([obj isKindOfClass:[NSNumber class]])
@@ -79,7 +79,7 @@
 
 + (void)displayError:(NSError *)error
 {
-    NSString *message = [error.userInfo objectForKey:NSLocalizedDescriptionKey];
+    NSString *message = error.userInfo[NSLocalizedDescriptionKey];
     
     if (message == nil)
     {

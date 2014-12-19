@@ -80,7 +80,7 @@
 {
     // Return the number of rows in the section.
     NSString *groupName = [self.groupNames objectAtIndex:section];
-    NSArray *props = [self.groupedProperties objectForKey:groupName];
+    NSArray *props = self.groupedProperties[groupName];
     return props.count;
 }
 
@@ -104,7 +104,7 @@
     
     // retrieve appropriate property object
     NSString *groupName = [self.groupNames objectAtIndex:indexPath.section];
-    NSArray *props = [self.groupedProperties objectForKey:groupName];
+    NSArray *props = self.groupedProperties[groupName];
     Property *property = [props objectAtIndex:indexPath.row];
     
     // set cell text
@@ -152,7 +152,7 @@
 {
     // retrieve appropriate property object
     NSString *groupName = [self.groupNames objectAtIndex:indexPath.section];
-    NSArray *props = [self.groupedProperties objectForKey:groupName];
+    NSArray *props = self.groupedProperties[groupName];
     Property *property = [props objectAtIndex:indexPath.row];
     
     EditPropertyViewController *editPropVC = [[EditPropertyViewController alloc] initWithProperty:property
@@ -205,7 +205,7 @@
                         group = @"";
                     }
                     
-                    NSMutableArray *propsForGroup = [self.groupedProperties objectForKey:group];
+                    NSMutableArray *propsForGroup = self.groupedProperties[group];
                     if (propsForGroup == nil)
                     {
                         propsForGroup = [NSMutableArray arrayWithObject:prop];

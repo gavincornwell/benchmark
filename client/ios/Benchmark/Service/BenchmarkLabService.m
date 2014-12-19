@@ -50,7 +50,13 @@
             }
         }
         
-        completionHandler(testDefinitions, responseError);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(testDefinitions, responseError);
+            });
+        }
     }];
 }
 
@@ -73,7 +79,13 @@
             }
         }
         
-        completionHandler(tests, nil);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(tests, responseError);
+            });
+        }
     }];
 }
 
@@ -100,7 +112,7 @@
         if (responseDictionary)
         {
             // get the "properties" array
-            NSArray *jsonProperties = [responseDictionary objectForKey:kJSONProperties];
+            NSArray *jsonProperties = responseDictionary[kJSONProperties];
             properties = [NSMutableArray arrayWithCapacity:jsonProperties.count];
             // convert each property into an object
             for (NSDictionary *property in jsonProperties)
@@ -109,7 +121,13 @@
             }
         }
         
-        completionHandler(properties, responseError);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(properties, responseError);
+            });
+        }
     }];
 }
 
@@ -133,7 +151,13 @@
             }
         }
         
-        completionHandler(runs, responseError);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(runs, responseError);
+            });
+        }
     }];
 }
 
@@ -159,7 +183,13 @@
             }
         }
         
-        completionHandler(status, responseError);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(status, responseError);
+            });
+        }
     }];
 }
 
@@ -201,13 +231,19 @@
         if (responseDictionary)
         {
             // update property version
-            NSNumber *updatedVersion = [responseDictionary objectForKey:kJSONVersion];
+            NSNumber *updatedVersion = responseDictionary[kJSONVersion];
             property.version = updatedVersion;
             
             succeeded = YES;
         }
         
-        completionHandler(succeeded, responseError);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(succeeded, responseError);
+            });
+        }
     }];
 }
 
@@ -223,7 +259,7 @@
     // calculate now as the number of seconds since Jan 1 1970
     NSTimeInterval seconds = [[NSDate date] timeIntervalSince1970];
     unsigned long long millSecondsSince1970 = seconds * 1000;
-    [jsonBody setValue:[NSNumber numberWithLongLong:millSecondsSince1970] forKey:kJSONScheduled];
+    jsonBody[kJSONScheduled] = [NSNumber numberWithLongLong:millSecondsSince1970];
     
     [self executePostRequestForUrl:scheduleRunUrl bodyDictionary:jsonBody completionHandler:^(NSDictionary *responseDictionary, NSError *responseError) {
         BOOL succeeded = NO;
@@ -231,7 +267,7 @@
         if (responseDictionary)
         {
             // update the run object with the latest version
-            NSNumber *updatedVersion = [responseDictionary objectForKey:kJSONVersion];
+            NSNumber *updatedVersion = responseDictionary[kJSONVersion];
             run.version = updatedVersion;
             
             // change the state of the run object
@@ -240,7 +276,13 @@
             succeeded = YES;
         }
         
-        completionHandler(succeeded, responseError);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(succeeded, responseError);
+            });
+        }
     }];
 }
 
@@ -257,7 +299,7 @@
         if (responseDictionary)
         {
             // update the run object with the latest version
-            NSNumber *updatedVersion = [responseDictionary objectForKey:kJSONVersion];
+            NSNumber *updatedVersion = responseDictionary[kJSONVersion];
             run.version = updatedVersion;
             
             // change the state of the run object
@@ -266,7 +308,13 @@
             succeeded = YES;
         }
         
-        completionHandler(succeeded, responseError);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(succeeded, responseError);
+            });
+        }
     }];
 }
 
@@ -296,7 +344,13 @@
             test = [self constructTestObjectFromDictionary:responseDictionary];
         }
         
-        completionHandler(test, responseError);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(test, responseError);
+            });
+        }
     }];
 }
 
@@ -324,7 +378,13 @@
             run = [self constructRunObjectFromDictionary:responseDictionary test:test];
         }
         
-        completionHandler(run, responseError);
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(run, responseError);
+            });
+        }
     }];
 }
 
@@ -335,7 +395,15 @@
     
     NSString *deleteTestUrl = [NSString stringWithFormat:@"%@%@/%@", self.baseApiUrl, kUrlPathTests, test.name];
     
-    [self executeDeleteRequestForUrl:deleteTestUrl completionHandler:completionHandler];
+    [self executeDeleteRequestForUrl:deleteTestUrl completionHandler:^(BOOL succeeded, NSError *responseError) {
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(succeeded, responseError);
+            });
+        }
+    }];
 }
 
 - (void)deleteRun:(Run *)run completionHandler:(BOOLCompletionHandler)completionHandler
@@ -345,7 +413,15 @@
     
     NSString *deleteRunUrl = [NSString stringWithFormat:@"%@%@/%@%@/%@", self.baseApiUrl, kUrlPathTests, run.test.name, kUrlPathRuns, run.name];
     
-    [self executeDeleteRequestForUrl:deleteRunUrl completionHandler:completionHandler];
+    [self executeDeleteRequestForUrl:deleteRunUrl completionHandler:^(BOOL succeeded, NSError *responseError) {
+        if (completionHandler != NULL)
+        {
+            // call the completion handler on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(succeeded, responseError);
+            });
+        }
+    }];
 }
 
 #pragma mark - Object construction methods
@@ -357,8 +433,8 @@
     NSString *identifier = [json valueForKeyPath:idPath];
     
     return [[TestDefinition alloc] initWithIdentifier:identifier
-                                                 name:[json objectForKey:kJSONRelease]
-                                               schema:[json objectForKey:kJSONSchema]];
+                                                 name:json[kJSONRelease]
+                                               schema:json[kJSONSchema]];
 }
 
 - (Test *)constructTestObjectFromDictionary:(NSDictionary *)json
@@ -367,10 +443,10 @@
     NSString *idPath = [NSString stringWithFormat:@"%@.%@", kJSONId, kJSONOId];
     NSString *identifier = [json valueForKeyPath:idPath];
     
-    return [[Test alloc] initWithName:[json objectForKey:kJSONName]
-                              summary:[json objectForKey:kJSONDescription]
+    return [[Test alloc] initWithName:json[kJSONName]
+                              summary:json[kJSONDescription]
                            identifier:identifier
-                              version:[json objectForKey:kJSONVersion]];
+                              version:json[kJSONVersion]];
 }
 
 - (Run *)constructRunObjectFromDictionary:(NSDictionary *)json test:(Test *)test
@@ -381,7 +457,7 @@
     
     // determine the state of the run
     RunState state = RunStateNotScheduled;
-    NSString *stateString = [json objectForKey:kJSONState];
+    NSString *stateString = json[kJSONState];
     if (stateString != nil)
     {
         if ([stateString isEqualToString:kJSONStateScheduled])
@@ -408,10 +484,10 @@
     NSDate *timeCompleted = [Utils retrieveDateFromDictionary:json withKey:kJSONCompleted];
     NSDate *timeStopped = [Utils retrieveDateFromDictionary:json withKey:kJSONStopped];
     
-    return [[Run alloc] initWithName:[json objectForKey:kJSONName]
-                             summary:[json objectForKey:kJSONDescription]
+    return [[Run alloc] initWithName:json[kJSONName]
+                             summary:json[kJSONDescription]
                           identifier:identifier
-                             version:[json objectForKey:kJSONVersion]
+                             version:json[kJSONVersion]
                                 test:test
                                state:state
                   scheduledStartTime:scheduledStartTime
@@ -431,9 +507,9 @@
     long long duration = 0;
     
     // convert the duration to seconds
-    if ([json objectForKey:kJSONDuration])
+    if (json[kJSONDuration])
     {
-        duration = [[json objectForKey:kJSONDuration] longLongValue];
+        duration = [json[kJSONDuration] longLongValue];
         if (duration > 0)
         {
             duration = duration / 1000;
@@ -441,15 +517,15 @@
     }
     
     // convert success rate to a percentage
-    if ([json objectForKey:kJSONSuccessRate])
+    if (json[kJSONSuccessRate])
     {
-        successRate = [[json objectForKey:kJSONSuccessRate] floatValue] * 100;
+        successRate = [json[kJSONSuccessRate] floatValue] * 100;
     }
     
     // convert progress to a percentage
-    if ([json objectForKey:kJSONProgress])
+    if (json[kJSONProgress])
     {
-        progress = [[json objectForKey:kJSONProgress] floatValue] * 100;
+        progress = [json[kJSONProgress] floatValue] * 100;
     }
     
     return [[RunStatus alloc] initWithScheduledStartTime:scheduledStartTime
@@ -457,16 +533,16 @@
                                                 duration:duration
                                              successRate:successRate
                                                 progress:progress
-                                       resultsTotalCount:[[json objectForKey:kJSONResultsTotal] integerValue]
-                                     resultsSuccessCount:[[json objectForKey:kJSONResultsSuccess] integerValue]
-                                        resultsFailCount:[[json objectForKey:kJSONResultsFail] integerValue]];
+                                       resultsTotalCount:[json[kJSONResultsTotal] integerValue]
+                                     resultsSuccessCount:[json[kJSONResultsSuccess] integerValue]
+                                        resultsFailCount:[json[kJSONResultsFail] integerValue]];
 }
 
 - (Property *)constructPropertyFromDictionary:(NSDictionary *)json
 {
     // determine type
     PropertyType type;
-    NSString *typeString = [json objectForKey:kJSONType];
+    NSString *typeString = json[kJSONType];
     if ([@"INT" isEqualToString:typeString])
     {
         type = PropertyTypeInteger;
@@ -484,25 +560,25 @@
     // handle string and boolean objects
     BOOL isHidden = NO;
     BOOL isSecret = NO;
-    if ([json objectForKey:kJSONHide] != nil)
+    if (json[kJSONHide] != nil)
     {
         isHidden = [Utils retrieveBoolFromDictionary:json withKey:kJSONHide];
     }
     
-    if ([json objectForKey:kJSONMask] != nil)
+    if (json[kJSONMask] != nil)
     {
         isSecret = [Utils retrieveBoolFromDictionary:json withKey:kJSONMask];
     }
     
     // construct and return the property object
-    return [[Property alloc] initWithName:[json objectForKey:kJSONName]
-                                    title:[json objectForKey:kJSONTitle]
-                                  summary:[json objectForKey:kJSONDescription]
-                             defaultValue:[json objectForKey:kJSONDefault]
-                             currentValue:[json objectForKey:kJSONValue]
-                                    group:[json objectForKey:kJSONGroup]
+    return [[Property alloc] initWithName:json[kJSONName]
+                                    title:json[kJSONTitle]
+                                  summary:json[kJSONDescription]
+                             defaultValue:json[kJSONDefault]
+                             currentValue:json[kJSONValue]
+                                    group:json[kJSONGroup]
                                      type:type
-                                  version:[json objectForKey:kJSONVersion]
+                                  version:json[kJSONVersion]
                                  isHidden:isHidden
                                  isSecret:isSecret];
 }
@@ -701,7 +777,10 @@
             errorMessage = [self errorMessageForStatusCode:httpResponse.statusCode];
         }
         
-        *outError = [Utils createErrorWithMessage:errorMessage];
+        if (outError != NULL)
+        {
+            *outError = [Utils createErrorWithMessage:errorMessage];
+        }
         responseDictionary = nil;
     }
 
@@ -721,7 +800,10 @@
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
     if (httpResponse.statusCode >= 400)
     {
-        *outError = [Utils createErrorWithMessage:[self errorMessageForStatusCode:httpResponse.statusCode]];
+        if (outError != NULL)
+        {
+            *outError = [Utils createErrorWithMessage:[self errorMessageForStatusCode:httpResponse.statusCode]];
+        }
         responseArray = nil;
     }
     
