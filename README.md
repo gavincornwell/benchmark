@@ -11,9 +11,8 @@ An Android app is planned but there is no target date.
 iOS App Roadmap
 ---------------
 
-* Bring project up to date (NSURLSession, XCTest, async testing)
-* Add Tests & Runs (v1.1)
 * Property editing (v1.2)
+* Copy tests and runs (v1.3)
 * iPad/iPhone 6 enhanced run status view (swift, storyboards, size classes) 
 * Save results to Alfresco (iOS SDK via CocoaPods)
 * Save results to cloud storage (via document provider extension)
